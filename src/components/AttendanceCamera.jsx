@@ -2,9 +2,9 @@ import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 import Swal from "sweetalert2";
 
-const ALLOWED_LATITUDE = -6.22592;
-const ALLOWED_LONGITUDE = 106.8302336;
-const ALLOWED_RADIUS = 0.1;
+const ALLOWED_LATITUDE = -0.457833;
+const ALLOWED_LONGITUDE = 117.1259754;
+const ALLOWED_RADIUS = 0.5;
 
 const AttendanceCamera = () => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
