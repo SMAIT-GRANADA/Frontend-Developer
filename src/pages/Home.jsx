@@ -2,6 +2,7 @@ import AbsensiKamera from "../components/AttendanceCamera";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Stats from "../components/Stats";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
         <Hero />
         <Stats />
         <AbsensiKamera />
+        <Footer />
       </div>
     </>
   );
