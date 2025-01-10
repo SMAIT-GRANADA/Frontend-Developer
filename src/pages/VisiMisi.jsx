@@ -6,7 +6,7 @@ const VisiMisi = () => {
   return (
     <>
       <Navbar />
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen mt-32">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${bgVisiMisi})` }}
