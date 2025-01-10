@@ -1,23 +1,62 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { FiFacebook } from "react-icons/fi";
+import { FaInstagram } from "react-icons/fa";
+import { SlSocialYoutube } from "react-icons/sl";
 import LogoSekolah from "../assets/logo-sekolah.svg";
 
 const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPSBOpen, setIsPSBOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <nav className="bg-[#006838] shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col">
-          <div className="text-center py-2">
-            <span className="text-white text-sm">Selamat datang kami</span>
+          <div className="text-center py-2 border-b border-green-700 overflow-hidden">
+            <style>
+              {`
+                @keyframes marquee {
+                  0% { transform: translateX(100%); }
+                  100% { transform: translateX(-100%); }
+                }
+                .marquee-container {
+                  width: 100%;
+                  overflow: hidden;
+                }
+                .marquee-text {
+                  display: inline-block;
+                  white-space: nowrap;
+                  animation: marquee 18s linear infinite;
+                  padding-left: 100%;
+                }
+                .marquee-text:hover {
+                  animation-play-state: paused;
+                }
+              `}
+            </style>
+            <div
+              className="marquee-container"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <div
+                className="marquee-text"
+                style={{ animationPlayState: isHovered ? "paused" : "running" }}
+              >
+                <span className="text-white text-sm">
+                  Selamat datang di website SMAIT GRANADA, Sholeh, Berilmu Dan
+                  Memimpin
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row justify-between items-center py-2">
-            <div className="flex items-center mb-4 lg:mb-0">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center">
               <Link to="/" className="flex items-center">
                 <img
                   src={LogoSekolah}
@@ -31,6 +70,120 @@ const Navbar = () => {
                   <h2 className="text-white text-sm md:text-base">SAMARINDA</h2>
                 </div>
               </Link>
+            </div>
+
+            <div className="hidden lg:flex items-center space-x-8">
+              <Link to="/" className="text-white hover:text-yellow-300">
+                Beranda
+              </Link>
+
+              <div className="relative">
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center text-white hover:text-yellow-300"
+                >
+                  Profil
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </button>
+                {isProfileOpen && (
+                  <div className="absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
+                    <div className="py-1">
+                      <Link
+                        to="/visi-misi"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Visi & Misi
+                      </Link>
+                      <Link
+                        to="/struktur"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Struktur Organisasi
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative">
+                <button
+                  onClick={() => setIsPSBOpen(!isPSBOpen)}
+                  className="flex items-center text-white hover:text-yellow-300"
+                >
+                  PSB
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </button>
+                {isPSBOpen && (
+                  <div className="absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
+                    <div className="py-1">
+                      <Link
+                        to="/pendaftaran"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Pendaftaran
+                      </Link>
+                      <Link
+                        to="/info-psb"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Informasi PSB
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <a
+                href="https://www.e-ujian.com/69950015"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-yellow-300"
+              >
+                E-quiz
+              </a>
+              <a
+                href="https://alumnigranada.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-yellow-300"
+              >
+                Alumni
+              </a>
+            </div>
+
+            <div className="hidden lg:flex items-center space-x-4">
+              <a
+                href="https://www.instagram.com/smaitgranada/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-yellow-300"
+              >
+                <FaInstagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://web.facebook.com/smaitgranada.samarinda"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-yellow-300"
+              >
+                <FiFacebook className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.youtube.com/@smaitgranadasamarinda4801/featured"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-yellow-300"
+              >
+                <SlSocialYoutube className="h-5 w-5" />
+              </a>
+              <div className="hidden lg:block">
+                <Link
+                  to="/login"
+                  className="bg-yellow-300 text-gray-900 px-6 py-2 rounded-md font-medium hover:bg-yellow-400 transition-colors"
+                >
+                  Login
+                </Link>
+              </div>
             </div>
 
             <div className="lg:hidden">
@@ -50,120 +203,6 @@ const Navbar = () => {
                   <path d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
               </button>
-            </div>
-
-            <div className="hidden lg:flex flex-col md:flex-row items-center gap-8">
-              <div className="flex items-center space-x-8">
-                <Link to="/" className="text-white hover:text-yellow-300">
-                  Beranda
-                </Link>
-
-                <div className="relative">
-                  <button
-                    onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center text-white hover:text-yellow-300"
-                  >
-                    Profil
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </button>
-                  {isProfileOpen && (
-                    <div className="absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
-                      <div className="py-1">
-                        <Link
-                          to="/visi-misi"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Visi & Misi
-                        </Link>
-                        <Link
-                          to="/struktur"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Struktur Organisasi
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <button
-                    onClick={() => setIsPSBOpen(!isPSBOpen)}
-                    className="flex items-center text-white hover:text-yellow-300"
-                  >
-                    PSB
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </button>
-                  {isPSBOpen && (
-                    <div className="absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white">
-                      <div className="py-1">
-                        <Link
-                          to="/pendaftaran"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Pendaftaran
-                        </Link>
-                        <Link
-                          to="/info-psb"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Informasi PSB
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <a
-                  href="https://www.e-ujian.com/69950015"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-yellow-300"
-                >
-                  E-quiz
-                </a>
-                <a
-                  href="https://alumnigranada.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-yellow-300"
-                >
-                  Alumni
-                </a>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-yellow-300"
-                >
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-yellow-300"
-                >
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://youtube.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-yellow-300"
-                >
-                  <Youtube className="h-5 w-5" />
-                </a>
-                <Link
-                  to="/login"
-                  className="bg-yellow-300 text-gray-900 px-6 py-2 rounded-md font-medium hover:bg-yellow-400 transition-colors"
-                >
-                  Login
-                </Link>
-              </div>
             </div>
           </div>
 
@@ -237,28 +276,28 @@ const Navbar = () => {
                 </a>
                 <div className="flex items-center space-x-4 pt-4">
                   <a
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/smaitgranada/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <Instagram className="h-5 w-5" />
+                    <FaInstagram className="h-5 w-5" />
                   </a>
                   <a
-                    href="https://facebook.com"
+                    href="https://web.facebook.com/smaitgranada.samarinda"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <Facebook className="h-5 w-5" />
+                    <FiFacebook className="h-5 w-5" />
                   </a>
                   <a
-                    href="https://youtube.com"
+                    href="https://www.youtube.com/@smaitgranadasamarinda4801/featured"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <Youtube className="h-5 w-5" />
+                    <SlSocialYoutube className="h-5 w-5" />
                   </a>
                   <Link
                     to="/login"
