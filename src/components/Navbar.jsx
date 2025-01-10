@@ -98,10 +98,10 @@ const Navbar = () => {
                         Visi & Misi
                       </Link>
                       <Link
-                        to="/struktur"
+                        to="/berita"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        Struktur Organisasi
+                        Berita
                       </Link>
                     </div>
                   </div>
@@ -253,10 +253,10 @@ const Navbar = () => {
                     Visi & Misi
                   </Link>
                   <Link
-                    to="/struktur"
+                    to="/berita"
                     className="block text-white hover:text-yellow-300"
                   >
-                    Struktur Organisasi
+                    Berita
                   </Link>
                 </div>
               )}
