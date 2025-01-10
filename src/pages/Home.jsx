@@ -1,4 +1,3 @@
-import React from "react";
 import AbsensiKamera from "../components/AttendanceCamera";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
@@ -8,9 +7,11 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <Hero />
-      <Stats />
-      <AbsensiKamera />
+      <div className="pt-28 lg:pt-32">
+        <Hero />
+        <Stats />
+        <AbsensiKamera />
+      </div>
     </>
   );
 };
