@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import bgVisiMisi from "../assets/bg-visimisi.png";
 
 const VisiMisi = () => {
@@ -78,6 +79,7 @@ const VisiMisi = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
