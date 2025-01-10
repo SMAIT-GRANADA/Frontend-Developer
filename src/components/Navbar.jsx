@@ -125,12 +125,6 @@ const Navbar = () => {
                       >
                         Pendaftaran
                       </Link>
-                      <Link
-                        to="/info-psb"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        Informasi PSB
-                      </Link>
                     </div>
                   </div>
                 )}
@@ -274,12 +268,6 @@ const Navbar = () => {
                     className="block text-white hover:text-yellow-300"
                   >
                     Pendaftaran
-                  </Link>
-                  <Link
-                    to="/info-psb"
-                    className="block text-white hover:text-yellow-300"
-                  >
-                    Informasi PSB
                   </Link>
                 </div>
               )}
