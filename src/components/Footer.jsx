@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logoSekolah from "../assets/logo-sekolah.svg";
-import instagramLogo from "../assets/mdi_instagram.svg";
-import facebookLogo from "../assets/facebook.svg";
-import youtubeLogo from "../assets/youtube.svg";
+import { FiFacebook } from "react-icons/fi";
+import { FaInstagram } from "react-icons/fa";
+import { SlSocialYoutube } from "react-icons/sl";
 import emailLogo from "../assets/email.svg";
 import waLogo from "../assets/wa.svg";
 
 const Footer = () => {
   return (
     <footer className="bg-[#0E1D0C] text-white">
-      <div className="container mx-auto px-4 py-10">
+      <div className="container mx-auto px-4 lg:px-48  py-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
@@ -30,34 +30,32 @@ const Footer = () => {
               <div className="flex space-x-4">
                 <a
                   href="https://www.instagram.com/smaitgranada/"
-                  className="hover:text-gray-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black"
                 >
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <img
-                      src={instagramLogo}
-                      alt="Instagram"
-                      className="w-4 h-4"
-                    />
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                    <FaInstagram className="h-4 w-4" />
                   </div>
                 </a>
                 <a
                   href="https://web.facebook.com/smaitgranada.samarinda"
-                  className="hover:text-gray-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black"
                 >
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <img
-                      src={facebookLogo}
-                      alt="Facebook"
-                      className="w-4 h-4"
-                    />
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                    <FiFacebook className="h-4 w-4" />
                   </div>
                 </a>
                 <a
                   href="https://www.youtube.com/@smaitgranadasamarinda4801/featured"
-                  className="hover:text-gray-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black"
                 >
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <img src={youtubeLogo} alt="YouTube" className="w-4 h-4" />
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                    <SlSocialYoutube className="h-4 w-4" />
                   </div>
                 </a>
               </div>
@@ -67,7 +65,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Alamat</h4>
             <p className="text-sm">
-              Jl. Ringroad No.3, Bukit Pinang,
+              Jl. HM Ardan KM 03, Kel. Bukit Pinang
               <br />
               Kec. Samarinda Ulu, Kota
               <br />
@@ -79,7 +77,7 @@ const Footer = () => {
             </p>
           </div>
 
-          <div>
+          <div className=" md:ml-16">
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/" className="hover:text-yellow-300">
@@ -97,13 +95,15 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/pendaftaran" className="hhover:text-yellow-300">
+                <Link to="/pendaftaran" className="hover:text-yellow-300">
                   PSB
                 </Link>
               </li>
               <li>
                 <a
                   href="https://alumnigranada.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-yellow-300"
                 >
                   E-quiz
@@ -122,7 +122,9 @@ const Footer = () => {
             <div className="space-y-2 text-sm">
               <a
                 href="mailto:mail@smaitgranada.sch.id"
-                className="flex items-center space-x-2 hover:text-gray-300"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:text-yellow-300"
               >
                 <span>
                   <img src={emailLogo} alt="Facebook" className="w-4 h-4" />
@@ -131,7 +133,9 @@ const Footer = () => {
               </a>
               <a
                 href="tel:+628115044599"
-                className="flex items-center space-x-2 hover:text-gray-300"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:text-yellow-300"
               >
                 <span>
                   <img src={waLogo} alt="Facebook" className="w-4 h-4" />
