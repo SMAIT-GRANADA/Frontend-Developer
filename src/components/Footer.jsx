@@ -28,7 +28,10 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold mb-2">Media Sosial</h4>
               <div className="flex space-x-4">
-                <a href="#" className="hover:text-gray-300">
+                <a
+                  href="https://www.instagram.com/smaitgranada/"
+                  className="hover:text-gray-300"
+                >
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                     <img
                       src={instagramLogo}
@@ -37,7 +40,10 @@ const Footer = () => {
                     />
                   </div>
                 </a>
-                <a href="#" className="hover:text-gray-300">
+                <a
+                  href="https://web.facebook.com/smaitgranada.samarinda"
+                  className="hover:text-gray-300"
+                >
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                     <img
                       src={facebookLogo}
@@ -46,7 +52,10 @@ const Footer = () => {
                     />
                   </div>
                 </a>
-                <a href="#" className="hover:text-gray-300">
+                <a
+                  href="https://www.youtube.com/@smaitgranadasamarinda4801/featured"
+                  className="hover:text-gray-300"
+                >
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                     <img src={youtubeLogo} alt="YouTube" className="w-4 h-4" />
                   </div>
@@ -73,34 +82,37 @@ const Footer = () => {
           <div>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/" className="hover:text-gray-300">
+                <Link to="/" className="hover:text-yellow-300">
                   Beranda
                 </Link>
               </li>
               <li>
-                <Link href="/visi-misi" className="hover:text-gray-300">
+                <Link to="/visi-misi" className="hover:text-yellow-300">
                   Profil
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-gray-300">
+                <Link to="#" className="hover:text-yellow-300">
                   Berita Granada
                 </Link>
               </li>
               <li>
-                <Link href="/info-psb" className="hover:text-gray-300">
+                <Link to="/pendaftaran" className="hhover:text-yellow-300">
                   PSB
                 </Link>
               </li>
               <li>
-                <Link to="#" className="hover:text-gray-300">
+                <a
+                  href="https://alumnigranada.com/"
+                  className="hover:text-yellow-300"
+                >
                   E-quiz
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="#" className="hover:text-gray-300">
+                <a href="#" className="hover:text-yellow-300">
                   Lokasi
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
