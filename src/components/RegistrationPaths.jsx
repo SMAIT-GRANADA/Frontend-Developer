@@ -34,10 +34,12 @@ const RegistrationPaths = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h2 className="text-start text-xl font-medium mb-12">
-        <strong>Kami memiliki 3 jalur pendaftaran</strong>, syarat dan ketentuan
-        :
-      </h2>
+      <div className="p-4 rounded-xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] mb-4">
+        <h2 className="text-start text-xl font-medium">
+          <strong>Kami memiliki 3 jalur pendaftaran</strong>, syarat dan
+          ketentuan :
+        </h2>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {paths.map((path, index) => (
