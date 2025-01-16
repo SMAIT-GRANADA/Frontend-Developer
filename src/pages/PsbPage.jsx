@@ -8,12 +8,15 @@ const PsbPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="mt-32 md:mt-36 w-full relative">
-        <img
-          src={psbBackground}
-          alt="PSB Background"
-          className="w-full h-[200px] md:h-[400px] lg:h-[500px] object-cover"
-        />
+      <div className="mt-24 md:mt-28 w-full relative">
+        <div className="w-full h-full relative overflow-hidden">
+          <img
+            src={psbBackground}
+            alt="PSB Background"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-10" />
+        </div>
       </div>
       <div className="flex-grow">
         <RegistrationPaths />
