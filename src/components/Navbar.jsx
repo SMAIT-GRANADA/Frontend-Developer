@@ -15,6 +15,16 @@ const Navbar = () => {
 
   const isStudentRoute = location.pathname.startsWith("/student");
 
+  const handleProfileClick = () => {
+    setIsProfileOpen(!isProfileOpen);
+    setIsPSBOpen(false);
+  };
+
+  const handlePSBClick = () => {
+    setIsPSBOpen(!isPSBOpen);
+    setIsProfileOpen(false);
+  };
+
   return (
     <nav className="bg-[#006838] shadow-lg fixed w-full top-0 z-50">
       <div className="w-full mx-auto">
@@ -89,7 +99,7 @@ const Navbar = () => {
 
                   <div className="relative">
                     <button
-                      onClick={() => setIsProfileOpen(!isProfileOpen)}
+                      onClick={handleProfileClick}
                       className="flex items-center text-white hover:text-yellow-300"
                     >
                       Profil
@@ -117,7 +127,7 @@ const Navbar = () => {
 
                   <div className="relative">
                     <button
-                      onClick={() => setIsPSBOpen(!isPSBOpen)}
+                      onClick={handlePSBClick}
                       className="flex items-center text-white hover:text-yellow-300"
                     >
                       PSB
