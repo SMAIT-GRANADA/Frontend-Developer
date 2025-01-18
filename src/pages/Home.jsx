@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import MapRegist from "../components/MapRegist";
 import StaffGrid from "../components/StaffGrid";
 import ProfilGranada from "../components/ProfileGranada";
+import NewsLayout from "../components/NewsLayout";
 
 const Home = () => {
   return (
@@ -14,10 +15,13 @@ const Home = () => {
         <Hero />
         <Stats />
         <ProfilGranada />
+        <div className="w-full bg-white py-8">
+          <NewsLayout />
+        </div>
         <div className="relative pb-20 md:pb-32 bg-transparent">
           <MapRegist />
         </div>
-        <div className="w-full bg-white">
+        <div className="w-full bg-[#F8FCF8]">
           <StaffGrid />
         </div>
         <Footer />
