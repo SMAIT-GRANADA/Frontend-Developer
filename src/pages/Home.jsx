@@ -3,6 +3,7 @@ import Hero from "../components/Hero";
 import Stats from "../components/Stats";
 import Footer from "../components/Footer";
 import MapRegist from "../components/MapRegist";
+import StaffGrid from "../components/StaffGrid";
 
 const Home = () => {
   return (
@@ -13,6 +14,9 @@ const Home = () => {
         <Stats />
         <div className="relative pb-20 md:pb-32 bg-transparent">
           <MapRegist />
+        </div>
+        <div className="w-full bg-white">
+          <StaffGrid />
         </div>
         <Footer />
       </div>
