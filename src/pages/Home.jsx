@@ -1,4 +1,3 @@
-import AbsensiKamera from "../components/AttendanceCamera";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Stats from "../components/Stats";
@@ -12,7 +11,6 @@ const Home = () => {
       <div className="pt-28 lg:pt-32">
         <Hero />
         <Stats />
-        <AbsensiKamera />
         <div className="relative pb-20 md:pb-32">
           <MapRegist />
         </div>
