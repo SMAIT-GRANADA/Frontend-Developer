@@ -11,7 +11,7 @@ const Home = () => {
       <div className="pt-28 lg:pt-32">
         <Hero />
         <Stats />
-        <div className="relative pb-20 md:pb-32">
+        <div className="relative pb-20 md:pb-32 bg-transparent">
           <MapRegist />
         </div>
         <Footer />
