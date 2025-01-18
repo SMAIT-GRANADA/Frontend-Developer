@@ -66,7 +66,7 @@ const StaffGrid = () => {
                   <img
                     src={staff.image}
                     alt={staff.name}
-                    className="w-full h-full object-cover object-top transform transition-transform duration-300 hover:scale-110"
+                    className="w-full h-full object-cover object-center transform transition-transform duration-300 hover:scale-110"
                   />
                 </div>
                 <h3 className="text-lg font-semibold text-center">
@@ -85,7 +85,7 @@ const StaffGrid = () => {
         >
           <button
             onClick={prevSlide}
-            className="p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 -ml-4 z-10"
+            className="p-2 rounded-full bg-white shadow-lg hover:bg-yellow-400 -ml-4 z-10"
           >
             <ChevronLeft size={24} />
           </button>
@@ -98,7 +98,7 @@ const StaffGrid = () => {
         >
           <button
             onClick={nextSlide}
-            className="p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 -mr-4 z-10"
+            className="p-2 rounded-full bg-white shadow-lg hover:bg-yellow-400 -mr-4 z-10"
           >
             <ChevronRight size={24} />
           </button>
