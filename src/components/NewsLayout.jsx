@@ -4,7 +4,7 @@ import { dummyNews } from "../data/dummyNews";
 
 const NewsLayout = () => {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4">BERITA GRANADA</h1>
         <p className="text-gray-600">
