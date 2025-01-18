@@ -1,44 +1,31 @@
-import React, { useState, useRef } from "react";
-import { staffData } from "../data/staffData";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useStaffGridQuery } from "../hooks/useStaffGridQuery";
+import StaffCard from "./StaffCard";
+import NavigationDots from "./NavigationDots";
 
 const StaffGrid = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [showArrows, setShowArrows] = useState(false);
-  const scrollRef = useRef(null);
-  const itemsPerSlide = 5;
-  const totalSlides = Math.ceil(staffData.length / itemsPerSlide);
+  const {
+    currentSlide,
+    showArrows,
+    scrollRef,
+    totalSlides,
+    staffData,
+    isLoading,
+    error,
+    setShowArrows,
+    scrollToSlide,
+    nextSlide,
+    prevSlide,
+    handleScroll,
+  } = useStaffGridQuery();
 
-  const scrollToSlide = (slideIndex) => {
-    if (scrollRef.current) {
-      const slideWidth = scrollRef.current.scrollWidth / totalSlides;
-      scrollRef.current.scrollTo({
-        left: slideWidth * slideIndex,
-        behavior: "smooth",
-      });
-      setCurrentSlide(slideIndex);
-    }
-  };
-
-  const nextSlide = () => {
-    const newSlide = (currentSlide + 1) % totalSlides;
-    scrollToSlide(newSlide);
-  };
-
-  const prevSlide = () => {
-    const newSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    scrollToSlide(newSlide);
-  };
-
-  const handleScroll = (e) => {
-    const scrollWidth = e.target.scrollWidth;
-    const scrollPosition = e.target.scrollLeft;
-    const slideWidth = scrollWidth / totalSlides;
-    const newSlide = Math.round(scrollPosition / slideWidth);
-    if (newSlide !== currentSlide) {
-      setCurrentSlide(newSlide);
-    }
-  };
+  if (isLoading) return <div className="text-center py-8">Loading...</div>;
+  if (error)
+    return (
+      <div className="text-center py-8 text-red-500">
+        Error loading staff data
+      </div>
+    );
 
   return (
     <div
@@ -58,22 +45,7 @@ const StaffGrid = () => {
         >
           <div className="flex gap-6 transition-all duration-500 ease-in-out min-w-max px-4">
             {staffData.map((staff) => (
-              <div
-                key={staff.id}
-                className="flex flex-col items-center transform transition-all duration-500 ease-in-out w-64"
-              >
-                <div className="w-full aspect-[3/4] mb-4 overflow-hidden rounded-lg shadow-lg">
-                  <img
-                    src={staff.image}
-                    alt={staff.name}
-                    className="w-full h-full object-cover object-center transform transition-transform duration-300 hover:scale-110"
-                  />
-                </div>
-                <h3 className="text-lg font-semibold text-center">
-                  {staff.name}
-                </h3>
-                <p className="text-gray-600 text-center">{staff.position}</p>
-              </div>
+              <StaffCard key={staff.id} staff={staff} />
             ))}
           </div>
         </div>
@@ -104,21 +76,11 @@ const StaffGrid = () => {
           </button>
         </div>
 
-        <div className="flex justify-center mt-8 gap-2">
-          <div className="flex gap-2">
-            {Array.from({ length: totalSlides }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => scrollToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  currentSlide === index
-                    ? "bg-green-600 scale-110"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+        <NavigationDots
+          totalSlides={totalSlides}
+          currentSlide={currentSlide}
+          onDotClick={scrollToSlide}
+        />
       </div>
     </div>
   );
