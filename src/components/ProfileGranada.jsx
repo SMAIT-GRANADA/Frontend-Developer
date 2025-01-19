@@ -4,8 +4,8 @@ import piala from "../assets/piala.svg";
 
 const ProfileGranada = () => {
   return (
-    <>
-      <div className="relative bg-white py-16">
+    <div className="bg-white">
+      <div className="relative pt-16">
         <div className="absolute inset-0">
           <img
             src={waveHome}
@@ -15,8 +15,8 @@ const ProfileGranada = () => {
         </div>
         <div className="container mx-auto px-4 lg:px-48 py-10 relative">
           <div className="flex flex-col lg:flex-row gap-8 items-start">
-            <div className="w-64 h-64 flex-shrink-0">
-              <div className="h-[436] w-[351] rounded-lg overflow-hidden">
+            <div className="w-[351px] h-[436px] flex-shrink-0">
+              <div className="h-full w-full rounded-lg overflow-hidden">
                 <img
                   src="https://ik.imagekit.io/wahyup/Foto%20Guru%20SMA%20IT%20Granada/Foto%20kepala%20sekolah.jpg?updatedAt=1737222719360"
                   alt="Profile"
@@ -70,9 +70,14 @@ const ProfileGranada = () => {
         </div>
       </div>
 
-      <div className="relative bg-white py-16">
+      <div className="relative ">
         <div className="container mx-auto px-4 lg:px-48 py-10 relative z-10">
-          <div className="flex justify-around ">
+          <div className="relative">
+            <div className="absolute top-14 right-0 left-0 bottom-0">
+              <div className="w-full h-[131px] bg-[#F9DE4B] rounded-xl"></div>
+            </div>
+          </div>
+          <div className="flex justify-around relative z-10">
             <div className="text-center">
               <img
                 src={piala}
@@ -105,7 +110,7 @@ const ProfileGranada = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
