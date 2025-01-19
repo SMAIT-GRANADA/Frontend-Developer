@@ -17,9 +17,9 @@ const NewsLayout = () => {
             <img src={arrowRight} alt="Arrow Right" className="ml-2 w-4 h-4" />
           </button>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#98A393]">
-          <div className="absolute top-1/2 left-0 transform -translate-y-1/2 w-2 h-2 bg-[#98A393] rounded-full"></div>
-          <div className="absolute top-1/2 right-0 transform -translate-y-1/2 w-2 h-2 bg-[#98A393] rounded-full"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-[#949593]">
+          <div className="absolute top-1/2 left-0 transform -translate-y-1/2 w-1 h-1 bg-[#949593] rounded-full"></div>
+          <div className="absolute top-1/2 right-0 transform -translate-y-1/2 w-1 h-1 bg-[#949593] rounded-full"></div>
         </div>
       </header>
 

@@ -6,7 +6,7 @@ import psbBackground from "../assets/PSBBG.png";
 
 const PsbPage = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="mt-24 md:mt-28 w-full relative">
         <div className="w-full h-full relative overflow-hidden">
@@ -18,11 +18,11 @@ const PsbPage = () => {
           <div className="absolute inset-0 bg-black bg-opacity-10" />
         </div>
       </div>
-      <div className="flex-grow">
+      <div className="flex-grow bg-white">
         <RegistrationPaths />
-        <div className="relative pb-20 md:pb-32">
-          <MapRegist />
-        </div>
+      </div>
+      <div className="relative pb-20 md:pb-32">
+        <MapRegist />
       </div>
       <Footer />
     </div>
