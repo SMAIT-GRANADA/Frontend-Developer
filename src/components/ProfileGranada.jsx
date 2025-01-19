@@ -15,7 +15,8 @@ const ProfileGranada = () => {
         </div>
         <div className="container mx-auto px-4 lg:px-48 py-10 relative">
           <div className="flex flex-col lg:flex-row gap-8 items-start">
-            <div className="w-[351px] h-[436px] flex-shrink-0">
+            {/* Gambar Profil */}
+            <div className="w-[351px] h-auto flex-shrink-0">
               <div className="h-full w-full rounded-lg overflow-hidden">
                 <img
                   src="https://ik.imagekit.io/wahyup/Foto%20Guru%20SMA%20IT%20Granada/Foto%20kepala%20sekolah.jpg?updatedAt=1737222719360"
@@ -25,9 +26,10 @@ const ProfileGranada = () => {
               </div>
             </div>
 
+            {/* Konten Teks */}
             <div className="flex-1">
               <h2 className="text-3xl font-bold mb-4">Profile SMAIT Granada</h2>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-2">
                 SMA Islam Terpadu (SMAIT) Granada Samarinda adalah lembaga
                 pendidikan menengah atas yang berlokasi di Jalan HM. Ardhan KM
                 03, Kecamatan Samarinda Ulu, Kelurahan Bukit Pinang, Kota
@@ -35,7 +37,7 @@ const ProfileGranada = () => {
                 tinggi yang dikelilingi oleh hutan lebat, menciptakan lingkungan
                 belajar yang tenang dengan kualitas udara yang baik.
               </p>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-2">
                 Sistem Pendidikan Islam terpadu yang diterapkan sekolah Islam
                 Granada terinspirasi oleh, kesuksesan pendidikan pada masa
                 kejayaan, Islam. Para ilmuan muslim telah menguasai Sains dan
@@ -46,19 +48,19 @@ const ProfileGranada = () => {
                 sebagai hamba Allah dan mengemban tanggung jawab untuk
                 menegakkan dan membela agamanya.
               </p>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-2">
                 SMAIT Granada memiliki tiga gedung utama yang digunakan untuk
                 berbagai keperluan, termasuk kantor, perpustakaan, laboratorium
                 komputer, laboratorium IPA, koperasi, ruang Bimbingan Konseling
                 (BK), asrama, ruang UKS, dan mushola.
               </p>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-2">
                 Pembelajaran berbasis kontekstual disesuaikan dengan tantangan
                 zaman, termasuk program Granada Overseas Program (GoPro) dan
                 Granada Educational Tour (GET) yang memberikan pengalaman
                 belajar di dalam dan luar negeri.
               </p>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-2">
                 Kegiatan ekstrakurikuler di SMAIT Granada dirancang untuk
                 mengembangkan minat dan bakat siswa, serta menanamkan disiplin
                 melalui program Pramuka SIT dan Badan Eksekutif Siswa Terpadu
