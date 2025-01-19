@@ -1,9 +1,18 @@
 import MainNews from "./MainNews";
 import SideNews from "./SideNews";
-import { dummyNews } from "../data/dummyNews";
+import { useNewsQuery } from "../hooks/useNewsQuery";
 import arrowRight from "../assets/arrow-right-circle.svg";
 
 const NewsLayout = () => {
+  const { data: newsData, isLoading } = useNewsQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const mainNews = newsData?.data[0];
+  const sideNews = newsData?.data.slice(1, 4);
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <header className="mb-8 py-8 relative">
@@ -24,13 +33,13 @@ const NewsLayout = () => {
       </header>
 
       <main className="grid lg:grid-cols-3 gap-8">
-        <MainNews news={dummyNews.mainNews} />
+        {mainNews && <MainNews news={mainNews} />}
         <div className="lg:col-span-1">
-          {dummyNews.sideNews.map((news, index) => (
+          {sideNews?.map((news, index) => (
             <SideNews
               key={news.id}
               news={news}
-              isLast={index === dummyNews.sideNews.length - 1}
+              isLast={index === sideNews.length - 1}
             />
           ))}
         </div>

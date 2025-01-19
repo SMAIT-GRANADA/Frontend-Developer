@@ -1,9 +1,29 @@
 import { useState } from "react";
 import schoolLogo from "../assets/logo-sekolah.svg";
 import { Eye, EyeOff, User } from "lucide-react";
+import { useLoginMutation } from "../hooks/useLoginMutation";
+import { Loader2 } from "lucide-react";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+
+  const loginMutation = useLoginMutation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginMutation.mutate(credentials);
+  };
+
+  const handleChange = (e) => {
+    setCredentials((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-full rounded-xl overflow-hidden">
@@ -27,11 +47,14 @@ const LoginForm = () => {
               Login
             </h2>
 
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="ID"
+                  name="username"
+                  value={credentials.username}
+                  onChange={handleChange}
+                  placeholder="USERNAME"
                   className="w-full bg-transparent border-b-2 border-white/50 py-2 text-white placeholder-white/70 focus:outline-none focus:border-white pr-10"
                 />
                 <User
@@ -43,6 +66,9 @@ const LoginForm = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={credentials.password}
+                  onChange={handleChange}
                   placeholder="PASSWORD"
                   className="w-full bg-transparent border-b-2 border-white/50 py-2 text-white placeholder-white/70 focus:outline-none focus:border-white pr-10"
                 />
@@ -57,9 +83,13 @@ const LoginForm = () => {
 
               <button
                 type="submit"
-                className="w-full bg-yellow-400 text-black font-semibold py-2 px-4 rounded-full hover:bg-yellow-300 transition-colors mt-8"
+                disabled={loginMutation.isPending}
+                className="w-full bg-yellow-400 text-black font-semibold py-2 px-4 rounded-full hover:bg-yellow-300 transition-colors mt-8 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Login
+                {loginMutation.isPending && (
+                  <Loader2 className="animate-spin" size={20} />
+                )}
+                <span>{loginMutation.isPending ? "Loading..." : "Login"}</span>
               </button>
             </form>
           </div>
