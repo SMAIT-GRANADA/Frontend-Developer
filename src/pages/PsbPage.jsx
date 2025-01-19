@@ -6,7 +6,7 @@ import psbBackground from "../assets/PSBBG.png";
 
 const PsbPage = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       <div className="mt-24 md:mt-28 w-full relative">
         <div className="w-full h-full relative overflow-hidden">
