@@ -29,7 +29,7 @@ const StaffGrid = () => {
 
   return (
     <div
-      className="w-full max-w-7xl mx-auto px-4 py-8 bg-white relative group"
+      className="w-full max-w-7xl mx-auto px-4 py-8 bg-[#F8FCF8] relative group"
       onMouseEnter={() => setShowArrows(true)}
       onMouseLeave={() => setShowArrows(false)}
     >
