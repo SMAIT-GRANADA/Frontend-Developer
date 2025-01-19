@@ -13,9 +13,9 @@ const SideNews = ({ news, isLast }) => (
       </div>
     </div>
     {!isLast && (
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#98A393]">
-        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 w-2 h-2 bg-[#98A393] rounded-full"></div>
-        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 w-2 h-2 bg-[#98A393] rounded-full"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#DEE2DD]">
+        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 w-1 h-1 bg-[#DEE2DD] rounded-full"></div>
+        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 w-1 h-1 bg-[#DEE2DD] rounded-full"></div>
       </div>
     )}
   </div>
