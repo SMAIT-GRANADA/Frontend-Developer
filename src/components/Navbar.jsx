@@ -110,13 +110,13 @@ const Navbar = () => {
                         <div className="py-1">
                           <Link
                             to="/visi-misi"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-400"
                           >
                             Visi & Misi
                           </Link>
                           <Link
                             to="/berita"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-400"
                           >
                             Berita
                           </Link>
@@ -138,7 +138,7 @@ const Navbar = () => {
                         <div className="py-1">
                           <Link
                             to="/pendaftaran"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-400"
                           >
                             Pendaftaran
                           </Link>
@@ -172,7 +172,9 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <FaInstagram className="h-5 w-5" />
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                      <FaInstagram className="h-5 w-5 text-black" />
+                    </div>
                   </a>
                   <a
                     href="https://web.facebook.com/smaitgranada.samarinda"
@@ -180,7 +182,9 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <FiFacebook className="h-5 w-5" />
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                      <FiFacebook className="h-5 w-5 text-black" />
+                    </div>
                   </a>
                   <a
                     href="https://www.youtube.com/@smaitgranadasamarinda4801/featured"
@@ -188,7 +192,9 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <SlSocialYoutube className="h-5 w-5" />
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                      <SlSocialYoutube className="h-5 w-5 text-black" />
+                    </div>
                   </a>
                   <div className="hidden lg:block">
                     <Link
@@ -314,7 +320,9 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <FaInstagram className="h-5 w-5" />
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                      <FaInstagram className="h-5 w-5 text-black" />
+                    </div>
                   </a>
                   <a
                     href="https://web.facebook.com/smaitgranada.samarinda"
@@ -322,7 +330,9 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <FiFacebook className="h-5 w-5" />
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                      <FiFacebook className="h-5 w-5 text-black" />
+                    </div>
                   </a>
                   <a
                     href="https://www.youtube.com/@smaitgranadasamarinda4801/featured"
@@ -330,7 +340,9 @@ const Navbar = () => {
                     rel="noopener noreferrer"
                     className="text-white hover:text-yellow-300"
                   >
-                    <SlSocialYoutube className="h-5 w-5" />
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-yellow-300">
+                      <SlSocialYoutube className="h-5 w-5 text-black" />
+                    </div>
                   </a>
                 </div>
                 <Link
