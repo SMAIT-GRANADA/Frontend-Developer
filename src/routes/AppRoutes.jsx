@@ -6,7 +6,7 @@ import PsbPage from "../pages/PsbPage";
 import LoginPage from "../pages/LoginPage";
 import StudentDashboardPage from "../pages/StudentDashboardPage";
 import ProtectedRoute from "../middlewares/ProtectedRoute";
-import GuestRoute from "../middlewares/GuestRoute";
+import AdminDashboard from "../pages/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +20,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <StudentDashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
           </ProtectedRoute>
         }
       />
