@@ -78,8 +78,10 @@ const ProfileGranada = () => {
                 alt="International"
                 className="w-24 h-24 mx-auto mb-2"
               />
-              <p className="font-semibold text-lg text-[#428938]">2000+</p>
-              <p className="text-[#428938]">Internasional</p>
+              <p className=" text-[#428938]">2000+</p>
+              <p className="text-[#428938] font-semibold text-lg">
+                Internasional
+              </p>
             </div>
             <div className="text-center">
               <img
@@ -87,8 +89,8 @@ const ProfileGranada = () => {
                 alt="National"
                 className="w-24 h-24 mx-auto mb-2"
               />
-              <p className="font-semibold text-lg text-[#428938]">2000+</p>
-              <p className="text-[#428938]">Nasional</p>
+              <p className=" text-[#428938]">2000+</p>
+              <p className=" font-semibold text-lg text-[#428938]">Nasional</p>
             </div>
             <div className="text-center">
               <img
@@ -96,8 +98,8 @@ const ProfileGranada = () => {
                 alt="Regional"
                 className="w-24 h-24 mx-auto mb-2"
               />
-              <p className="font-semibold text-lg text-[#428938]">2000+</p>
-              <p className="text-[#428938]">Regional</p>
+              <p className="text-[#428938]">2000+</p>
+              <p className="font-semibold text-lg text-[#428938]">Regional</p>
             </div>
           </div>
         </div>
