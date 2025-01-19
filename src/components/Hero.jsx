@@ -3,6 +3,7 @@ import granadaImg2 from "../assets/backgroundschool2.jpg";
 import granadaImg3 from "../assets/backgroundschool3.jpg";
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -102,9 +103,12 @@ const Hero = () => {
         <h1 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
           SAMARINDA
         </h1>
-        <button className="bg-transparent border-2 border-yellow-400 text-yellow-400 px-4 md:px-6 py-2 text-sm md:text-base rounded-lg hover:bg-yellow-400 hover:text-white transition-all duration-300">
+        <Link
+          to="/pendaftaran"
+          className="bg-transparent border-2 border-yellow-400 text-yellow-400 px-4 md:px-6 py-2 text-sm md:text-base rounded-lg hover:bg-yellow-400 hover:text-white transition-all duration-300"
+        >
           Lihat selengkapnya
-        </button>
+        </Link>
       </div>
     </div>
   );
