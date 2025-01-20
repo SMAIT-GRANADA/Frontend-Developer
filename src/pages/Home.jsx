@@ -6,6 +6,7 @@ import MapRegist from "../components/MapRegist";
 import StaffGrid from "../components/StaffGrid";
 import ProfilGranada from "../components/ProfileGranada";
 import NewsLayout from "../components/NewsLayout";
+import VideoPage from "../components/VideoPage";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <Hero />
         <Stats />
         <ProfilGranada />
+        <VideoPage />
         <div className="w-full bg-white py-8">
           <NewsLayout />
         </div>
