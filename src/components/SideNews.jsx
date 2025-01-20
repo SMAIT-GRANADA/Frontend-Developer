@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/dateFormatterNews";
+
 const SideNews = ({ news, isLast }) => (
   <div className={`relative pb-6 mb-6 ${isLast ? "last:pb-0 last:mb-0" : ""}`}>
     <div className="flex flex-col md:flex-row gap-4">
@@ -8,7 +10,7 @@ const SideNews = ({ news, isLast }) => (
       />
       <div>
         <time className="text-gray-500 text-sm">
-          {new Date(news.createdAt).toLocaleDateString()}
+          {formatDate(news.createdAt)}
         </time>
         <h3 className="font-semibold mt-1 mb-2">{news.title}</h3>
         <p className="text-gray-600 text-sm line-clamp-2">{news.description}</p>
