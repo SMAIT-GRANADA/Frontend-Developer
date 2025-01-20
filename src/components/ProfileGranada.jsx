@@ -18,7 +18,7 @@ const ProfileGranada = () => {
             <div className="w-[351px] h-auto flex-shrink-0">
               <div className="h-full w-full rounded-lg overflow-hidden">
                 <img
-                  src="https://ik.imagekit.io/wahyup/Foto%20Guru%20SMA%20IT%20Granada/Foto%20kepala%20sekolah.jpg?updatedAt=1737222719360"
+                  src="https://ik.imagekit.io/wahyup/Foto%20Guru%20SMA%20IT%20Granada/Foto%20kepala%20sekolah.webp?updatedAt=1737392727322"
                   alt="Profile"
                   className="w-full h-full object-cover rounded-sm"
                 />
@@ -84,7 +84,7 @@ const ProfileGranada = () => {
                 alt="International"
                 className="w-24 h-24 mx-auto mb-2"
               />
-              <p className="text-[#428938] text-2xl font-bold">2000+</p>
+              <p className="text-[#428938] text-2xl font-bold">1843+</p>
               <p className="text-[#428938] font-semibold text-lg">
                 Internasional
               </p>
@@ -104,7 +104,7 @@ const ProfileGranada = () => {
                 alt="Regional"
                 className="w-24 h-24 mx-auto mb-2"
               />
-              <p className="text-[#428938] text-2xl font-bold">2000+</p>
+              <p className="text-[#428938] text-2xl font-bold">4520+</p>
               <p className="font-semibold text-lg text-[#428938]">Regional</p>
             </div>
           </div>
