@@ -10,5 +10,6 @@ export const useNewsQuery = (params = { limit: 5, page: 1 }) => {
   return useQuery({
     queryKey: newsKeys.list(params),
     queryFn: () => getNews(params),
+    keepPreviousData: true,
   });
 };
