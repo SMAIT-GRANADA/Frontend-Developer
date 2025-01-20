@@ -17,7 +17,7 @@ const Home = () => {
         <Hero />
         <Stats />
         <ProfilGranada />
-        <div className="w-full bg-white py-8">
+        <div className="w-full bg-white pb-8">
           <VideoPage />
         </div>
         <div className="w-full bg-white py-8">
