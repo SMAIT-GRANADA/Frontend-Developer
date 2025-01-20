@@ -7,6 +7,7 @@ import StaffGrid from "../components/StaffGrid";
 import ProfilGranada from "../components/ProfileGranada";
 import NewsLayout from "../components/NewsLayout";
 import VideoPage from "../components/VideoPage";
+import QuotesOfTheDay from "../components/QuotesOfTheDay";
 
 const Home = () => {
   return (
@@ -16,7 +17,9 @@ const Home = () => {
         <Hero />
         <Stats />
         <ProfilGranada />
-        <VideoPage />
+        <div className="w-full bg-white py-8">
+          <VideoPage />
+        </div>
         <div className="w-full bg-white py-8">
           <NewsLayout />
         </div>
@@ -26,6 +29,7 @@ const Home = () => {
         <div className="w-full bg-[#F8FCF8]">
           <StaffGrid />
         </div>
+        <QuotesOfTheDay />
         <Footer />
       </div>
     </>
