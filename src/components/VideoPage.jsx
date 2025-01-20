@@ -11,8 +11,8 @@ const VideoPage = () => {
             alt="Video SMA IT Granada Samarinda"
             className="w-full shadow-lg"
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
-            <h1 className="text-3xl text-white text-center mb-4">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden sm:block">
+            <h1 className="text-3xl text-white text-center mb-4 ">
               Video SMA IT Granada Samarinda Tahun 2024
             </h1>
             <p className="text-[#808380] mb-6 text-center">
