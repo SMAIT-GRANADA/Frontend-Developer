@@ -1,17 +1,12 @@
 import MainNews from "./MainNews";
 import SideNews from "./SideNews";
+import MainNewsSkeleton from "./Skeleton/MainNewsSkeleton";
+import SideNewsSkeleton from "./Skeleton/SideNewsSkeleton";
 import { useNewsQuery } from "../hooks/useNewsQuery";
 import arrowRight from "../assets/arrow-right-circle.svg";
 
 const NewsLayout = () => {
   const { data: newsData, isLoading } = useNewsQuery();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  const mainNews = newsData?.data[0];
-  const sideNews = newsData?.data.slice(1, 4);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -33,16 +28,29 @@ const NewsLayout = () => {
       </header>
 
       <main className="grid lg:grid-cols-3 gap-8">
-        {mainNews && <MainNews news={mainNews} />}
-        <div className="lg:col-span-1">
-          {sideNews?.map((news, index) => (
-            <SideNews
-              key={news.id}
-              news={news}
-              isLast={index === sideNews.length - 1}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <>
+            <MainNewsSkeleton />
+            <div className="lg:col-span-1">
+              {[1, 2, 3].map((index) => (
+                <SideNewsSkeleton key={index} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            {newsData?.data[0] && <MainNews news={newsData.data[0]} />}
+            <div className="lg:col-span-1">
+              {newsData?.data.slice(1, 4).map((news, index) => (
+                <SideNews
+                  key={news.id}
+                  news={news}
+                  isLast={index === newsData.data.slice(1, 4).length - 1}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
