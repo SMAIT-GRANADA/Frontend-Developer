@@ -4,9 +4,15 @@ import MainNewsSkeleton from "./Skeleton/MainNewsSkeleton";
 import SideNewsSkeleton from "./Skeleton/SideNewsSkeleton";
 import { useNewsQuery } from "../hooks/useNewsQuery";
 import arrowRight from "../assets/arrow-right-circle.svg";
+import { useNavigate } from "react-router-dom";
 
 const NewsLayout = () => {
   const { data: newsData, isLoading } = useNewsQuery();
+  const navigate = useNavigate();
+
+  const handleToNewsPage = () => {
+    navigate("/news");
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -16,7 +22,10 @@ const NewsLayout = () => {
           Informasi terkini seputar kegiatan dan prestasi SMA IT GRANADA
         </p>
         <div className="flex justify-end">
-          <button className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-colors flex items-center">
+          <button
+            className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-colors flex items-center"
+            onClick={handleToNewsPage}
+          >
             Lihat Semua
             <img src={arrowRight} alt="Arrow Right" className="ml-2 w-4 h-4" />
           </button>
