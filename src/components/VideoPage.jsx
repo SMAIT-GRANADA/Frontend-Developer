@@ -16,7 +16,7 @@ const VideoPage = () => {
           <img
             src={imageYoutube}
             alt="Video SMA IT Granada Samarinda"
-            className="w-full max-w-4xl rounded-lg shadow-lg"
+            className="w-full rounded-lg shadow-lg"
           />
         </div>
       </div>
