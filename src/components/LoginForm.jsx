@@ -10,7 +10,6 @@ const LoginForm = () => {
     username: "",
     password: "",
   });
-
   const loginMutation = useLoginMutation();
 
   const handleSubmit = (e) => {
@@ -39,14 +38,12 @@ const LoginForm = () => {
           SAMARINDA
         </h1>
       </div>
-
       <div className="w-full lg:w-1/2 bg-green-700 p-6 sm:p-8">
         <div className="h-full flex items-center justify-center">
           <div className="w-full max-w-md">
             <h2 className="text-xl sm:text-2xl text-white font-semibold mb-6 sm:mb-8">
               Login
             </h2>
-
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="relative">
                 <input
@@ -55,14 +52,14 @@ const LoginForm = () => {
                   value={credentials.username}
                   onChange={handleChange}
                   placeholder="USERNAME"
-                  className="w-full bg-transparent border-b-2 border-white/50 py-2 text-white placeholder-white/70 focus:outline-none focus:border-white pr-10"
+                  autoComplete="off"
+                  className="w-full border-b-2 bg-transparent border-white/50 py-2 text-white placeholder-gray-200 focus:outline-none focus:border-white pr-10"
                 />
                 <User
-                  className="absolute right-2 top-2 text-white/70"
+                  className="absolute right-2 top-2 text-gray-200"
                   size={20}
                 />
               </div>
-
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -70,17 +67,17 @@ const LoginForm = () => {
                   value={credentials.password}
                   onChange={handleChange}
                   placeholder="PASSWORD"
-                  className="w-full bg-transparent border-b-2 border-white/50 py-2 text-white placeholder-white/70 focus:outline-none focus:border-white pr-10"
+                  autoComplete="off"
+                  className="w-full bg-transparent border-b-2 border-white/50 py-2 text-white placeholder-gray-200 focus:outline-none focus:border-white pr-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-2 text-white/70"
+                  className="absolute right-2 top-2 text-gray-200"
                 >
                   {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                 </button>
               </div>
-
               <button
                 type="submit"
                 disabled={loginMutation.isPending}
