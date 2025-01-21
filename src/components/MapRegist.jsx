@@ -35,8 +35,8 @@ const MapRegist = () => {
               Lokasi Sekolah
             </h2>
             <p className="text-center text-gray-700">
-              Jl. HM Ardan KM 03, Kel. Bukit Pinang Kec. Samarinda Ulu, Kota
-              Samarinda, Kalimantan Timur 75124 Indonesia
+              Jl. HM Ardan KM 03 No. 101, RT 01, Kel. Bukit Pinang, Kec.
+              Samarinda Ulu, Kota Samarinda, Kalimantan Timur 75124, Indonesia
             </p>
           </div>
         </div>
