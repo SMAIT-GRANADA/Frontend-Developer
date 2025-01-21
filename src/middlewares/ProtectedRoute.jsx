@@ -3,25 +3,25 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 const ProtectedRoute = ({ children }) => {
-  const token = Cookies.get("token");
+  const accessToken = Cookies.get("accessToken");
   const location = useLocation();
 
-  if (!token) {
+  if (!accessToken) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   try {
-    const decoded = jwtDecode(token);
+    const decoded = jwtDecode(accessToken);
     const currentTime = Date.now() / 1000;
 
     if (decoded.exp < currentTime) {
-      Cookies.remove("token");
+      Cookies.remove("accessToken");
       return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
     return children;
   } catch (error) {
-    Cookies.remove("token");
+    Cookies.remove("accessToken");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 };
