@@ -6,7 +6,7 @@ import PsbPage from "../pages/PsbPage";
 import LoginPage from "../pages/LoginPage";
 import StudentDashboardPage from "../pages/StudentDashboardPage";
 import ProtectedRoute from "../middlewares/ProtectedRoute";
-import AdminDashboard from "../pages/AdminDashboard";
+import SuperAdminDashboard from "../pages/SuperAdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -24,10 +24,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin"
+        path="/superadmin"
         element={
           <ProtectedRoute>
-            <AdminDashboard />
+            <SuperAdminDashboard />
           </ProtectedRoute>
         }
       />

@@ -1,14 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../services/auth.service";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { jwtDecode } from "jwt-decode";
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
 
   return useMutation({
     mutationFn: loginUser,
@@ -16,14 +14,14 @@ export const useLoginMutation = () => {
       const { user, tokens } = data.data;
 
       try {
-        const decoded = jwtDecode(tokens.accessToken);
+        const decoded = jwtDecode(tokens.refreshToken);
         const currentTime = Date.now() / 1000;
 
         if (decoded.exp < currentTime) {
           throw new Error("Token expired");
         }
 
-        Cookies.set("token", tokens.accessToken);
+        Cookies.set("token", tokens.refreshToken);
 
         Swal.fire({
           icon: "success",
