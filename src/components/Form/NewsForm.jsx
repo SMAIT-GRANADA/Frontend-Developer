@@ -101,7 +101,6 @@ export default function NewsForm() {
             onChange={handleFileChange}
             accept="image/*"
             className="hidden"
-            required
           />
         </div>
 
