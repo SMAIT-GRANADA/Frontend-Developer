@@ -1,9 +1,11 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URI,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 axiosInstance.interceptors.request.use(

@@ -1,5 +1,4 @@
 import axiosInstance from "../api/axiosInstance";
-import Cookies from "js-cookie";
 
 export const getNews = async (params) => {
   const response = await axiosInstance.get("news", { params });
@@ -14,11 +13,9 @@ export const createNews = async (formData) => {
     form.append("media", formData.media);
   }
 
-  const token = Cookies.get("token");
   const response = await axiosInstance.post("/news", form, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
