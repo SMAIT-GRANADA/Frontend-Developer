@@ -13,7 +13,11 @@ const Navbar = () => {
   const [isHovered, setIsHovered] = useState(false);
   const location = useLocation();
 
-  const isStudentRoute = location.pathname.startsWith("/student");
+  const restrictedRoutes = ["/student", "/teacher", "/admin", "/superadmin"];
+
+  const isRestrictedRoute = restrictedRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
 
   const handleProfileClick = () => {
     setIsProfileOpen(!isProfileOpen);
@@ -29,7 +33,7 @@ const Navbar = () => {
     <nav className="bg-[#006838] shadow-lg fixed w-full top-0 z-50">
       <div className="w-full mx-auto">
         <div className="flex flex-col">
-          {!isStudentRoute && (
+          {!isRestrictedRoute && (
             <div className="w-full border-b border-green-700">
               <div className="overflow-hidden">
                 <style>
@@ -90,7 +94,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {!isStudentRoute && (
+            {!isRestrictedRoute && (
               <>
                 <div className="hidden lg:flex items-center space-x-8">
                   <Link to="/" className="text-white hover:text-yellow-300">
@@ -228,7 +232,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {!isStudentRoute && (
+          {!isRestrictedRoute && (
             <div
               className={`fixed top-0 right-0 h-full w-64 bg-[#006838] transform transition-transform duration-300 ease-in-out ${
                 isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
@@ -356,7 +360,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      {!isStudentRoute && isMobileMenuOpen && (
+      {!isRestrictedRoute && isMobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
