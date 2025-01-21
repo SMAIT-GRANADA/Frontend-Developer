@@ -14,14 +14,18 @@ export const useLoginMutation = () => {
       const { user, tokens } = data.data;
 
       try {
-        const decoded = jwtDecode(tokens.refreshToken);
+        const decoded = jwtDecode(tokens.accessToken);
         const currentTime = Date.now() / 1000;
 
         if (decoded.exp < currentTime) {
           throw new Error("Token expired");
         }
 
-        Cookies.set("token", tokens.refreshToken);
+        Cookies.set("accessToken", tokens.accessToken, {
+          path: "/",
+          secure: true,
+          sameSite: "strict",
+        });
 
         Swal.fire({
           icon: "success",
@@ -43,7 +47,7 @@ export const useLoginMutation = () => {
           navigate("/student");
         }
       } catch (error) {
-        Cookies.remove("token");
+        Cookies.remove("accessToken", { path: "/" });
         throw new Error("Invalid token");
       }
     },
