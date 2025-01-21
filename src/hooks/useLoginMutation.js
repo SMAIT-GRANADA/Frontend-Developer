@@ -34,7 +34,7 @@ export const useLoginMutation = () => {
         });
 
         if (user.roles.includes("superadmin")) {
-          navigate("/admin");
+          navigate("/superadmin");
         } else if (user.roles.includes("admin")) {
           navigate("/admin");
         } else if (user.roles.includes("guru")) {
