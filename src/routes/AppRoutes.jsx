@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import VisiMisi from "../pages/VisiMisi";
+import News from "../pages/News";
 import NotFoundPage from "../pages/NotFoundPage";
 import PsbPage from "../pages/PsbPage";
 import LoginPage from "../pages/LoginPage";
@@ -12,6 +13,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/berita" element={<News />} />
       <Route path="/visi-misi" element={<VisiMisi />} />
       <Route path="/pendaftaran" element={<PsbPage />} />
       <Route path="/login" element={<LoginPage />} />
