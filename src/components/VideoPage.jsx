@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
 const VideoPage = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-
   return (
     <div className="w-full bg-white relative z-10">
       <div className="mx-auto px-4 lg:px-0">
@@ -21,19 +19,6 @@ const VideoPage = () => {
             />
             Your browser does not support the video tag.
           </video>
-
-          {!isPlaying && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden sm:block">
-              <h1 className="text-3xl text-gray-700 text-center mb-4 text-shadow-lg">
-                Video SMA IT Granada Samarinda Tahun 2024
-              </h1>
-              <p className="text-gray-700 mb-6 text-center text-shadow-md font-medium">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod
-                <br /> tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-          )}
         </div>
       </div>
       <style jsx>{`
