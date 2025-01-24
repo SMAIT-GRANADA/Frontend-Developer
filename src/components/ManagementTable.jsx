@@ -1,17 +1,76 @@
 import React, { useState } from "react";
 import { useGetUsersQuery } from "../hooks/useGetUsersQuery";
-import { Pencil, Trash2, Loader2 } from "lucide-react";
+import { useDeleteUserMutation } from "../hooks/useDeleteUserMutation";
+import { Pencil, Trash2, Loader2, Search } from "lucide-react";
 import AddUserModal from "./Modal/AddUserModal";
+import UpdateUserModal from "./Modal/UpdateUserModal";
+import Swal from "sweetalert2";
 
 const ManagementTable = () => {
   const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const limit = 10;
 
   const { data, isLoading, isError, error, refetch } = useGetUsersQuery(
     page,
     limit
   );
+  const { mutate: deleteUser, isLoading: isDeleting } = useDeleteUserMutation();
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Data yang dihapus tidak dapat dikembalikan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#6B7280",
+      confirmButtonText: "Ya, Hapus!",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(id, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Berhasil!",
+              text: "Data pengguna berhasil dihapus",
+              icon: "success",
+              confirmButtonColor: "#3B82F6",
+            });
+            refetch();
+          },
+          onError: (error) => {
+            Swal.fire({
+              title: "Gagal!",
+              text:
+                error?.response?.data?.message ||
+                "Terjadi kesalahan saat menghapus data",
+              icon: "error",
+              confirmButtonColor: "#EF4444",
+            });
+          },
+        });
+      }
+    });
+  };
+
+  const handleUpdate = (id) => {
+    setSelectedUserId(id);
+    setIsUpdateModalOpen(true);
+  };
+
+  const filteredData = data?.data.filter((item) => {
+    const searchStr = searchTerm.toLowerCase();
+    return (
+      item.username.toLowerCase().includes(searchStr) ||
+      item.name.toLowerCase().includes(searchStr) ||
+      item.email.toLowerCase().includes(searchStr) ||
+      item.roles[0]?.role?.name.toLowerCase().includes(searchStr)
+    );
+  });
 
   if (isLoading) {
     return (
@@ -44,16 +103,30 @@ const ManagementTable = () => {
           <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
             Manajemen Pengguna
           </h1>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="w-full sm:w-auto bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
-          >
-            Tambah Data
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <div className="relative w-full sm:w-64">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Cari pengguna..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+            </div>
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="w-full sm:w-auto bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
+            >
+              Tambah Data
+            </button>
+          </div>
         </div>
 
         <div className="block md:hidden">
-          {data?.data.map((item, index) => (
+          {filteredData?.map((item, index) => (
             <div
               key={item.id}
               className="bg-white rounded-lg shadow-sm mb-4 p-4"
@@ -63,10 +136,18 @@ const ManagementTable = () => {
                   {(page - 1) * limit + index + 1}
                 </span>
                 <div className="flex gap-2">
-                  <button className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50">
+                  <button
+                    onClick={() => handleUpdate(item.id)}
+                    disabled={isDeleting}
+                    className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50"
+                  >
                     <Pencil className="h-4 w-4" />
                   </button>
-                  <button className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50">
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    disabled={isDeleting}
+                    className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50"
+                  >
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
@@ -154,7 +235,7 @@ const ManagementTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.data.map((item, index) => (
+                {filteredData?.map((item, index) => (
                   <tr
                     key={item.id}
                     className="hover:bg-gray-50 transition-colors"
@@ -193,10 +274,18 @@ const ManagementTable = () => {
                     </td>
                     <td className="py-3 px-4 border-b text-sm text-gray-700">
                       <div className="flex gap-2">
-                        <button className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50">
+                        <button
+                          onClick={() => handleUpdate(item.id)}
+                          disabled={isDeleting}
+                          className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50 disabled:opacity-50"
+                        >
                           <Pencil className="h-4 w-4" />
                         </button>
-                        <button className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50">
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          disabled={isDeleting}
+                          className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50 disabled:opacity-50"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -219,7 +308,7 @@ const ManagementTable = () => {
           <span className="text-sm text-gray-700">Halaman {page}</span>
           <button
             onClick={() => setPage((old) => old + 1)}
-            disabled={data?.data.length < limit}
+            disabled={filteredData?.length < limit}
             className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next
@@ -228,8 +317,18 @@ const ManagementTable = () => {
       </div>
 
       <AddUserModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        refetch={refetch}
+      />
+
+      <UpdateUserModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => {
+          setIsUpdateModalOpen(false);
+          setSelectedUserId(null);
+        }}
+        userId={selectedUserId}
         refetch={refetch}
       />
     </>
