@@ -1,15 +1,17 @@
-import { LayoutList, LogOut, Menu, X } from "lucide-react";
+import { LayoutList, LogOut, Menu, X, Bell } from "lucide-react";
 import avatar from "../../assets/avatar.png";
 
-const SidebarAdmin = ({ isOpen, setIsOpen }) => {
+const SidebarAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
   return (
     <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed left-4 top-24 z-50 p-2 bg-emerald-700 text-white rounded-lg md:hidden"
-      >
-        <Menu size={24} />
-      </button>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed left-4 top-24 z-50 p-2 bg-emerald-700 text-white rounded-lg md:hidden"
+        >
+          <Menu size={24} />
+        </button>
+      )}
 
       <div
         className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity md:hidden ${
@@ -19,7 +21,7 @@ const SidebarAdmin = ({ isOpen, setIsOpen }) => {
       />
 
       <div
-        className={`fixed md:static h-screen w-64 bg-emerald-700 p-6 flex flex-col transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed md:static h-screen w-64 bg-emerald-700 p-6 flex flex-col transform transition-transform duration-300 ease-in-out z-40 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`}
       >
@@ -33,8 +35,7 @@ const SidebarAdmin = ({ isOpen, setIsOpen }) => {
               />
             </div>
             <div className="text-white">
-              <div className="font-medium">ADMIN</div>
-              <div className="text-sm">21000349959</div>
+              <div className="font-medium">SUPERADMIN</div>
             </div>
           </div>
           <button
@@ -46,9 +47,19 @@ const SidebarAdmin = ({ isOpen, setIsOpen }) => {
         </div>
 
         <div className="flex-1">
-          <button className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors">
+          <button
+            onClick={() => setActiveMenu("konten")}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+          >
             <LayoutList size={24} />
             <span className="text-lg">Konten</span>
+          </button>
+          <button
+            onClick={() => setActiveMenu("manajemen")}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
+          >
+            <Bell size={24} />
+            <span className="text-lg">Manajemen</span>
           </button>
         </div>
 
