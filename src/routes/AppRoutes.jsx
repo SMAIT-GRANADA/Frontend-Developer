@@ -8,6 +8,9 @@ import LoginPage from "../pages/LoginPage";
 import StudentDashboardPage from "../pages/StudentDashboardPage";
 import ProtectedRoute from "../middlewares/ProtectedRoute";
 import SuperAdminDashboard from "../pages/SuperAdminDashboard";
+// import AdminDashboard from "../pages/AdminDashboard";
+// import TeacherDashboard from "../pages/TeacherDashboard";
+// import ParentDashboard from "../pages/ParentDashboard";
 
 const AppRoutes = () => {
   return (
@@ -20,7 +23,7 @@ const AppRoutes = () => {
       <Route
         path="/student"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["siswa"]}>
             <StudentDashboardPage />
           </ProtectedRoute>
         }
@@ -28,11 +31,35 @@ const AppRoutes = () => {
       <Route
         path="/superadmin"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["superadmin"]}>
             <SuperAdminDashboard />
           </ProtectedRoute>
         }
       />
+      {/* <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/teacher"
+        element={
+          <ProtectedRoute allowedRoles={["guru"]}>
+            <TeacherDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/parent"
+        element={
+          <ProtectedRoute allowedRoles={["ortu"]}>
+            <ParentDashboard />
+          </ProtectedRoute>
+        }
+      /> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
