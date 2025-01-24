@@ -1,24 +1,18 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
+const LazyVideo = lazy(() => import("./VideoComponent"));
 
 const VideoPage = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   return (
     <div className="w-full bg-white relative z-10">
       <div className="mx-auto px-4 lg:px-0">
         <div className="relative">
-          <video
-            className="w-full shadow-lg"
-            controls
-            controlsList="nodownload"
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            preload="metadata"
+          <Suspense
+            fallback={<div className="w-full h-64 bg-gray-200 animate-pulse" />}
           >
-            <source
-              src="https://storage.googleapis.com/attandance_testing/Video%20profile/Profil%20SMA%20IT%20Granada%20Samarinda%202024%20-%20SMAIT%20Granada%20Samarinda%20(720p%2C%20h264).mp4"
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
-          </video>
+            <LazyVideo setIsPlaying={setIsPlaying} />
+          </Suspense>
         </div>
       </div>
       <style jsx>{`
