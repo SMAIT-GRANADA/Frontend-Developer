@@ -1,14 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { useVerifyOtpMutation } from "../hooks/useVerifyOtpMutation";
+import { useForgotPasswordMutation } from "../hooks/useForgotPasswordMutation";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import LockLogo from "../assets/lock-icon.png";
 
 const OTPVerificationForm = () => {
+  const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [timeLeft, setTimeLeft] = useState(35);
+  const [timeLeft, setTimeLeft] = useState(60);
   const inputs = useRef([]);
   const verifyOtpMutation = useVerifyOtpMutation();
+  const resendOtpMutation = useForgotPasswordMutation();
+
+  useEffect(() => {
+    const username = Cookies.get("username");
+    if (!username) {
+      navigate("/login");
+      return;
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -47,8 +60,16 @@ const OTPVerificationForm = () => {
   };
 
   const handleResend = () => {
-    setTimeLeft(35);
-    // Add resend OTP logic here
+    const username = Cookies.get("username");
+    if (!username) {
+      navigate("/login");
+      return;
+    }
+    resendOtpMutation.mutate(username, {
+      onSuccess: () => {
+        setTimeLeft(60);
+      },
+    });
   };
 
   return (
@@ -79,7 +100,7 @@ const OTPVerificationForm = () => {
             value={data}
             onChange={(e) => handleChange(e.target, index)}
             onKeyDown={(e) => handleBackspace(e, index)}
-            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 border-2 rounded-xl text-center text-lg sm:text-xl font-bold focus:border-green-600 focus:outline-none"
+            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 border-2 rounded-xl text-center text-lg sm:text-xl font-bold focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all"
           />
         ))}
       </div>
@@ -111,10 +132,19 @@ const OTPVerificationForm = () => {
 
       <button
         onClick={handleResend}
-        disabled={timeLeft > 0 || verifyOtpMutation.isPending}
-        className="w-full bg-transparent border-2 border-yellow-300 text-yellow-300 font-semibold py-2.5 sm:py-3 px-4 rounded-full hover:bg-yellow-300 hover:text-black transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={
+          timeLeft > 0 ||
+          verifyOtpMutation.isPending ||
+          resendOtpMutation.isPending
+        }
+        className="w-full bg-transparent border-2 border-yellow-300 text-yellow-300 font-semibold py-2.5 sm:py-3 px-4 rounded-full hover:bg-yellow-300 hover:text-black transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        Kirim Ulang OTP
+        {resendOtpMutation.isPending && (
+          <Loader2 className="animate-spin" size={20} />
+        )}
+        <span>
+          {resendOtpMutation.isPending ? "Sending..." : "Kirim Ulang OTP"}
+        </span>
       </button>
 
       <div className="text-center">
@@ -122,7 +152,11 @@ const OTPVerificationForm = () => {
           Belum dapat email?{" "}
           <button
             onClick={handleResend}
-            disabled={timeLeft > 0 || verifyOtpMutation.isPending}
+            disabled={
+              timeLeft > 0 ||
+              verifyOtpMutation.isPending ||
+              resendOtpMutation.isPending
+            }
             className="text-white font-bold hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
           >
             Kirim ulang email

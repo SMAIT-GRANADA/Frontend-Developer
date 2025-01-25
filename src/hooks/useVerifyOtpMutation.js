@@ -10,7 +10,8 @@ export const useVerifyOtpMutation = () => {
   return useMutation({
     mutationFn: verifyOtp,
     onSuccess: (data) => {
-      Cookies.set("resetToken", data.data.resetToken);
+      Cookies.remove("username");
+      Cookies.set("resetToken", data.data.resetToken, { expires: 1 });
       Swal.fire({
         icon: "success",
         title: "Success",

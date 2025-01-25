@@ -1,7 +1,24 @@
-import { LayoutList, LogOut, Menu, X, Bell } from "lucide-react";
+import { LayoutList, LogOut, Menu, X, UserCog } from "lucide-react";
 import avatar from "../../assets/avatar.png";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
-const SidebarAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
+const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken", { path: "/" });
+    Swal.fire({
+      icon: "success",
+      title: "Logout Berhasil",
+      text: "Sampai jumpa kembali!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    navigate("/login");
+  };
+
   return (
     <>
       {!isOpen && (
@@ -58,12 +75,15 @@ const SidebarAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             onClick={() => setActiveMenu("manajemen")}
             className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
           >
-            <Bell size={24} />
-            <span className="text-lg">Manajemen</span>
+            <UserCog size={24} />
+            <span className="text-lg">Manajemen Akun</span>
           </button>
         </div>
 
-        <button className="flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+        >
           <LogOut size={24} />
           <span className="text-lg">Logout</span>
         </button>
@@ -72,4 +92,4 @@ const SidebarAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
   );
 };
 
-export default SidebarAdmin;
+export default SidebarSuperAdmin;
