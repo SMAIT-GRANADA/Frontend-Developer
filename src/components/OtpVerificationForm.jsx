@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Loader2 } from "lucide-react";
+import { useVerifyOtpMutation } from "../hooks/useVerifyOtpMutation";
+import Swal from "sweetalert2";
 import LockLogo from "../assets/lock-icon.png";
 
 const OTPVerificationForm = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(35);
   const inputs = useRef([]);
+  const verifyOtpMutation = useVerifyOtpMutation();
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -15,7 +19,9 @@ const OTPVerificationForm = () => {
 
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
-    setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
+    const newOtp = [...otp];
+    newOtp[index] = element.value;
+    setOtp(newOtp);
     if (element.value && index < 5) {
       inputs.current[index + 1].focus();
     }
@@ -27,8 +33,26 @@ const OTPVerificationForm = () => {
     }
   };
 
+  const handleVerify = () => {
+    const otpString = otp.join("");
+    if (otpString.length !== 6) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please enter complete OTP",
+      });
+      return;
+    }
+    verifyOtpMutation.mutate(otpString);
+  };
+
+  const handleResend = () => {
+    setTimeLeft(35);
+    // Add resend OTP logic here
+  };
+
   return (
-    <div className="bg-green-700 rounded-3xl shadow-lg p-4 sm:p-6 md:p-8 w-full  sm:max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto">
+    <div className="bg-green-700 rounded-3xl shadow-lg p-4 sm:p-6 md:p-8 w-full sm:max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto">
       <div className="flex flex-col items-center mb-6 sm:mb-8">
         <div className="rounded-full mb-4 sm:mb-6">
           <img
@@ -66,24 +90,41 @@ const OTPVerificationForm = () => {
           {`${timeLeft % 60}`.padStart(2, "0")}
         </p>
         <p className="text-white text-sm sm:text-base">
-          Silakan periksa email Anda G**********@gmail.com untuk
+          Silakan periksa email Anda untuk
           <br />
           kode verifikasi Anda.
         </p>
       </div>
 
-      <button className="w-full bg-yellow-300 text-black font-semibold py-2.5 sm:py-3 px-4 rounded-full hover:bg-yellow-400 transition-colors mb-3">
-        Verifikasi Kode
+      <button
+        onClick={handleVerify}
+        disabled={verifyOtpMutation.isPending}
+        className="w-full bg-yellow-300 text-black font-semibold py-2.5 sm:py-3 px-4 rounded-full hover:bg-yellow-400 transition-colors mb-3 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      >
+        {verifyOtpMutation.isPending && (
+          <Loader2 className="animate-spin" size={20} />
+        )}
+        <span>
+          {verifyOtpMutation.isPending ? "Verifying..." : "Verifikasi Kode"}
+        </span>
       </button>
 
-      <button className="w-full bg-transparent border-2 border-yellow-300 text-yellow-300 font-semibold py-2.5 sm:py-3 px-4 rounded-full hover:bg-yellow-300 hover:text-black transition-colors mb-4">
+      <button
+        onClick={handleResend}
+        disabled={timeLeft > 0 || verifyOtpMutation.isPending}
+        className="w-full bg-transparent border-2 border-yellow-300 text-yellow-300 font-semibold py-2.5 sm:py-3 px-4 rounded-full hover:bg-yellow-300 hover:text-black transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
         Kirim Ulang OTP
       </button>
 
       <div className="text-center">
         <p className="text-white text-sm sm:text-base">
           Belum dapat email?{" "}
-          <button className="text-white font-bold hover:underline">
+          <button
+            onClick={handleResend}
+            disabled={timeLeft > 0 || verifyOtpMutation.isPending}
+            className="text-white font-bold hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
+          >
             Kirim ulang email
           </button>
         </p>

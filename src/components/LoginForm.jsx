@@ -1,8 +1,9 @@
 import { useState } from "react";
-import schoolLogo from "../assets/logo-sekolah.svg";
-import { Eye, EyeOff, User } from "lucide-react";
+import { Eye, EyeOff, User, Loader2 } from "lucide-react";
 import { useLoginMutation } from "../hooks/useLoginMutation";
-import { Loader2 } from "lucide-react";
+import { useForgotPasswordMutation } from "../hooks/useForgotPasswordMutation";
+import Swal from "sweetalert2";
+import schoolLogo from "../assets/logo-sekolah.svg";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,9 +12,18 @@ const LoginForm = () => {
     password: "",
   });
   const loginMutation = useLoginMutation();
+  const forgotPasswordMutation = useForgotPasswordMutation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!credentials.username || !credentials.password) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please fill in all fields",
+      });
+      return;
+    }
     loginMutation.mutate(credentials);
   };
 
@@ -22,6 +32,18 @@ const LoginForm = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleForgotPassword = () => {
+    if (!credentials.username) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please enter your username first",
+      });
+      return;
+    }
+    forgotPasswordMutation.mutate(credentials.username);
   };
 
   return (
@@ -79,19 +101,30 @@ const LoginForm = () => {
                 </button>
               </div>
               <div className="text-right text-xs md:text-sm mt-4">
-                <a href="#" className="text-white hover:underline">
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-white hover:underline"
+                >
                   Lupa Kata Sandi?
-                </a>
+                </button>
               </div>
               <button
                 type="submit"
-                disabled={loginMutation.isPending}
+                disabled={
+                  loginMutation.isPending || forgotPasswordMutation.isPending
+                }
                 className="w-full bg-yellow-400 text-black font-semibold py-2 px-4 rounded-full hover:bg-yellow-300 transition-colors mt-8 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loginMutation.isPending && (
+                {(loginMutation.isPending ||
+                  forgotPasswordMutation.isPending) && (
                   <Loader2 className="animate-spin" size={20} />
                 )}
-                <span>{loginMutation.isPending ? "Loading..." : "Login"}</span>
+                <span>
+                  {loginMutation.isPending || forgotPasswordMutation.isPending
+                    ? "Loading..."
+                    : "Login"}
+                </span>
               </button>
             </form>
           </div>

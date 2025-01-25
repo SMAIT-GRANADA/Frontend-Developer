@@ -1,18 +1,65 @@
 import React, { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useResetPasswordMutation } from "../../hooks/useResetPasswordMutation";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 const ResetPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const resetPasswordMutation = useResetPasswordMutation();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handleSubmit = () => {
+    const resetToken = Cookies.get("resetToken");
+    if (!resetToken) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Reset token not found",
+      });
+      return;
+    }
+
+    if (!password || !confirmPassword) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please fill in all fields",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Passwords do not match",
+      });
+      return;
+    }
+
+    if (password.length < 8) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Password must be at least 8 characters long",
+      });
+      return;
+    }
+
+    resetPasswordMutation.mutate({
+      resetToken,
+      newPassword: password,
+      confirmPassword,
+    });
   };
 
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
   };
 
   return (
@@ -36,12 +83,13 @@ const ResetPasswordForm = () => {
             placeholder="Kata Sandi Baru"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-white text-gray-800 focus:outline-none"
+            onKeyDown={handleKeyPress}
+            className="w-full px-4 py-3 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all"
           />
           <button
             type="button"
-            onClick={togglePasswordVisibility}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 transition-colors focus:outline-none"
           >
             {showPassword ? (
               <EyeOff className="h-5 w-5" />
@@ -57,12 +105,13 @@ const ResetPasswordForm = () => {
             placeholder="Konfirmasi Kata Sandi"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-white text-gray-800 focus:outline-none"
+            onKeyPress={handleKeyPress}
+            className="w-full px-4 py-3 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all"
           />
           <button
             type="button"
-            onClick={toggleConfirmPasswordVisibility}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 transition-colors focus:outline-none"
           >
             {showConfirmPassword ? (
               <EyeOff className="h-5 w-5" />
@@ -73,8 +122,19 @@ const ResetPasswordForm = () => {
         </div>
 
         <div className="flex justify-center">
-          <button className="w-3/4 bg-yellow-300 text-black font-semibold py-3 px-4 rounded-full hover:bg-yellow-400 transition-colors">
-            Ubah Kata Sandi
+          <button
+            onClick={handleSubmit}
+            disabled={resetPasswordMutation.isPending}
+            className="w-3/4 bg-yellow-300 text-black font-semibold py-3 px-4 rounded-full hover:bg-yellow-400 active:bg-yellow-500 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-green-700"
+          >
+            {resetPasswordMutation.isPending ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                <span>Loading...</span>
+              </>
+            ) : (
+              "Ubah Kata Sandi"
+            )}
           </button>
         </div>
       </div>
