@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SidebarAdmin from "../components/Sidebar/SidebarAdmin";
+import SidebarSuperAdmin from "../components/Sidebar/SidebarSuperAdmin";
 import Navbar from "../components/Navbar";
 import NewsForm from "../components/Form/NewsForm";
 import ManagementTable from "../components/ManagementTable";
@@ -12,7 +12,7 @@ const SuperAdminDashboard = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="flex pt-24 md:pt-28">
-        <SidebarAdmin
+        <SidebarSuperAdmin
           isOpen={isSidebarOpen}
           setIsOpen={setIsSidebarOpen}
           setActiveMenu={setActiveMenu}

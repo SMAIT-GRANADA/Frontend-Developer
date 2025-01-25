@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useResetPasswordMutation } from "../../hooks/useResetPasswordMutation";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 const ResetPasswordForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const resetPasswordMutation = useResetPasswordMutation();
+
+  useEffect(() => {
+    const resetToken = Cookies.get("resetToken");
+    if (!resetToken) {
+      navigate("/login");
+      return;
+    }
+  }, [navigate]);
 
   const handleSubmit = () => {
     const resetToken = Cookies.get("resetToken");
@@ -105,7 +115,7 @@ const ResetPasswordForm = () => {
             placeholder="Konfirmasi Kata Sandi"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             className="w-full px-4 py-3 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all"
           />
           <button
