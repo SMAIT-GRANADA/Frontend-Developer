@@ -1,4 +1,4 @@
-import { LayoutList, LogOut, Menu, X, UserCog } from "lucide-react";
+import { LayoutList, LogOut, Menu, X, UserCog, Quote } from "lucide-react";
 import avatar from "../../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -77,6 +77,13 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
           >
             <UserCog size={24} />
             <span className="text-lg">Manajemen Akun</span>
+          </button>
+          <button
+            onClick={() => setActiveMenu("quotes")}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
+          >
+            <Quote size={24} />
+            <span className="text-lg">Quotes</span>
           </button>
         </div>
 

@@ -3,6 +3,7 @@ import SidebarSuperAdmin from "../components/Sidebar/SidebarSuperAdmin";
 import Navbar from "../components/Navbar";
 import NewsForm from "../components/Form/NewsForm";
 import ManagementTable from "../components/ManagementTable";
+import QuotesTable from "../components/Table/QoutesTable";
 
 const SuperAdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,6 +21,7 @@ const SuperAdminDashboard = () => {
         <main className="flex-1 p-4 md:p-6 mt-8">
           {activeMenu === "konten" && <NewsForm />}
           {activeMenu === "manajemen" && <ManagementTable />}
+          {activeMenu === "quotes" && <QuotesTable />}
         </main>
       </div>
     </div>
