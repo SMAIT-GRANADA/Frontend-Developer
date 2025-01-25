@@ -8,6 +8,8 @@ import LoginPage from "../pages/LoginPage";
 import StudentDashboardPage from "../pages/StudentDashboardPage";
 import ProtectedRoute from "../middlewares/ProtectedRoute";
 import SuperAdminDashboard from "../pages/SuperAdminDashboard";
+import OtpVerificatinPage from "../pages/OtpVerificatinPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 // import AdminDashboard from "../pages/AdminDashboard";
 // import TeacherDashboard from "../pages/TeacherDashboard";
 // import ParentDashboard from "../pages/ParentDashboard";
@@ -36,6 +38,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="/otp" element={<OtpVerificatinPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       {/* <Route
         path="/admin"
         element={

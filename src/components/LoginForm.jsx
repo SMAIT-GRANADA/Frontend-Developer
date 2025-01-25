@@ -78,6 +78,11 @@ const LoginForm = () => {
                   {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                 </button>
               </div>
+              <div className="text-right text-xs md:text-sm mt-4">
+                <a href="#" className="text-white hover:underline">
+                  Lupa Kata Sandi?
+                </a>
+              </div>
               <button
                 type="submit"
                 disabled={loginMutation.isPending}
