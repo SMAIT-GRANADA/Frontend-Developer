@@ -1,23 +1,34 @@
-import React from "react";
-import indonesiaMap from "../assets/map-indonesia.jpg";
+import React, { useState, useEffect, useRef } from "react";
+import MapBackground from "./MapBackground";
 
 const MapRegist = () => {
-  return (
-    <div className="relative w-full">
-      <div className="fixed top-0 left-0 w-full h-screen -z-10 overflow-hidden">
-        <img
-          src={indonesiaMap}
-          alt="Indonesia Map"
-          className="w-[110%] h-[110%] object-cover object-center transform scale-150"
-          style={{
-            transformOrigin: "center center",
-            position: "absolute",
-            top: "-10%",
-            left: "-15%",
-          }}
-        />
-      </div>
+  const [showMap, setShowMap] = useState(false);
+  const mapRef = useRef(null);
 
+  useEffect(() => {
+    const options = {
+      rootMargin: "500px 0px",
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShowMap(true);
+      } else if (!entry.isIntersecting && entry.boundingClientRect.top > 0) {
+        setShowMap(false);
+      }
+    }, options);
+
+    if (mapRef.current) {
+      observer.observe(mapRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="relative w-full" ref={mapRef}>
+      {showMap && <MapBackground />}
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="relative">
           <div className="rounded-xl overflow-hidden shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white">
