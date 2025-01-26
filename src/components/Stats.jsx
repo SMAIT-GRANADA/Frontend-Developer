@@ -42,22 +42,22 @@ export default function Stats() {
     {
       icon: graduates,
       label: "Lulusan",
-      value: 2000,
+      value: 145,
     },
     {
       icon: teacher,
       label: "Guru",
-      value: 2000,
+      value: 32,
     },
     {
       icon: student,
       label: "Siswa",
-      value: 2000,
+      value: 305,
     },
     {
       icon: extracurricular,
       label: "Ekstrakurikuler",
-      value: 2000,
+      value: 22,
     },
   ];
 
