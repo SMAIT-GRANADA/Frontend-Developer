@@ -18,10 +18,12 @@ const SuperAdminDashboard = () => {
           setIsOpen={setIsSidebarOpen}
           setActiveMenu={setActiveMenu}
         />
-        <main className="flex-1 mt-8">
-          {activeMenu === "konten" && <NewsForm />}
-          {activeMenu === "manajemen" && <ManagementTable />}
-          {activeMenu === "quotes" && <QuotesTable />}
+        <main className="flex-1 px-4 sm:px-6 lg:px-8">
+          <div className="py-16">
+            {activeMenu === "konten" && <NewsForm />}
+            {activeMenu === "manajemen" && <ManagementTable />}
+            {activeMenu === "quotes" && <QuotesTable />}
+          </div>
         </main>
       </div>
     </div>
