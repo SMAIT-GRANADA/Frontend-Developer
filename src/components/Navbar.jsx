@@ -68,8 +68,8 @@ const Navbar = () => {
                     onMouseLeave={() => setIsHovered(false)}
                   >
                     <span className="text-white text-sm">
-                      Selamat datang di website SMAIT GRANADA, Sholeh, Berilmu
-                      Dan Memimpin
+                      Selamat datang di website SMAIT GRANADA, Sholeh, Berilmu,
+                      Memimpin
                     </span>
                   </div>
                 </div>
