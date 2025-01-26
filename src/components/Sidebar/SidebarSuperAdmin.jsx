@@ -37,8 +37,8 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
         onClick={() => setIsOpen(false)}
       />
 
-      <div
-        className={`fixed md:static h-screen w-64 bg-emerald-700 p-6 flex flex-col transform transition-transform duration-300 ease-in-out z-40 ${
+      <aside
+        className={`fixed md:sticky top-0 h-screen md:h-[calc(100vh-4rem)] w-64 bg-emerald-700 p-6 flex flex-col transform transition-transform duration-300 ease-in-out z-40 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`}
       >
@@ -63,23 +63,32 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
           </button>
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <button
-            onClick={() => setActiveMenu("konten")}
+            onClick={() => {
+              setActiveMenu("konten");
+              setIsOpen(false);
+            }}
             className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
           >
             <LayoutList size={24} />
             <span className="text-lg">Konten</span>
           </button>
           <button
-            onClick={() => setActiveMenu("manajemen")}
+            onClick={() => {
+              setActiveMenu("manajemen");
+              setIsOpen(false);
+            }}
             className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
           >
             <UserCog size={24} />
-            <span className="text-lg">Manajemen Akun</span>
+            <span className="text-lg">Manajemen</span>
           </button>
           <button
-            onClick={() => setActiveMenu("quotes")}
+            onClick={() => {
+              setActiveMenu("quotes");
+              setIsOpen(false);
+            }}
             className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
           >
             <Quote size={24} />
@@ -89,12 +98,12 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+          className="mt-auto flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
         >
           <LogOut size={24} />
           <span className="text-lg">Logout</span>
         </button>
-      </div>
+      </aside>
     </>
   );
 };
