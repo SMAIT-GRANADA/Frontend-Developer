@@ -11,3 +11,13 @@ export const deleteQuote = async (id) => {
   const response = await axiosInstance.delete(`/quotes/${id}`);
   return response.data;
 };
+
+export const createQuote = async (data) => {
+  const response = await axiosInstance.post("/quotes", data);
+  return response.data;
+};
+
+export const updateQuote = async ({ id, data }) => {
+  const response = await axiosInstance.put(`/quotes/${id}`, data);
+  return response.data;
+};
