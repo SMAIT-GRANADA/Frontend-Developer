@@ -21,3 +21,7 @@ export const updateQuote = async ({ id, data }) => {
   const response = await axiosInstance.put(`/quotes/${id}`, data);
   return response.data;
 };
+export const getQuotes = async (params) => {
+  const response = await axiosInstance.get("/quotes", { params });
+  return response.data;
+};
