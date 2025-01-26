@@ -98,9 +98,9 @@ const ManagementTable = () => {
 
   return (
     <>
-      <div className="w-full max-w-7xl mx-auto p-2 sm:p-4 md:p-6 bg-white rounded-lg shadow-lg">
+      <div className="w-full max-w-6xl mx-auto p-2 sm:p-4 bg-white rounded-lg shadow-lg">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-800">
             Manajemen Pengguna
           </h1>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -200,59 +200,56 @@ const ManagementTable = () => {
           ))}
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden md:block overflow-auto">
           <div className="w-full">
-            <table className="min-w-full bg-white border-collapse">
+            <table className="w-full bg-white border-collapse text-sm">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
                     No
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
                     Username
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
                     Nama
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
                     Email
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
                     Status
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
-                    Dibuat Pada
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
+                    Dibuat
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
-                    Diperbarui Pada
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
+                    Diperbarui
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
                     Peran
                   </th>
-                  <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-3 border-b text-left font-semibold text-gray-700">
                     Aksi
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData?.map((item, index) => (
-                  <tr
-                    key={item.id}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                  <tr key={item.id} className="hover:bg-gray-50">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       {(page - 1) * limit + index + 1}
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       {item.username}
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       {item.name}
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       {item.email}
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       <span
                         className={`inline-flex px-2 py-1 rounded-full text-xs font-semibold ${
                           item.isActive
@@ -263,16 +260,16 @@ const ManagementTable = () => {
                         {item.isActive ? "Aktif" : "Tidak Aktif"}
                       </span>
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       {new Date(item.createdAt).toLocaleDateString("id-ID")}
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       {new Date(item.updatedAt).toLocaleDateString("id-ID")}
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700 capitalize">
+                    <td className="py-2 px-3 border-b text-gray-700 capitalize">
                       {item.roles[0]?.role?.name || "-"}
                     </td>
-                    <td className="py-3 px-4 border-b text-sm text-gray-700">
+                    <td className="py-2 px-3 border-b text-gray-700">
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleUpdate(item.id)}

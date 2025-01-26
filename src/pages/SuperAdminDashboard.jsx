@@ -18,7 +18,7 @@ const SuperAdminDashboard = () => {
           setIsOpen={setIsSidebarOpen}
           setActiveMenu={setActiveMenu}
         />
-        <main className="flex-1 p-4 md:p-6 mt-8">
+        <main className="flex-1 mt-8">
           {activeMenu === "konten" && <NewsForm />}
           {activeMenu === "manajemen" && <ManagementTable />}
           {activeMenu === "quotes" && <QuotesTable />}

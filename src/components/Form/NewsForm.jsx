@@ -34,7 +34,7 @@ export default function NewsForm() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-lg">
+    <div className="w-full max-w-6xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
         Buat Berita Baru
       </h1>
