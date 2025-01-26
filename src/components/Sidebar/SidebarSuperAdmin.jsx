@@ -24,7 +24,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed left-4 top-24 z-50 p-2 bg-emerald-700 text-white rounded-lg md:hidden"
+          className="fixed left-4 top-28 z-50 p-2 bg-emerald-700 text-white rounded-lg md:hidden"
         >
           <Menu size={24} />
         </button>
@@ -38,32 +38,34 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
       />
 
       <aside
-        className={`fixed md:sticky top-0 h-screen md:h-[calc(100vh-4rem)] w-64 bg-emerald-700 p-6 flex flex-col transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-700 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        } md:translate-x-0 overflow-y-auto`}
       >
-        <div className="flex justify-between items-center mb-12">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
-              <img
-                src={avatar}
-                alt="Admin"
-                className="w-full h-full object-cover"
-              />
+        <div className="flex-none p-6">
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
+                <img
+                  src={avatar}
+                  alt="Admin"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="text-white">
+                <div className="font-medium">SUPERADMIN</div>
+              </div>
             </div>
-            <div className="text-white">
-              <div className="font-medium">SUPERADMIN</div>
-            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="md:hidden text-white hover:text-gray-200"
+            >
+              <X size={24} />
+            </button>
           </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="md:hidden text-white hover:text-gray-200"
-          >
-            <X size={24} />
-          </button>
         </div>
 
-        <div className="flex-1 flex flex-col">
+        <nav className="flex-1 px-3 py-4">
           <button
             onClick={() => {
               setActiveMenu("konten");
@@ -94,15 +96,17 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             <Quote size={24} />
             <span className="text-lg">Quotes</span>
           </button>
-        </div>
+        </nav>
 
-        <button
-          onClick={handleLogout}
-          className="mt-auto flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
-        >
-          <LogOut size={24} />
-          <span className="text-lg">Logout</span>
-        </button>
+        <div className="flex-none p-6">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+          >
+            <LogOut size={24} />
+            <span className="text-lg">Logout</span>
+          </button>
+        </div>
       </aside>
     </>
   );
