@@ -3,6 +3,7 @@ import SidebarSuperAdmin from "../components/Sidebar/SidebarSuperAdmin";
 import Navbar from "../components/Navbar";
 import NewsForm from "../components/Form/NewsForm";
 import ManagementTable from "../components/ManagementTable";
+import StudentManagementTable from "../components/StudentManagementTable";
 import QuotesTable from "../components/Table/QoutesTable";
 
 const SuperAdminDashboard = () => {
@@ -21,7 +22,8 @@ const SuperAdminDashboard = () => {
         <main className="flex-1 px-4 sm:px-6 lg:px-8">
           <div className="py-16">
             {activeMenu === "konten" && <NewsForm />}
-            {activeMenu === "manajemen" && <ManagementTable />}
+            {activeMenu === "manajemen-pengguna" && <ManagementTable />}
+            {activeMenu === "manajemen-siswa" && <StudentManagementTable />}
             {activeMenu === "quotes" && <QuotesTable />}
           </div>
         </main>

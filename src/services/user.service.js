@@ -8,6 +8,17 @@ export const getUsers = async ({ page = 1, limit = 10 }) => {
   return response.data;
 };
 
+// Get Parents
+export const getParents = async () => {
+  const response = await axiosInstance.get("/users", {
+    params: {
+      roleId: 4, // PARENT role
+      isActive: true,
+    },
+  });
+  return response.data;
+};
+
 // Add user
 export const addUser = async (userData) => {
   const response = await axiosInstance.post("/users", userData);

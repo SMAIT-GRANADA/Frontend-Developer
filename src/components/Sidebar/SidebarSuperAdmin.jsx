@@ -1,4 +1,14 @@
-import { LayoutList, LogOut, Menu, X, UserCog, Quote } from "lucide-react";
+import React, { useState } from "react";
+import {
+  LayoutList,
+  LogOut,
+  Menu,
+  X,
+  UserCog,
+  Quote,
+  ChevronDown,
+  Users,
+} from "lucide-react";
 import avatar from "../../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -6,6 +16,7 @@ import Swal from "sweetalert2";
 
 const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
+  const [isManagementOpen, setIsManagementOpen] = useState(false);
 
   const handleLogout = () => {
     Cookies.remove("accessToken", { path: "/" });
@@ -42,6 +53,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 overflow-y-auto`}
       >
+        {/* Header section remains the same */}
         <div className="flex-none p-6">
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-4">
@@ -76,16 +88,51 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             <LayoutList size={24} />
             <span className="text-lg">Konten</span>
           </button>
-          <button
-            onClick={() => {
-              setActiveMenu("manajemen");
-              setIsOpen(false);
-            }}
-            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
-          >
-            <UserCog size={24} />
-            <span className="text-lg">Manajemen</span>
-          </button>
+
+          {/* Management Dropdown */}
+          <div className="mt-4">
+            <button
+              onClick={() => setIsManagementOpen(!isManagementOpen)}
+              className="w-full flex items-center justify-between gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <UserCog size={24} />
+                <span className="text-lg">Manajemen</span>
+              </div>
+              <ChevronDown
+                size={20}
+                className={`transform transition-transform ${
+                  isManagementOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {isManagementOpen && (
+              <div className="ml-4 mt-2 space-y-2">
+                <button
+                  onClick={() => {
+                    setActiveMenu("manajemen-pengguna");
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+                >
+                  <UserCog size={20} />
+                  <span className="text-base">Pengguna</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveMenu("manajemen-siswa");
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+                >
+                  <Users size={20} />
+                  <span className="text-base">Siswa</span>
+                </button>
+              </div>
+            )}
+          </div>
+
           <button
             onClick={() => {
               setActiveMenu("quotes");
@@ -98,6 +145,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
           </button>
         </nav>
 
+        {/* Logout section remains the same */}
         <div className="flex-none p-6">
           <button
             onClick={handleLogout}
