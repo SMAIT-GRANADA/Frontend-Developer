@@ -1,7 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class SalarySlipSection extends Component {
-  render() {
-    return <div></div>;
-  }
-}
+const SalarySlipSection = () => {
+  return (
+    <>
+      <div className="hidden lg:block w-64 bg-emerald-700">
+        <h1>salary</h1>
+      </div>
+    </>
+  );
+};
+
+export default SalarySlipSection;
