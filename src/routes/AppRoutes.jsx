@@ -11,7 +11,7 @@ import SuperAdminDashboard from "../pages/SuperAdminDashboard";
 import OtpVerificatinPage from "../pages/OtpVerificatinPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 // import AdminDashboard from "../pages/AdminDashboard";
-// import TeacherDashboard from "../pages/TeacherDashboard";
+import TeacherDashboard from "../pages/TeacherDashboard";
 // import ParentDashboard from "../pages/ParentDashboard";
 
 const AppRoutes = () => {
@@ -47,7 +47,7 @@ const AppRoutes = () => {
             <AdminDashboard />
           </ProtectedRoute>
         }
-      />
+      /> */}
       <Route
         path="/teacher"
         element={
@@ -56,7 +56,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      <Route
+      {/* <Route
         path="/parent"
         element={
           <ProtectedRoute allowedRoles={["ortu"]}>
