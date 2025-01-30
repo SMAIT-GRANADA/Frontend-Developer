@@ -3,7 +3,7 @@ import axiosInstance from "../api/axiosInstance";
 export const fetchStaffData = async (page = 1, limit = 4) => {
   try {
     const response = await axiosInstance.get(
-      `staff?page=${page}&limit=${limit}`
+      `/staff?page=${page}&limit=${limit}`
     );
     return response.data;
   } catch (error) {
