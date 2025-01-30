@@ -18,13 +18,11 @@ const PointForm = ({ onSubmit, initialData, onCancel }) => {
         </label>
         <input
           type="number"
-          {...register("studentId", { required: "Student ID is required" })}
+          {...register("id", { required: "Student ID is required" })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
         />
-        {errors.studentId && (
-          <p className="mt-1 text-sm text-red-600">
-            {errors.studentId.message}
-          </p>
+        {errors.id && (
+          <p className="mt-1 text-sm text-red-600">{errors.id.message}</p>
         )}
       </div>
 
