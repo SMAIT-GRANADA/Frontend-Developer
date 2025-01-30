@@ -21,7 +21,7 @@ export const useStaffGridQuery = () => {
   });
 
   const staffData = staffResponse?.data || [];
-  const totalPages = staffResponse?.pagination?.totalPages || 1;
+  const totalPages = staffResponse?.meta?.totalPages || 1;
 
   const scrollToSlide = useCallback(
     (slideIndex) => {
@@ -75,5 +75,6 @@ export const useStaffGridQuery = () => {
     nextSlide,
     prevSlide,
     handleScroll,
+    itemsPerSlide,
   };
 };
