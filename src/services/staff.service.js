@@ -7,6 +7,7 @@ export const fetchStaffData = async (page = 1, limit = 4) => {
     );
     return response.data;
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to fetch staff data");
   }
 };
