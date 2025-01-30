@@ -1,15 +1,17 @@
-import React from "react";
-import { LogOut, Clock, CreditCard, Award, X } from "lucide-react";
+import {
+  Banknote,
+  LogOut,
+  Menu,
+  X,
+  ChartNoAxesCombined,
+  Clock,
+} from "lucide-react";
+import avatar from "../../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
-const TeacherSidebar = ({
-  isOpen,
-  onClose,
-  activeSection,
-  setActiveSection,
-}) => {
+const TeacherSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -24,83 +26,95 @@ const TeacherSidebar = ({
     navigate("/login");
   };
 
-  const menuItems = [
-    { id: "attendance", icon: Clock, label: "Absensi" },
-    { id: "salary", icon: CreditCard, label: "Slip Gaji" },
-    { id: "points", icon: Award, label: "Point Siswa" },
-  ];
-
-  const SidebarContent = () => (
-    <div className="h-full flex flex-col justify-between py-6">
-      <div className="space-y-8">
-        <div className="flex flex-col items-center space-y-2">
-          <div className="w-16 h-16 bg-gray-300 rounded-full overflow-hidden">
-            <div className="w-full h-full bg-gray-400 flex items-center justify-center">
-              <span className="text-2xl text-white">👨‍🏫</span>
-            </div>
-          </div>
-          <div className="text-white font-semibold">GURU</div>
-        </div>
-
-        <div className="pt-4 space-y-2">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                setActiveSection(item.id);
-                if (onClose) onClose();
-              }}
-              className={`w-full flex items-center space-x-3 py-2 px-4 rounded-lg transition-colors ${
-                activeSection === item.id
-                  ? "bg-white text-emerald-700"
-                  : "text-white hover:bg-white/10"
-              }`}
-            >
-              <item.icon className="w-5 h-5" />
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <button
-        onClick={handleLogout}
-        className="w-full flex items-center space-x-3 text-white py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
-      >
-        <LogOut className="w-5 h-5" />
-        <span>Logout</span>
-      </button>
-    </div>
-  );
-
   return (
     <>
-      <div className="hidden lg:block w-64 bg-emerald-700">
-        <SidebarContent />
-      </div>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed left-4 top-28 z-50 p-2 bg-emerald-800 text-white rounded-lg md:hidden"
+        >
+          <Menu size={24} />
+        </button>
+      )}
 
       <div
-        className={`lg:hidden fixed inset-0 bg-black/50 z-30 transition-opacity duration-300 ${
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity md:hidden ${
+          isOpen ? "opacity-100 z-30" : "opacity-0 pointer-events-none"
         }`}
-        onClick={onClose}
+        onClick={() => setIsOpen(false)}
       />
 
-      <div
-        className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-emerald-700 z-40 transform transition-transform duration-300 ease-in-out ${
+      <aside
+        className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-800 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        } md:translate-x-0 overflow-y-auto`}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-lg"
-        >
-          <X className="w-6 h-6" />
-        </button>
-        <SidebarContent />
-      </div>
+        <div className="flex-none p-6">
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
+                <img
+                  src={avatar}
+                  alt="Admin"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="text-white">
+                <div className="font-medium">Hai GURU</div>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="md:hidden text-white hover:text-gray-200"
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+
+        <nav className="flex-1 px-3 py-4">
+          <button
+            onClick={() => {
+              setActiveMenu("slipgaji");
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+          >
+            <Banknote size={24} />
+            <span className="text-lg">Slip Gaji</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveMenu("points");
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
+          >
+            <ChartNoAxesCombined size={24} />
+            <span className="text-lg">Point Siswa</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveMenu("absensi");
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
+          >
+            <Clock size={24} />
+            <span className="text-lg">Absensi</span>
+          </button>
+        </nav>
+
+        <div className="flex-none p-6">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+          >
+            <LogOut size={24} />
+            <span className="text-lg">Logout</span>
+          </button>
+        </div>
+      </aside>
     </>
   );
 };
