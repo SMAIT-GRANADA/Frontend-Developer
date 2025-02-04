@@ -3,13 +3,11 @@ import { useGetStudentsQuery } from "../hooks/useGetStudentsQuery";
 import { Pencil, Loader2, Search } from "lucide-react";
 import AddStudentModal from "./Modal/AddStudentModal";
 import UpdateClassModal from "./Modal/UpdateClassModal";
-import ImportStudentsModal from "./Modal/ImportStudentsModal";
 
 const StudentManagementTable = () => {
   const [page, setPage] = useState(1);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const limit = 10;
@@ -80,12 +78,6 @@ const StudentManagementTable = () => {
                 className="flex-shrink-0 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition"
               >
                 Tambah Data
-              </button>
-              <button
-                onClick={() => setIsImportModalOpen(true)}
-                className="flex-shrink-0 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
-              >
-                Import Data
               </button>
             </div>
           </div>
@@ -280,11 +272,6 @@ const StudentManagementTable = () => {
         refetch={refetch}
       />
 
-      <ImportStudentsModal
-        isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
-        refetch={refetch}
-      />
       <AddStudentModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
