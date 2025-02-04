@@ -13,7 +13,13 @@ const Navbar = () => {
   const [isHovered, setIsHovered] = useState(false);
   const location = useLocation();
 
-  const restrictedRoutes = ["/student", "/teacher", "/admin", "/superadmin"];
+  const restrictedRoutes = [
+    "/student",
+    "/teacher",
+    "/admin",
+    "/superadmin",
+    "/parent",
+  ];
 
   const isRestrictedRoute = restrictedRoutes.some((route) =>
     location.pathname.startsWith(route)
