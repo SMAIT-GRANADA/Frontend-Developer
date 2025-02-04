@@ -12,7 +12,7 @@ import OtpVerificatinPage from "../pages/OtpVerificatinPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 // import AdminDashboard from "../pages/AdminDashboard";
 import TeacherDashboard from "../pages/TeacherDashboard";
-// import ParentDashboard from "../pages/ParentDashboard";
+import ParentDashboard from "../pages/ParentDashboard";
 
 const AppRoutes = () => {
   return (
@@ -56,14 +56,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      {/* <Route
+      <Route
         path="/parent"
         element={
           <ProtectedRoute allowedRoles={["ortu"]}>
             <ParentDashboard />
           </ProtectedRoute>
         }
-      /> */}
+      />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
