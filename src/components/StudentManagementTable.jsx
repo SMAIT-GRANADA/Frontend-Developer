@@ -260,7 +260,6 @@ const StudentManagementTable = () => {
         </div>
       </div>
 
-      {/* Modals */}
       <UpdateClassModal
         isOpen={isUpdateModalOpen}
         onClose={() => {
