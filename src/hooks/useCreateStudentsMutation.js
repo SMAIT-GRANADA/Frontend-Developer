@@ -10,7 +10,6 @@ export const useCreateStudentsMutation = () => {
           className: student.className?.trim() || "",
         })),
       };
-
       return await createBulkStudents(payload);
     },
   });

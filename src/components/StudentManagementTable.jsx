@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useGetStudentsQuery } from "../hooks/useGetStudentsQuery";
 import { Pencil, Loader2, Search } from "lucide-react";
 import AddStudentModal from "./Modal/AddStudentModal";
-import UpdateClassModal from "./Modal/UpdateClassModal";
+import UpdateStudentModal from "./Modal/UpdateClassModal";
 
 const StudentManagementTable = () => {
   const [page, setPage] = useState(1);
@@ -260,15 +260,13 @@ const StudentManagementTable = () => {
         </div>
       </div>
 
-      {/* Modals */}
-      <UpdateClassModal
+      <UpdateStudentModal
         isOpen={isUpdateModalOpen}
         onClose={() => {
           setIsUpdateModalOpen(false);
           setSelectedStudent(null);
         }}
-        studentId={selectedStudent?.id}
-        currentClassName={selectedStudent?.className}
+        student={selectedStudent}
         refetch={refetch}
       />
 

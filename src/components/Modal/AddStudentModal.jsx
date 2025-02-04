@@ -24,24 +24,38 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
     }));
   };
 
-  const handleSubmit = (processedData) => {
+  const handleSubmit = (e) => {
+    // Tambahkan parameter e
+    e.preventDefault(); // Tambahkan ini
+
+    const processedData = [
+      {
+        name: formData.name,
+        className: formData.className,
+      },
+    ];
+
     createStudents(processedData, {
       onSuccess: (response) => {
         Swal.fire({
           title: "Berhasil!",
-          text: response.message || "Data siswa berhasil ditambahkan",
+          text: response.message,
           icon: "success",
           confirmButtonColor: "#3B82F6",
         });
         onClose();
+        setFormData({
+          // Reset form
+          name: "",
+          className: "",
+          parentId: "",
+        });
         refetch();
       },
       onError: (error) => {
         Swal.fire({
           title: "Gagal!",
-          text:
-            error?.response?.data?.message ||
-            "Terjadi kesalahan saat menambahkan data",
+          text: error?.response?.data?.message || "Terjadi kesalahan",
           icon: "error",
           confirmButtonColor: "#EF4444",
         });
@@ -128,6 +142,7 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
             >
               Batal
             </button>
+
             <button
               type="submit"
               disabled={isLoading}
