@@ -24,46 +24,19 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const studentData = [
-      {
-        name: formData.name.trim(),
-        className: formData.className.trim(),
-        parentId: formData.parentId ? parseInt(formData.parentId) : null,
-        // isActive akan ditambahkan di mutation
-      },
-    ];
-
-    createStudents(studentData, {
+  const handleSubmit = (processedData) => {
+    createStudents(processedData, {
       onSuccess: (response) => {
-        if (response.status === true) {
-          Swal.fire({
-            title: "Berhasil!",
-            text: response.message || "Data siswa berhasil ditambahkan",
-            icon: "success",
-            confirmButtonColor: "#3B82F6",
-          });
-          onClose();
-          refetch();
-          setFormData({
-            name: "",
-            className: "",
-            parentId: "",
-          });
-        } else {
-          // Handle kasus dimana API mengembalikan status false
-          Swal.fire({
-            title: "Gagal!",
-            text: response.message || "Gagal menambahkan data siswa",
-            icon: "error",
-            confirmButtonColor: "#EF4444",
-          });
-        }
+        Swal.fire({
+          title: "Berhasil!",
+          text: response.message || "Data siswa berhasil ditambahkan",
+          icon: "success",
+          confirmButtonColor: "#3B82F6",
+        });
+        onClose();
+        refetch();
       },
       onError: (error) => {
-        console.error("Error detail:", error?.response?.data);
         Swal.fire({
           title: "Gagal!",
           text:

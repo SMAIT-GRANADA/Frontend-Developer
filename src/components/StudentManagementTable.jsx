@@ -24,7 +24,7 @@ const StudentManagementTable = () => {
     setIsUpdateModalOpen(true);
   };
 
-  const filteredData = data?.data.filter((item) => {
+  const filteredData = data?.data?.filter((item) => {
     const searchStr = searchTerm.toLowerCase();
     return (
       item.name.toLowerCase().includes(searchStr) ||
