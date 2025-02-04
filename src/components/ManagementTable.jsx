@@ -12,13 +12,14 @@ const ManagementTable = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchFound, setSearchFound] = useState(true);
   const limit = 10;
 
   const { data, isLoading, isError, error, refetch } = useGetUsersQuery(
     page,
     limit
   );
-  const { mutate: deleteUser, isLoading: isDeleting } = useDeleteUserMutation();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUserMutation();
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -62,15 +63,32 @@ const ManagementTable = () => {
     setIsUpdateModalOpen(true);
   };
 
-  const filteredData = data?.data.filter((item) => {
+  const handleNextPage = () => {
+    if (!searchTerm || !data?.data.length) {
+      return;
+    }
+
+    const currentPageData = filterData(data?.data);
+    if (currentPageData.length === 0) {
+      setPage((prev) => prev + 1);
+      setSearchFound(false);
+    }
+  };
+
+  const filterData = (items) => {
+    if (!searchTerm) return items;
+
     const searchStr = searchTerm.toLowerCase();
-    return (
-      item.username.toLowerCase().includes(searchStr) ||
-      item.name.toLowerCase().includes(searchStr) ||
-      item.email.toLowerCase().includes(searchStr) ||
-      item.roles[0]?.role?.name.toLowerCase().includes(searchStr)
+    return items.filter(
+      (item) =>
+        item.username.toLowerCase().includes(searchStr) ||
+        item.name.toLowerCase().includes(searchStr) ||
+        item.email.toLowerCase().includes(searchStr) ||
+        item.roles[0]?.role?.name.toLowerCase().includes(searchStr)
     );
-  });
+  };
+
+  const displayData = data?.data ? filterData(data.data) : [];
 
   if (isLoading) {
     return (
@@ -111,7 +129,11 @@ const ManagementTable = () => {
               <input
                 type="text"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setSearchFound(true);
+                  if (page !== 1) setPage(1);
+                }}
                 placeholder="Cari pengguna..."
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
@@ -127,7 +149,7 @@ const ManagementTable = () => {
 
         <div className="block lg:hidden">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {filteredData?.map((item, index) => (
+            {displayData.map((item, index) => (
               <div
                 key={item.id}
                 className="bg-white rounded-lg shadow p-4 border border-gray-200"
@@ -247,7 +269,7 @@ const ManagementTable = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredData?.map((item, index) => (
+                {displayData.map((item, index) => (
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {(page - 1) * limit + index + 1}
@@ -316,8 +338,14 @@ const ManagementTable = () => {
               Previous
             </button>
             <button
-              onClick={() => setPage((old) => old + 1)}
-              disabled={filteredData?.length < limit}
+              onClick={() => {
+                if (searchTerm && displayData.length === 0) {
+                  handleNextPage();
+                } else {
+                  setPage((old) => old + 1);
+                }
+              }}
+              disabled={!searchTerm && data?.data.length < limit}
               className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
             >
               Next
@@ -325,6 +353,11 @@ const ManagementTable = () => {
           </div>
           <div className="text-sm text-gray-700">
             Halaman <span className="font-medium">{page}</span>
+            {!searchFound && searchTerm && (
+              <span className="ml-2 text-gray-500">
+                Mencari di halaman berikutnya...
+              </span>
+            )}
           </div>
         </div>
       </div>
