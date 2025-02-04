@@ -12,10 +12,21 @@ export const createBulkStudents = async (payload) => {
   return response.data;
 };
 
-export const updateClass = async ({ studentId, className }) => {
+export const updateStudent = async ({
+  studentId,
+  name,
+  className,
+  parentId,
+}) => {
   const response = await axiosInstance.put(`/students/class`, {
-    studentId,
-    className,
+    students: [
+      {
+        id: studentId,
+        name,
+        className,
+        parentId,
+      },
+    ],
   });
   return response.data;
 };

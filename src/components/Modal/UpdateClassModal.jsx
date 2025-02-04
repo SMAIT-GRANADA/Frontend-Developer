@@ -1,43 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, Loader2 } from "lucide-react";
-import { useUpdateClassMutation } from "../../hooks/useUpdateClassMutation";
+import { useUpdateStudentMutation } from "../../hooks/useUpdateClassMutation";
+import { useGetParentsQuery } from "../../hooks/useGetParentQuery";
 import Swal from "sweetalert2";
 
-const UpdateClassModal = ({
-  isOpen,
-  onClose,
-  studentId,
-  currentClassName,
-  refetch,
-}) => {
-  const [className, setClassName] = useState(currentClassName || "");
-  const { mutate: updateClass, isPending: isUpdating } =
-    useUpdateClassMutation();
+const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    className: "",
+    parentId: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const { mutate: updateStudent, isPending: isUpdating } =
+    useUpdateStudentMutation();
+  const { data: parentsData, isLoading: isLoadingParents } =
+    useGetParentsQuery();
+
+  useEffect(() => {
+    if (student) {
+      setFormData({
+        name: student.name || "",
+        className: student.className || "",
+        parentId: student.parentId || "",
+      });
+    }
+  }, [student]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateClass(
+    updateStudent(
       {
-        studentId,
-        className,
+        studentId: student.id,
+        ...formData,
       },
       {
         onSuccess: () => {
           Swal.fire({
             title: "Berhasil!",
-            text: "Kelas siswa berhasil diperbarui",
+            text: "Data siswa berhasil diperbarui",
             icon: "success",
             confirmButtonColor: "#3B82F6",
           });
-          onClose();
           refetch();
+          onClose();
         },
         onError: (error) => {
           Swal.fire({
             title: "Gagal!",
-            text:
-              error?.response?.data?.message ||
-              "Terjadi kesalahan saat memperbarui kelas",
+            text: error?.response?.data?.message || "Terjadi kesalahan",
             icon: "error",
             confirmButtonColor: "#EF4444",
           });
@@ -59,22 +77,59 @@ const UpdateClassModal = ({
           <X className="h-5 w-5" />
         </button>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Perbarui Kelas</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">
+          Update Data Siswa
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Nama Siswa
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+              disabled={isUpdating}
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Kelas
             </label>
             <input
               type="text"
-              value={className}
-              onChange={(e) => setClassName(e.target.value)}
+              name="className"
+              value={formData.className}
+              onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
               disabled={isUpdating}
-              placeholder="Contoh: X IPA 1"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Orang Tua
+            </label>
+            <select
+              name="parentId"
+              value={formData.parentId}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isUpdating || isLoadingParents}
+            >
+              <option value="">Pilih Orang Tua (Opsional)</option>
+              {parentsData?.data?.map((parent) => (
+                <option key={parent.id} value={parent.id}>
+                  {parent.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex justify-end gap-3 mt-6">
@@ -107,4 +162,4 @@ const UpdateClassModal = ({
   );
 };
 
-export default UpdateClassModal;
+export default UpdateStudentModal;
