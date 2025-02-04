@@ -86,7 +86,7 @@ export default function NewsForm() {
             <button
               type="button"
               onClick={handleFileButton}
-              className="px-4 py-2 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              className="px-4 py-2 bg-green-600 text-white border border-gray-300 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
             >
               Choose File
             </button>
@@ -107,7 +107,7 @@ export default function NewsForm() {
         <button
           type="submit"
           disabled={createNewsMutation.isPending}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50"
+          className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition disabled:opacity-50"
         >
           {createNewsMutation.isPending ? "Posting..." : "Post News"}
         </button>
