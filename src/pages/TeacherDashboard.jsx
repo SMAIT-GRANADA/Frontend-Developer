@@ -5,10 +5,11 @@ import Navbar from "../components/Navbar";
 import SalarySlipSection from "../components/teacher/SalarySlipSection";
 import StudentPointsSection from "../components/teacher/StudentPointsSection";
 import AttendanceSection from "../components/teacher/AttendanceSection";
+import NilaiSection from "../components/Table/NilaiSection";
 
 const TeacherDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("slipgaji");
+  const [activeMenu, setActiveMenu] = useState("nilai");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -21,6 +22,7 @@ const TeacherDashboard = () => {
         />
         <main className="flex-1 px-4 sm:px-6 lg:px-8">
           <div className="py-16">
+            {activeMenu === "nilai" && <NilaiSection />}
             {activeMenu === "slipgaji" && <SalarySlipSection />}
             {activeMenu === "points" && <StudentPointsSection />}
             {activeMenu === "absensi" && <AttendanceSection />}
