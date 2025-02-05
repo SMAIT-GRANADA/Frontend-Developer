@@ -50,6 +50,7 @@ export const useGetQuotes = () => {
   const [quote, setQuote] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
     const fetchDailyQuote = async () => {
@@ -66,6 +67,9 @@ export const useGetQuotes = () => {
         if (response.status && response.data.length > 0) {
           const index = daysDiff % response.data.length;
           setQuote(response.data[index].content);
+          setIsEmpty(false);
+        } else {
+          setIsEmpty(true);
         }
       } catch (err) {
         setError(err);
@@ -77,5 +81,5 @@ export const useGetQuotes = () => {
     fetchDailyQuote();
   }, []);
 
-  return { quote, loading, error };
+  return { quote, loading, error, isEmpty };
 };
