@@ -108,6 +108,10 @@ const StudentManagementTable = () => {
                     <p className="text-sm font-medium">{item.name}</p>
                   </div>
                   <div>
+                    <span className="text-xs text-gray-500">NISN</span>
+                    <p className="text-sm font-medium">{item.nisn}</p>
+                  </div>
+                  <div>
                     <span className="text-xs text-gray-500">Kelas</span>
                     <p className="text-sm font-medium">{item.className}</p>
                   </div>
@@ -168,6 +172,9 @@ const StudentManagementTable = () => {
                     Nama
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    NISN
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Kelas
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
@@ -195,6 +202,9 @@ const StudentManagementTable = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {item.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {item.nisn}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {item.className}

@@ -7,7 +7,9 @@ export const useCreateStudentsMutation = () => {
       const payload = {
         students: data.map((student) => ({
           name: student.name?.trim() || "",
+          nisn: student.nisn?.trim() || "",
           className: student.className?.trim() || "",
+          parentId: student.parentId || null,
         })),
       };
       return await createBulkStudents(payload);
