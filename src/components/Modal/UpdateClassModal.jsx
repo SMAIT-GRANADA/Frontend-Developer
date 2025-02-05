@@ -9,13 +9,14 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
     name: "",
     className: "",
     parentId: "",
+    isActive: true,
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -28,8 +29,10 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
     if (student) {
       setFormData({
         name: student.name || "",
+
         className: student.className || "",
         parentId: student.parentId || "",
+        isActive: student.isActive ?? true,
       });
     }
   }, [student]);
@@ -130,6 +133,24 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="isActive"
+              id="isActive"
+              checked={formData.isActive}
+              onChange={handleChange}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              disabled={isUpdating}
+            />
+            <label
+              htmlFor="isActive"
+              className="text-sm font-medium text-gray-700"
+            >
+              Status Aktif
+            </label>
           </div>
 
           <div className="flex justify-end gap-3 mt-6">
