@@ -7,17 +7,29 @@ import Swal from "sweetalert2";
 const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
   const [formData, setFormData] = useState({
     name: "",
+    nisn: "",
     className: "",
     parentId: "",
     isActive: true,
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: newValue,
     }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
 
   const { mutate: updateStudent, isPending: isUpdating } =
@@ -29,31 +41,69 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
     if (student) {
       setFormData({
         name: student.name || "",
-
+        nisn: student.nisn || "",
         className: student.className || "",
         parentId: student.parentId || "",
         isActive: student.isActive ?? true,
       });
+      setErrors({});
     }
   }, [student]);
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (formData.nisn && !/^\d{10}$/.test(formData.nisn)) {
+      newErrors.nisn = "NISN harus 10 digit angka";
+    }
+
+    const hasChanges = Object.keys(formData).some((key) => {
+      if (key === "isActive") return formData[key] !== student?.isActive;
+      if (key === "parentId")
+        return formData[key] !== (student?.parentId || "");
+      return formData[key] !== (student?.[key] || "");
+    });
+
+    if (!hasChanges) {
+      newErrors.form = "Minimal satu field harus diubah untuk update";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     updateStudent(
       {
         studentId: student.id,
         ...formData,
+        parentId: formData.parentId || null,
       },
       {
-        onSuccess: () => {
-          Swal.fire({
-            title: "Berhasil!",
-            text: "Data siswa berhasil diperbarui",
-            icon: "success",
-            confirmButtonColor: "#3B82F6",
-          });
-          refetch();
-          onClose();
+        onSuccess: (response) => {
+          if (response.status) {
+            Swal.fire({
+              title: "Berhasil!",
+              text: response.message || "Data siswa berhasil diperbarui",
+              icon: "success",
+              confirmButtonColor: "#3B82F6",
+            });
+            refetch();
+            onClose();
+          } else {
+            Swal.fire({
+              title: "Gagal!",
+              text: response.message || "Terjadi kesalahan",
+              icon: "error",
+              confirmButtonColor: "#EF4444",
+            });
+          }
         },
         onError: (error) => {
           Swal.fire({
@@ -85,6 +135,12 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {errors.form && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-600">{errors.form}</p>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Nama Siswa
@@ -95,9 +151,25 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
               value={formData.name}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
               disabled={isUpdating}
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              NISN
+            </label>
+            <input
+              type="text"
+              name="nisn"
+              value={formData.nisn}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isUpdating}
+            />
+            {errors.nisn && (
+              <p className="mt-1 text-sm text-red-600">{errors.nisn}</p>
+            )}
           </div>
 
           <div>
@@ -110,7 +182,6 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
               value={formData.className}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
               disabled={isUpdating}
             />
           </div>
