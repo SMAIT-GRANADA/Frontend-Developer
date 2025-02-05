@@ -1,5 +1,5 @@
 import OTPVerificationForm from "../components/OtpVerificationForm";
-import loginBanner from "../assets/granada-school.png";
+import loginBanner from "../assets/granada-school.webp";
 
 const OTPVerificationPage = () => {
   return (

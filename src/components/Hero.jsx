@@ -1,6 +1,6 @@
-import granadaImg from "../assets/granada-school.png";
-import granadaImg2 from "../assets/backgroundschool2.jpg";
-import granadaImg3 from "../assets/backgroundschool3.jpg";
+import granadaImg from "../assets/granada-school.webp";
+import granadaImg2 from "../assets/backgroundschool2.webp";
+import granadaImg3 from "../assets/backgroundschool3.webp";
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
