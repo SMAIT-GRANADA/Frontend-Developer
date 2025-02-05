@@ -22,7 +22,7 @@ const StaffGridContainer = memo(({ children, onMouseEnter, onMouseLeave }) => (
 StaffGridContainer.displayName = "StaffGridContainer";
 
 const NavigationButton = memo(
-  ({ direction, onClick, showArrows, children }) => (
+  ({ direction, onClick, showArrows, disabled, children }) => (
     <div
       className={`absolute inset-y-0 ${
         direction === "left" ? "left-0" : "right-0"
@@ -32,7 +32,10 @@ const NavigationButton = memo(
     >
       <button
         onClick={onClick}
-        className="p-2 rounded-full bg-white shadow-lg hover:bg-yellow-400 z-10"
+        disabled={disabled}
+        className={`p-2 rounded-full bg-white shadow-lg hover:bg-yellow-400 z-10 ${
+          disabled ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         style={{ margin: direction === "left" ? "0 0 0 -1rem" : "0 -1rem 0 0" }}
         aria-label={direction === "left" ? "Previous slide" : "Next slide"}
       >
@@ -52,6 +55,7 @@ const StaffGrid = () => {
     totalSlides,
     staffData,
     isLoading,
+    isFetching,
     error,
     setShowArrows,
     scrollToSlide,
@@ -79,6 +83,14 @@ const StaffGrid = () => {
       );
     }
 
+    if (staffData.length === 0) {
+      return (
+        <div className="text-center py-8 text-gray-500">
+          No staff data available
+        </div>
+      );
+    }
+
     return staffData.map((staff) => (
       <StaffCard
         key={staff.id}
@@ -98,7 +110,9 @@ const StaffGrid = () => {
       <div className="relative">
         <div
           ref={scrollRef}
-          className="overflow-x-auto scrollbar-hide scroll-smooth"
+          className={`overflow-x-auto scrollbar-hide scroll-smooth ${
+            isFetching ? "opacity-50" : ""
+          }`}
           onScroll={handleScroll}
         >
           <div className="flex gap-6 transition-all duration-500 ease-in-out min-w-max px-4">
@@ -106,12 +120,13 @@ const StaffGrid = () => {
           </div>
         </div>
 
-        {!isLoading && (
+        {!isLoading && staffData.length > 0 && (
           <>
             <NavigationButton
               direction="left"
               onClick={prevSlide}
               showArrows={showArrows}
+              disabled={currentSlide === 0}
             >
               <ChevronLeft size={24} />
             </NavigationButton>
@@ -120,6 +135,7 @@ const StaffGrid = () => {
               direction="right"
               onClick={nextSlide}
               showArrows={showArrows}
+              disabled={currentSlide === totalSlides - 1}
             >
               <ChevronRight size={24} />
             </NavigationButton>

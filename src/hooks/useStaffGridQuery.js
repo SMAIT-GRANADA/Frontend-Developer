@@ -13,11 +13,13 @@ export const useStaffGridQuery = () => {
     data: staffResponse,
     isLoading,
     error,
+    isFetching,
   } = useQuery({
     queryKey: ["staffData", currentPage],
     queryFn: () => fetchStaffData(currentPage, itemsPerSlide),
     staleTime: 5 * 60 * 1000,
     cacheTime: 30 * 60 * 1000,
+    keepPreviousData: true,
   });
 
   const staffData = staffResponse?.data || [];
@@ -39,14 +41,20 @@ export const useStaffGridQuery = () => {
   );
 
   const nextSlide = useCallback(() => {
-    const newSlide = (currentSlide + 1) % totalPages;
-    scrollToSlide(newSlide);
-  }, [currentSlide, totalPages, scrollToSlide]);
+    if (currentSlide < totalPages - 1) {
+      const newSlide = currentSlide + 1;
+      setCurrentSlide(newSlide);
+      setCurrentPage(newSlide + 1);
+    }
+  }, [currentSlide, totalPages]);
 
   const prevSlide = useCallback(() => {
-    const newSlide = (currentSlide - 1 + totalPages) % totalPages;
-    scrollToSlide(newSlide);
-  }, [currentSlide, totalPages, scrollToSlide]);
+    if (currentSlide > 0) {
+      const newSlide = currentSlide - 1;
+      setCurrentSlide(newSlide);
+      setCurrentPage(newSlide + 1);
+    }
+  }, [currentSlide]);
 
   const handleScroll = useCallback(
     (e) => {
@@ -54,6 +62,7 @@ export const useStaffGridQuery = () => {
       const scrollPosition = e.target.scrollLeft;
       const slideWidth = scrollWidth / totalPages;
       const newSlide = Math.round(scrollPosition / slideWidth);
+
       if (newSlide !== currentSlide) {
         setCurrentSlide(newSlide);
         setCurrentPage(newSlide + 1);
@@ -69,6 +78,7 @@ export const useStaffGridQuery = () => {
     totalSlides: totalPages,
     staffData,
     isLoading,
+    isFetching,
     error,
     setShowArrows,
     scrollToSlide,
