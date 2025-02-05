@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 const AddStudentModal = ({ isOpen, onClose, refetch }) => {
   const [formData, setFormData] = useState({
     name: "",
+    nisn: "", // Add NISN field
     className: "",
     parentId: "",
   });
@@ -25,13 +26,14 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
   };
 
   const handleSubmit = (e) => {
-    // Tambahkan parameter e
-    e.preventDefault(); // Tambahkan ini
+    e.preventDefault();
 
     const processedData = [
       {
         name: formData.name,
+        nisn: formData.nisn, // Include NISN
         className: formData.className,
+        parentId: formData.parentId || null,
       },
     ];
 
@@ -45,8 +47,8 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
         });
         onClose();
         setFormData({
-          // Reset form
           name: "",
+          nisn: "", // Reset NISN
           className: "",
           parentId: "",
         });
@@ -62,19 +64,11 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
       },
     });
   };
-
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white rounded-lg w-full max-w-md p-6 relative">
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
-          disabled={isLoading}
-        >
-          <X className="h-5 w-5" />
-        </button>
+        {/* ... existing close button ... */}
 
         <h2 className="text-xl font-bold text-gray-900 mb-6">Tambah Siswa</h2>
 
@@ -96,6 +90,25 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
             />
           </div>
 
+          {/* Add NISN field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              NISN
+            </label>
+            <input
+              type="text"
+              name="nisn"
+              value={formData.nisn}
+              onChange={handleChange}
+              autoComplete="off"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+              disabled={isLoading}
+              placeholder="Masukkan NISN"
+            />
+          </div>
+
+          {/* ... existing className input ... */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Kelas
@@ -113,6 +126,7 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
             />
           </div>
 
+          {/* ... existing parent selection ... */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Orang Tua
@@ -133,6 +147,7 @@ const AddStudentModal = ({ isOpen, onClose, refetch }) => {
             </select>
           </div>
 
+          {/* ... existing buttons ... */}
           <div className="flex justify-end gap-3 mt-6">
             <button
               type="button"
