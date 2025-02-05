@@ -4,7 +4,7 @@ import quotes from "../assets/quotes.svg";
 import { useGetQuotes } from "../hooks/useQoutes";
 
 const QuotesOfTheDay = () => {
-  const { quote, loading, error } = useGetQuotes();
+  const { quote, loading, error, isEmpty } = useGetQuotes();
 
   if (error) return <div>Error loading quote</div>;
 
@@ -15,7 +15,11 @@ const QuotesOfTheDay = () => {
         <div className="flex-1">
           <img src={quotes} alt="" />
           <blockquote className="text-black text-2xl font-medium">
-            {loading ? "Loading quote..." : quote}
+            {loading
+              ? "Loading quote..."
+              : isEmpty
+              ? "Tidak ada quotes hari ini"
+              : quote}
           </blockquote>
         </div>
       </div>
