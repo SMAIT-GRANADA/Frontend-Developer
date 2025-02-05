@@ -10,11 +10,13 @@ const StudentManagementTable = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showInactive, setShowInactive] = useState(true);
   const limit = 10;
 
   const { data, isLoading, isError, error, refetch } = useGetStudentsQuery(
     page,
-    limit
+    limit,
+    showInactive
   );
 
   const handleUpdate = (student) => {
@@ -60,6 +62,7 @@ const StudentManagementTable = () => {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
           <h1 className="text-xl font-bold text-gray-800">Manajemen Siswa</h1>
           <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            {/* Search input */}
             <div className="relative flex-grow sm:flex-grow-0 sm:w-64">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-gray-400" />
@@ -72,14 +75,29 @@ const StudentManagementTable = () => {
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setIsAddModalOpen(true)}
-                className="flex-shrink-0 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition"
-              >
-                Tambah Data
-              </button>
+
+            {/* Status Filter */}
+            <div className="flex items-center gap-2">
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  checked={showInactive}
+                  onChange={(e) => setShowInactive(e.target.checked)}
+                  className="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+                />
+                <span className="ml-2 text-sm text-gray-600">
+                  Tampilkan Siswa Non-Aktif
+                </span>
+              </label>
             </div>
+
+            {/* Add button */}
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="flex-shrink-0 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition"
+            >
+              Tambah Data
+            </button>
           </div>
         </div>
 
