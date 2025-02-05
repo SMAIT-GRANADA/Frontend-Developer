@@ -6,14 +6,21 @@ import {
   ChartNoAxesCombined,
   Clock,
   GraduationCap,
+  PenSquare,
+  Eye,
+  Upload,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import avatar from "../../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const TeacherSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
+  const [isNilaiOpen, setIsNilaiOpen] = useState(true);
 
   const handleLogout = () => {
     Cookies.remove("accessToken", { path: "/" });
@@ -74,16 +81,58 @@ const TeacherSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
         </div>
 
         <nav className="flex-1 px-3 py-4">
-          <button
-            onClick={() => {
-              setActiveMenu("nilai");
-              setIsOpen(false);
-            }}
-            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
-          >
-            <GraduationCap size={24} />
-            <span className="text-lg">Nilai</span>
-          </button>
+          <div className="space-y-1">
+            <button
+              onClick={() => setIsNilaiOpen(!isNilaiOpen)}
+              className="w-full flex items-center justify-between text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <GraduationCap size={24} />
+                <span className="text-lg">Nilai</span>
+              </div>
+              {isNilaiOpen ? (
+                <ChevronUp size={20} />
+              ) : (
+                <ChevronDown size={20} />
+              )}
+            </button>
+
+            {isNilaiOpen && (
+              <div className="ml-4 space-y-1">
+                <button
+                  onClick={() => {
+                    setActiveMenu("input-nilai");
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+                >
+                  <Upload size={20} />
+                  <span className="text-sm">Input Nilai</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveMenu("ubah-nilai");
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+                >
+                  <PenSquare size={20} />
+                  <span className="text-sm">Ubah Nilai</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveMenu("lihat-nilai");
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+                >
+                  <Eye size={20} />
+                  <span className="text-sm">Lihat Nilai</span>
+                </button>
+              </div>
+            )}
+          </div>
+
           <button
             onClick={() => {
               setActiveMenu("slipgaji");

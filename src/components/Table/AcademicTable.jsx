@@ -1,31 +1,37 @@
 import React, { useState } from "react";
-import { useGetStudentsQuery } from "../../hooks/useStudents";
-import { Upload, Loader2, Search } from "lucide-react";
-import UploadNilaiModal from "../Modal/UploadNilaiModal";
+import { useGetAcademicsQuery } from "../../hooks/useAcademics";
+import { PenSquare, Eye, Loader2, Search } from "lucide-react";
+import ViewAcademicModal from "../Modal/ViewNilaiModal";
+import UpdateAcademicModal from "../Modal/UpdateNilaiModal";
 
-const NilaiSection = () => {
-  const [page, setPage] = useState(1);
+const AcademicTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const limit = 10;
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedAcademicId, setSelectedAcademicId] = useState(null);
 
-  const { data, isLoading, isError } = useGetStudentsQuery(page, limit);
+  const { data, isLoading, isError } = useGetAcademicsQuery();
 
   const filterData = (items) => {
     if (!searchTerm || !items) return items;
     const searchStr = searchTerm.toLowerCase();
     return items.filter(
       (item) =>
-        item.name.toLowerCase().includes(searchStr) ||
-        item.nisn.toLowerCase().includes(searchStr) ||
-        item.className.toLowerCase().includes(searchStr)
+        item.studentName.toLowerCase().includes(searchStr) ||
+        item.className.toLowerCase().includes(searchStr) ||
+        item.semester.toLowerCase().includes(searchStr) ||
+        item.academicYear.toLowerCase().includes(searchStr)
     );
   };
 
-  const handleUploadClick = (student) => {
-    setSelectedStudent(student);
-    setIsUploadModalOpen(true);
+  const handleViewClick = (id) => {
+    setSelectedAcademicId(id);
+    setIsViewModalOpen(true);
+  };
+
+  const handleUpdateClick = (id) => {
+    setSelectedAcademicId(id);
+    setIsUpdateModalOpen(true);
   };
 
   const displayData = data?.data ? filterData(data.data) : [];
@@ -53,10 +59,10 @@ const NilaiSection = () => {
 
   return (
     <>
-      <div className="w-full max-w-6xl mx-auto p-4 bg-white rounded-lg shadow-lg">
+      <div className="w-full max-w-7xl mx-auto p-4 bg-white rounded-lg shadow-lg">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
           <h1 className="text-xl font-bold text-gray-800">
-            Upload Nilai Siswa
+            Data Nilai Akademik
           </h1>
           <div className="relative flex-grow sm:flex-grow-0 sm:w-64">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -66,7 +72,7 @@ const NilaiSection = () => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari siswa..."
+              placeholder="Cari data nilai..."
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
@@ -80,16 +86,19 @@ const NilaiSection = () => {
                   No
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  NISN
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Nama
+                  Nama Siswa
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                   Kelas
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Status
+                  Semester
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Tahun Ajaran
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Jumlah Mata Pelajaran
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                   Aksi
@@ -100,76 +109,65 @@ const NilaiSection = () => {
               {displayData.map((item, index) => (
                 <tr key={item.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {(page - 1) * limit + index + 1}
+                    {index + 1}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {item.nisn}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.name}
+                    {item.studentName}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {item.className}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        item.isActive
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {item.isActive ? "Aktif" : "Tidak Aktif"}
-                    </span>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.semester}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.academicYear}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {Object.keys(item.grades).length}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      onClick={() => handleUploadClick(item)}
-                      className="text-blue-600 hover:text-blue-900"
-                    >
-                      <Upload className="h-4 w-4" />
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleUpdateClick(item.id)}
+                        className="text-green-600 hover:text-green-900"
+                      >
+                        <PenSquare className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleViewClick(item.id)}
+                        className="text-yellow-600 hover:text-yellow-900"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex justify-between w-full sm:w-auto gap-4">
-            <button
-              onClick={() => setPage((old) => Math.max(old - 1, 1))}
-              disabled={page === 1}
-              className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => setPage((old) => old + 1)}
-              disabled={!data?.meta?.hasNextPage}
-              className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-          <div className="text-sm text-gray-700">
-            Halaman <span className="font-medium">{page}</span> dari{" "}
-            <span className="font-medium">{data?.meta?.totalPages || 1}</span>
-          </div>
-        </div>
       </div>
 
-      <UploadNilaiModal
-        isOpen={isUploadModalOpen}
+      <ViewAcademicModal
+        isOpen={isViewModalOpen}
         onClose={() => {
-          setIsUploadModalOpen(false);
-          setSelectedStudent(null);
+          setIsViewModalOpen(false);
+          setSelectedAcademicId(null);
         }}
-        student={selectedStudent}
+        academicId={selectedAcademicId}
+      />
+
+      <UpdateAcademicModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => {
+          setIsUpdateModalOpen(false);
+          setSelectedAcademicId(null);
+        }}
+        academicId={selectedAcademicId}
       />
     </>
   );
 };
 
-export default NilaiSection;
+export default AcademicTable;
