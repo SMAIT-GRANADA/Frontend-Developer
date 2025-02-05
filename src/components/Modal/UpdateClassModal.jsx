@@ -29,7 +29,7 @@ const UpdateStudentModal = ({ isOpen, onClose, student, refetch }) => {
     if (student) {
       setFormData({
         name: student.name || "",
-        nisn: student.nisn || "",
+
         className: student.className || "",
         parentId: student.parentId || "",
         isActive: student.isActive ?? true,
