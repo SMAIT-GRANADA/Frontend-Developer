@@ -1,6 +1,6 @@
 import React from "react";
 import ResetPasswordForm from "../components/Form/ResetPasswordForm";
-import loginBanner from "../assets/granada-school.png";
+import loginBanner from "../assets/granada-school.webp";
 
 const ResetPasswordPage = () => {
   return (

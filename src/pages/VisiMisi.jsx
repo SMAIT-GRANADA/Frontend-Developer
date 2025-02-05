@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import bgVisiMisi from "../assets/bg-visimisi.png";
+import bgVisiMisi from "../assets/bg-visimisi.webp";
 
 const VisiMisi = () => {
   return (

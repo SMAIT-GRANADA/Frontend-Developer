@@ -1,5 +1,5 @@
 import LoginForm from "../components/LoginForm";
-import loginBanner from "../assets/granada-school.png";
+import loginBanner from "../assets/granada-school.webp";
 
 const LoginPage = () => {
   return (
