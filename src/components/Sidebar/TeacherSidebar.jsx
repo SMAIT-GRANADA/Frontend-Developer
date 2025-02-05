@@ -5,6 +5,7 @@ import {
   X,
   ChartNoAxesCombined,
   Clock,
+  GraduationCap,
 } from "lucide-react";
 import avatar from "../../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
@@ -75,10 +76,20 @@ const TeacherSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
         <nav className="flex-1 px-3 py-4">
           <button
             onClick={() => {
-              setActiveMenu("slipgaji");
+              setActiveMenu("nilai");
               setIsOpen(false);
             }}
             className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
+          >
+            <GraduationCap size={24} />
+            <span className="text-lg">Nilai</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveMenu("slipgaji");
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
           >
             <Banknote size={24} />
             <span className="text-lg">Slip Gaji</span>
