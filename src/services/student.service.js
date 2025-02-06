@@ -5,13 +5,17 @@ export const getStudents = async ({ page, limit, showInactive = true }) => {
     const params = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
-      showInactive: showInactive.toString(),
     });
 
-    const response = await fetch(`/students?${params}`);
-    if (!response.ok) throw new Error("Failed to fetch students");
+    const response = await axiosInstance.get(`/students?${params}`);
 
-    return response.json();
+    if (!showInactive) {
+      response.data.data = response.data.data.filter(
+        (student) => student.isActive
+      );
+    }
+
+    return response.data;
   } catch (error) {
     throw error;
   }
