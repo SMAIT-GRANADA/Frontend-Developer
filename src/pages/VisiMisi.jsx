@@ -2,8 +2,40 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import bgVisiMisi from "../assets/bg-visimisi.webp";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 const VisiMisi = () => {
+  const roleRoutes = {
+    siswa: "/student",
+    guru: "/teacher",
+    admin: "/admin",
+    superadmin: "/superadmin",
+    ortu: "/parent",
+  };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get("accessToken");
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const userRole = decoded.roles[0]?.toLowerCase();
+
+        if (userRole && roleRoutes[userRole]) {
+          navigate(roleRoutes[userRole], { replace: true });
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        Cookies.remove("accessToken", { path: "/" });
+      }
+    }
+  }, [navigate]);
+
   return (
     <>
       <Navbar />

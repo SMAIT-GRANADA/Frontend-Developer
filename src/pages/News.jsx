@@ -7,8 +7,40 @@ import NewsCardSkeleton from "../components/Skeleton/NewsCardSkeleton";
 import NewsGrid from "../components/NewsGrid";
 import NewsGridSkeleton from "../components/Skeleton/NewsGridSkeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import { useEffect } from "react";
 
 const News = () => {
+  const roleRoutes = {
+    siswa: "/student",
+    guru: "/teacher",
+    admin: "/admin",
+    superadmin: "/superadmin",
+    ortu: "/parent",
+  };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get("accessToken");
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const userRole = decoded.roles[0]?.toLowerCase();
+
+        if (userRole && roleRoutes[userRole]) {
+          navigate(roleRoutes[userRole], { replace: true });
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        Cookies.remove("accessToken", { path: "/" });
+      }
+    }
+  }, [navigate]);
+
   const { data: newsData, isLoading } = useNewsQuery();
 
   return (

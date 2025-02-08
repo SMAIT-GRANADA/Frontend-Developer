@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Stats from "../components/Stats";
@@ -9,7 +13,35 @@ import NewsLayout from "../components/NewsLayout";
 import VideoPage from "../components/VideoPage";
 import QuotesOfTheDay from "../components/QuotesOfTheDay";
 
+const roleRoutes = {
+  siswa: "/student",
+  guru: "/teacher",
+  admin: "/admin",
+  superadmin: "/superadmin",
+  ortu: "/parent",
+};
+
 const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get("accessToken");
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const userRole = decoded.roles[0]?.toLowerCase();
+
+        if (userRole && roleRoutes[userRole]) {
+          navigate(roleRoutes[userRole], { replace: true });
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        Cookies.remove("accessToken", { path: "/" });
+      }
+    }
+  }, [navigate]);
+
   return (
     <>
       <Navbar />
