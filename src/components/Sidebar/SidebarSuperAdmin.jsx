@@ -28,7 +28,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
       showConfirmButton: false,
       timer: 1500,
     });
-    navigate("/login");
+    navigate("/");
   };
 
   return (
