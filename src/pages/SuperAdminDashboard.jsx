@@ -5,6 +5,7 @@ import NewsForm from "../components/Form/NewsForm";
 import ManagementTable from "../components/ManagementTable";
 import StudentManagementTable from "../components/StudentManagementTable";
 import QuotesTable from "../components/Table/QoutesTable";
+import AcademicTableSuperAdmin from "../components/Table/AcademicTableSuperAdmin";
 
 const SuperAdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -25,6 +26,7 @@ const SuperAdminDashboard = () => {
             {activeMenu === "manajemen-pengguna" && <ManagementTable />}
             {activeMenu === "manajemen-siswa" && <StudentManagementTable />}
             {activeMenu === "quotes" && <QuotesTable />}
+            {activeMenu === "nilai-siswa" && <AcademicTableSuperAdmin />}
           </div>
         </main>
       </div>
