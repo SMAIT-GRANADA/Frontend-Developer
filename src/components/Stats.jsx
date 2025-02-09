@@ -42,7 +42,7 @@ export default function Stats() {
     {
       icon: graduates,
       label: "Lulusan",
-      value: 145,
+      value: 469,
     },
     {
       icon: teacher,
