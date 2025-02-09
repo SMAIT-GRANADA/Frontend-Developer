@@ -1,6 +1,7 @@
 import React from "react";
 import waveHome from "../assets/wave-home.svg";
 import piala from "../assets/piala.svg";
+import ProfileCard from "./ProfileCard";
 
 const ProfileGranada = () => {
   return (
@@ -18,11 +19,7 @@ const ProfileGranada = () => {
             <div className="flex flex-col lg:flex-row gap-x-12 items-start">
               <div className="lg:w-[351px] w-full h-auto flex-shrink-0">
                 <div className="h-full w-full rounded-lg overflow-hidden">
-                  <img
-                    src="https://ik.imagekit.io/wahyup/Foto%20Guru%20SMA%20IT%20Granada/Foto%20kepala%20sekolah.webp?updatedAt=1737392727322"
-                    alt="Profile"
-                    className="w-full h-full object-cover rounded-sm"
-                  />
+                  <ProfileCard imageUrl="https://ik.imagekit.io/wahyup/Foto%20Guru%20SMA%20IT%20Granada/Foto%20kepala%20sekolah.webp?updatedAt=1737392727322" />
                 </div>
               </div>
 
