@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import TeacherSidebar from "../components/Sidebar/TeacherSidebar";
 import Navbar from "../components/Navbar";
-import SalarySlipSection from "../components/teacher/SalarySlipSection";
-import StudentPointsSection from "../components/teacher/StudentPointsSection";
-import AttendanceSection from "../components/teacher/AttendanceSection";
+import SalarySlipSection from "../components/Teacher/SalarySlipSection";
+import StudentPointsSection from "../components/Teacher/StudentPointsSection";
+import AttendanceSection from "../components/Teacher/AttendanceSection";
 import NilaiSection from "../components/Table/NilaiSection";
 import AcademicTable from "../components/Table/AcademicTable";
 
