@@ -10,7 +10,7 @@ import {
   Users,
   GraduationCap,
 } from "lucide-react";
-import avatar from "../../assets/avatar.png";
+import avatar from "../assets/logo-sekolah.svg";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";

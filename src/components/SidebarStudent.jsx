@@ -1,11 +1,11 @@
-import React from "react";
-import { Menu, X, GraduationCap, AlertTriangle, LogOut } from "lucide-react";
-import avatar from "../assets/logo-sekolah.svg";
+import React, { useState } from "react";
+import { LogOut, Clock, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import avatar from "../assets/logo-sekolah.svg";
 
-const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
+const SidebarStudent = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -25,7 +25,7 @@ const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed left-4 top-28 z-50 p-2 bg-green-700 text-white rounded-lg md:hidden"
+          className="fixed left-4 top-28 z-50 p-2 bg-emerald-700 text-white rounded-lg md:hidden"
         >
           <Menu size={24} />
         </button>
@@ -41,7 +41,7 @@ const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
       <aside
         className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-700 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        } md:translate-x-0 overflow-y-auto`}
       >
         <div className="flex-none p-6">
           <div className="flex justify-between items-center mb-8">
@@ -49,12 +49,12 @@ const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
               <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
                 <img
                   src={avatar}
-                  alt="Parent"
+                  alt="Student"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="text-white">
-                <div className="font-medium">ORANG TUA</div>
+                <div className="font-medium">STUDENT</div>
               </div>
             </div>
             <button
@@ -69,24 +69,13 @@ const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
         <nav className="flex-1 px-3 py-4">
           <button
             onClick={() => {
-              setActiveMenu("nilai-siswa");
+              setActiveMenu("absensi");
               setIsOpen(false);
             }}
             className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
           >
-            <GraduationCap size={24} />
-            <span className="text-lg">Nilai Siswa</span>
-          </button>
-
-          <button
-            onClick={() => {
-              setActiveMenu("point-siswa");
-              setIsOpen(false);
-            }}
-            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
-          >
-            <AlertTriangle size={24} />
-            <span className="text-lg">Point Pelanggaran</span>
+            <Clock size={24} />
+            <span className="text-lg">Absensi</span>
           </button>
         </nav>
 
@@ -104,4 +93,4 @@ const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
   );
 };
 
-export default ParentSidebar;
+export default SidebarStudent;
