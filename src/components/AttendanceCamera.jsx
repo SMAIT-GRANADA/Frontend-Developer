@@ -2,15 +2,17 @@ import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 import Swal from "sweetalert2";
 import { X } from "lucide-react";
+import { useCheckIn } from "../hooks/useCheckIn";
 
-const ALLOWED_LATITUDE = -6.229197;
-const ALLOWED_LONGITUDE = 106.807296;
+const ALLOWED_LATITUDE = -6.22592;
+const ALLOWED_LONGITUDE = 106.830234;
 const ALLOWED_RADIUS = 0.5;
 
 const AttendanceCamera = ({ onSuccess, onClose }) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const webcamRef = useRef(null);
+  const checkInMutation = useCheckIn();
 
   const checkLocation = () => {
     if ("geolocation" in navigator) {
@@ -44,10 +46,50 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
     setIsCameraOpen(true);
   };
 
-  const captureImage = useCallback(() => {
+  const captureImage = useCallback(async () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc && userLocation) {
-      checkLocationAndSubmit(imageSrc, userLocation);
+      const distance = calculateDistance(
+        userLocation.latitude,
+        userLocation.longitude,
+        ALLOWED_LATITUDE,
+        ALLOWED_LONGITUDE
+      );
+
+      if (distance <= ALLOWED_RADIUS) {
+        try {
+          await checkInMutation.mutateAsync({
+            photoBase64: imageSrc,
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
+          });
+
+          Swal.fire({
+            title: "Success!",
+            text: "Attendance recorded successfully.",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            onSuccess();
+          });
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to submit attendance. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } else {
+        Swal.fire({
+          title: "Failed!",
+          text: `You are ${distance.toFixed(
+            2
+          )} km from the allowed location. Maximum allowed distance is ${ALLOWED_RADIUS} km.`,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     } else {
       Swal.fire({
         title: "Error!",
@@ -56,36 +98,7 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
         confirmButtonText: "OK",
       });
     }
-  }, [webcamRef, userLocation]);
-
-  const checkLocationAndSubmit = (imageSrc, location) => {
-    const distance = calculateDistance(
-      location.latitude,
-      location.longitude,
-      ALLOWED_LATITUDE,
-      ALLOWED_LONGITUDE
-    );
-
-    if (distance <= ALLOWED_RADIUS) {
-      Swal.fire({
-        title: "Success!",
-        text: "Attendance recorded successfully.",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        onSuccess();
-      });
-    } else {
-      Swal.fire({
-        title: "Failed!",
-        text: `You are ${distance.toFixed(
-          2
-        )} km from the allowed location. Maximum allowed distance is ${ALLOWED_RADIUS} km.`,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-  };
+  }, [webcamRef, userLocation, checkInMutation, onSuccess]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -143,9 +156,12 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
             />
             <button
               onClick={captureImage}
-              className="w-full bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-500 transition duration-300"
+              disabled={checkInMutation.isPending}
+              className="w-full bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-500 transition duration-300 disabled:bg-yellow-200 disabled:cursor-not-allowed"
             >
-              Capture Photo and Submit Attendance
+              {checkInMutation.isPending
+                ? "Submitting..."
+                : "Capture Photo and Submit Attendance"}
             </button>
           </div>
         )}
