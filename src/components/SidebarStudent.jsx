@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { LogOut, Clock, Menu, X } from "lucide-react";
+import React from "react";
+import { LogOut, Clock, Menu, X, LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -77,6 +77,16 @@ const SidebarStudent = ({ isOpen, setIsOpen, setActiveMenu }) => {
         </div>
 
         <nav className="flex-1 px-3 py-4">
+          <button
+            onClick={() => {
+              setActiveMenu("dashboard");
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mb-2"
+          >
+            <LayoutDashboard size={24} />
+            <span className="text-lg">Dashboard</span>
+          </button>
           <button
             onClick={() => {
               setActiveMenu("absensi");
