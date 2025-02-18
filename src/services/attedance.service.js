@@ -13,3 +13,8 @@ export const getTodayAttendance = async () => {
   const response = await axiosInstance.get("/attendance/today");
   return response.data;
 };
+
+export const getAttendanceHistory = async () => {
+  const response = await axiosInstance.get("/attendance/history");
+  return response.data;
+};
