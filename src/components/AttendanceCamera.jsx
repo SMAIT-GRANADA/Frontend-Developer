@@ -4,8 +4,8 @@ import Swal from "sweetalert2";
 import { X } from "lucide-react";
 import { useCheckIn } from "../hooks/useCheckIn";
 
-const ALLOWED_LATITUDE = -6.22592;
-const ALLOWED_LONGITUDE = 106.830234;
+const ALLOWED_LATITUDE = -6.206259;
+const ALLOWED_LONGITUDE = 106.807296;
 const ALLOWED_RADIUS = 0.5;
 
 const AttendanceCamera = ({ onSuccess, onClose }) => {

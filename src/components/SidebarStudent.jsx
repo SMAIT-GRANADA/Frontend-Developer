@@ -4,9 +4,17 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import avatar from "../assets/logo-sekolah.svg";
+import { useGetUserByIdQuery } from "../hooks/useGetUserQuery";
+import { jwtDecode } from "jwt-decode";
 
 const SidebarStudent = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
+
+  const token = Cookies.get("accessToken");
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userId = decodedToken?.id;
+
+  const { data: userData } = useGetUserByIdQuery(userId);
 
   const handleLogout = () => {
     Cookies.remove("accessToken", { path: "/" });
@@ -54,7 +62,9 @@ const SidebarStudent = ({ isOpen, setIsOpen, setActiveMenu }) => {
                 />
               </div>
               <div className="text-white">
-                <div className="font-medium">STUDENT</div>
+                <div className="font-medium">
+                  {userData?.data?.name || "STUDENT"}
+                </div>
               </div>
             </div>
             <button
