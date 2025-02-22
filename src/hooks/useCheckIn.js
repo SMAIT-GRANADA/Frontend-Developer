@@ -12,7 +12,7 @@ export const useTodayAttendance = () => {
     queryKey: ["todayAttendance"],
     queryFn: getTodayAttendance,
     staleTime: 0,
-    cacheTime: 0,
+    gcTime: 0,
     refetchInterval: 1000,
   });
 };
