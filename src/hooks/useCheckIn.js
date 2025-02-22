@@ -11,5 +11,8 @@ export const useTodayAttendance = () => {
   return useQuery({
     queryKey: ["todayAttendance"],
     queryFn: getTodayAttendance,
+    staleTime: 0,
+    cacheTime: 0,
+    refetchInterval: 1000,
   });
 };
