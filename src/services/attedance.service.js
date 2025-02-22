@@ -46,3 +46,20 @@ export const getTeacherAttendanceHistory = async () => {
   const response = await axiosInstance.get("/attendance/history");
   return response.data;
 };
+
+export const getAllAttendance = async () => {
+  const response = await axiosInstance.get("/attendance/all");
+  return response.data;
+};
+
+export const updateAttendance = async (id, data) => {
+  const response = await axiosInstance.put(`/attendance/${id}`, data);
+  return response.data;
+};
+
+export const exportAttendance = async () => {
+  const response = await axiosInstance.get("/attendance/export", {
+    responseType: "blob",
+  });
+  return response.data;
+};
