@@ -1,191 +1,260 @@
-import React, { useState, useEffect } from "react";
-import { Camera, Loader } from "lucide-react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { Users, Clock, AlertTriangle, XCircle } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import TeacherAttendanceCamera from "./TeacherAttendanceCamera";
+import {
+  useTeacherTodayAttendance,
+  useTeacherAttendanceHistory,
+} from "../../hooks/useTeacherAttendance";
 import Swal from "sweetalert2";
 
+const ATTENDANCE_START_HOUR = 8; // 8 AM
+const ATTENDANCE_LATE_HOUR = 9; // 9 AM
+const ATTENDANCE_LATE_MINUTE = 30;
+
 const AttendanceSection = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [todayStatus, setTodayStatus] = useState(null);
-  const [attendanceHistory, setAttendanceHistory] = useState([]);
   const [showCamera, setShowCamera] = useState(false);
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const [isCheckout, setIsCheckout] = useState(false);
 
-  useEffect(() => {
-    fetchTodayStatus();
-    fetchAttendanceHistory();
-  }, []);
+  const {
+    data: todayAttendance,
+    isLoading: todayLoading,
+    refetch: refetchToday,
+  } = useTeacherTodayAttendance();
 
-  const fetchTodayStatus = async () => {
-    try {
-      const response = await axios.get("/api/attendance/today");
-      setTodayStatus(response.data);
-    } catch (error) {
+  const { data: historyData, isLoading: historyLoading } =
+    useTeacherAttendanceHistory();
+
+  const checkAttendanceTime = () => {
+    const now = new Date();
+    const hour = now.getHours();
+
+    if (hour < ATTENDANCE_START_HOUR) {
       Swal.fire({
-        icon: "error",
-        title: "Gagal mengambil status absensi",
-        text: error.response?.data?.message || "Terjadi kesalahan",
+        title: "Belum Waktunya Absen",
+        text: "Absensi hanya dapat dilakukan mulai pukul 8 pagi",
+        icon: "warning",
+        confirmButtonText: "OK",
       });
+      return false;
     }
+    return true;
   };
 
-  const fetchAttendanceHistory = async () => {
-    try {
-      const response = await axios.get("/api/attendance/history");
-      setAttendanceHistory(response.data);
-    } catch (error) {
-      console.error("Error fetching attendance history:", error);
+  const handleOpenCamera = (checkoutMode = false) => {
+    if (!checkoutMode && !checkAttendanceTime()) {
+      return;
     }
+    setIsCheckout(checkoutMode);
+    setShowCamera(true);
   };
 
-  const handleCheckIn = async () => {
-    setIsLoading(true);
-    try {
-      await axios.post("/api/attendance/check-in", {
-        photo: "photo_data", // Will be implemented with actual camera
-        location: { lat: 0, lng: 0 }, // Will be implemented with geolocation
-      });
+  const handleAttendanceSuccess = () => {
+    refetchToday();
+    setShowCamera(false);
 
-      await fetchTodayStatus();
-      Swal.fire({
-        icon: "success",
-        title: "Berhasil Check In",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal Check In",
-        text: error.response?.data?.message || "Terjadi kesalahan",
-      });
-    }
-    setIsLoading(false);
+    const message = isCheckout
+      ? "Check-out berhasil dicatat. Terima kasih atas kerja keras Anda hari ini!"
+      : "Check-in berhasil dicatat. Selamat menjalankan tugas!";
+
+    Swal.fire({
+      title: "Sukses!",
+      text: message,
+      icon: "success",
+      confirmButtonText: "OK",
+    });
   };
 
-  const handleCheckOut = async () => {
-    setIsLoading(true);
-    try {
-      await axios.post("/api/attendance/check-out", {
-        photo: "photo_data", // Will be implemented with actual camera
-        location: { lat: 0, lng: 0 }, // Will be implemented with geolocation
-      });
-
-      await fetchTodayStatus();
-      Swal.fire({
-        icon: "success",
-        title: "Berhasil Check Out",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal Check Out",
-        text: error.response?.data?.message || "Terjadi kesalahan",
-      });
-    }
-    setIsLoading(false);
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), "dd MMMM yyyy HH:mm:ss");
   };
+
+  const attendanceData = historyData?.data || [];
+  const stats = {
+    total: attendanceData.length,
+    hadir: attendanceData.filter((item) => item.status === "hadir").length,
+    telat: attendanceData.filter((item) => item.status === "telat").length,
+    izin: attendanceData.filter((item) => item.status === "izin").length,
+    alpha: attendanceData.filter((item) => item.status === "alpha").length,
+  };
+
+  const pieData = [
+    { name: "Hadir Tepat Waktu", value: stats.hadir },
+    { name: "Terlambat", value: stats.telat },
+    { name: "Izin", value: stats.izin },
+    { name: "Alpha", value: stats.alpha },
+  ];
+
+  const COLORS = ["#22c55e", "#f43f5e", "#3b82f6", "#eab308"];
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold mb-4">Absensi Guru</h2>
+    <div className="space-y-6">
+      <div className="bg-white rounded-lg shadow-lg border p-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold">Manajemen Kehadiran</h1>
+            <p className="text-gray-600 mt-1">
+              Pantau dan kelola kehadiran Anda di sekolah
+            </p>
+          </div>
+          <div className="space-x-4">
+            {todayAttendance?.data?.checkInTime &&
+            !todayAttendance?.data?.checkOutTime ? (
+              <button
+                onClick={() => handleOpenCamera(true)}
+                className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition-colors"
+              >
+                Check Out
+              </button>
+            ) : !todayAttendance?.data?.checkInTime ? (
+              <button
+                onClick={() => handleOpenCamera(false)}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-lg transition-colors"
+              >
+                Check In
+              </button>
+            ) : null}
+          </div>
+        </div>
 
-        {/* Status Card */}
-        <div className="bg-emerald-50 rounded-lg p-4 mb-6">
-          <h3 className="text-lg font-semibold mb-2">Status Hari Ini</h3>
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-gray-600">
-                Status:{" "}
-                <span className="font-medium">
-                  {todayStatus?.status || "Belum Absen"}
+        {/* Today's Attendance Status */}
+        {todayLoading ? (
+          <div className="text-center text-gray-600 py-8">
+            Loading attendance data...
+          </div>
+        ) : todayAttendance?.data ? (
+          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+            <h2 className="text-lg font-semibold mb-4">
+              Status Kehadiran Hari Ini
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-gray-500 text-sm mb-1">Check-in Time</p>
+                <p className="text-gray-900 font-medium">
+                  {formatDate(todayAttendance.data.checkInTime)}
+                </p>
+              </div>
+
+              {todayAttendance.data.checkOutTime && (
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-gray-500 text-sm mb-1">Check-out Time</p>
+                  <p className="text-gray-900 font-medium">
+                    {formatDate(todayAttendance.data.checkOutTime)}
+                  </p>
+                </div>
+              )}
+
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-gray-500 text-sm mb-1">Status</p>
+                <span
+                  className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                    todayAttendance.data.status === "hadir"
+                      ? "bg-emerald-100 text-emerald-800"
+                      : todayAttendance.data.status === "telat"
+                      ? "bg-red-100 text-red-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
+                  {todayAttendance.data.status === "hadir"
+                    ? "Hadir Tepat Waktu"
+                    : todayAttendance.data.status === "telat"
+                    ? "Terlambat"
+                    : todayAttendance.data.status}
                 </span>
-              </p>
-              {todayStatus?.checkInTime && (
-                <p className="text-gray-600">
-                  Jam Masuk:{" "}
-                  <span className="font-medium">
-                    {new Date(todayStatus.checkInTime).toLocaleTimeString()}
-                  </span>
-                </p>
-              )}
-              {todayStatus?.checkOutTime && (
-                <p className="text-gray-600">
-                  Jam Pulang:{" "}
-                  <span className="font-medium">
-                    {new Date(todayStatus.checkOutTime).toLocaleTimeString()}
-                  </span>
-                </p>
-              )}
+              </div>
             </div>
+          </div>
+        ) : null}
 
-            <div className="space-x-4">
-              <button
-                onClick={handleCheckIn}
-                disabled={isLoading || todayStatus?.checkInTime}
-                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:bg-gray-400"
-              >
-                {isLoading ? (
-                  <Loader className="w-5 h-5 animate-spin" />
-                ) : (
-                  "Check In"
-                )}
-              </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-emerald-100 rounded-full">
+                <Users className="w-6 h-6 text-emerald-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Total Kehadiran</p>
+                <p className="text-2xl font-semibold">{stats.total}</p>
+              </div>
+            </div>
+          </div>
 
-              <button
-                onClick={handleCheckOut}
-                disabled={
-                  isLoading ||
-                  !todayStatus?.checkInTime ||
-                  todayStatus?.checkOutTime
-                }
-                className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 disabled:bg-gray-400"
-              >
-                {isLoading ? (
-                  <Loader className="w-5 h-5 animate-spin" />
-                ) : (
-                  "Check Out"
-                )}
-              </button>
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-blue-100 rounded-full">
+                <Clock className="w-6 h-6 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Tepat Waktu</p>
+                <p className="text-2xl font-semibold">{stats.hadir}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-red-100 rounded-full">
+                <AlertTriangle className="w-6 h-6 text-red-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Terlambat</p>
+                <p className="text-2xl font-semibold">{stats.telat}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-yellow-100 rounded-full">
+                <XCircle className="w-6 h-6 text-yellow-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Alpha</p>
+                <p className="text-2xl font-semibold">{stats.alpha}</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* History Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="px-4 py-2 text-left">Tanggal</th>
-                <th className="px-4 py-2 text-left">Check In</th>
-                <th className="px-4 py-2 text-left">Check Out</th>
-                <th className="px-4 py-2 text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* {attendanceHistory.map((record) => (
-                <tr key={record.id} className="border-t">
-                  <td className="px-4 py-2">
-                    {new Date(record.date).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-2">
-                    {record.checkInTime
-                      ? new Date(record.checkInTime).toLocaleTimeString()
-                      : "-"}
-                  </td>
-                  <td className="px-4 py-2">
-                    {record.checkOutTime
-                      ? new Date(record.checkOutTime).toLocaleTimeString()
-                      : "-"}
-                  </td>
-                  <td className="px-4 py-2">{record.status}</td>
-                </tr>
-              ))} */}
-            </tbody>
-          </table>
+        <div className="bg-white p-6 rounded-lg shadow border">
+          <h2 className="text-lg font-semibold mb-4">Statistik Kehadiran</h2>
+          <div className="h-96">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={80}
+                  outerRadius={120}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index]} />
+                  ))}
+                </Pie>
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
+
+      {/* Camera Modal */}
+      {showCamera && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 max-w-lg w-full mx-4">
+            <TeacherAttendanceCamera
+              onSuccess={handleAttendanceSuccess}
+              onClose={() => setShowCamera(false)}
+              isCheckout={isCheckout}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,17 +2,27 @@ import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 import Swal from "sweetalert2";
 import { X } from "lucide-react";
-import { useCheckIn } from "../hooks/useCheckIn";
+import {
+  useTeacherCheckIn,
+  useTeacherCheckOut,
+} from "../../hooks/useTeacherAttendance";
 
 const ALLOWED_LATITUDE = -7.090911;
 const ALLOWED_LONGITUDE = 107.668887;
 const ALLOWED_RADIUS = 0.5;
 
-const AttendanceCamera = ({ onSuccess, onClose }) => {
+const TeacherAttendanceCamera = ({
+  onSuccess,
+  onClose,
+  isCheckout = false,
+}) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const webcamRef = useRef(null);
-  const checkInMutation = useCheckIn();
+
+  const checkInMutation = useTeacherCheckIn();
+  const checkOutMutation = useTeacherCheckOut();
+  const currentMutation = isCheckout ? checkOutMutation : checkInMutation;
 
   const checkLocation = () => {
     if ("geolocation" in navigator) {
@@ -58,7 +68,7 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
 
       if (distance <= ALLOWED_RADIUS) {
         try {
-          await checkInMutation.mutateAsync({
+          await currentMutation.mutateAsync({
             photoBase64: imageSrc,
             latitude: userLocation.latitude,
             longitude: userLocation.longitude,
@@ -66,7 +76,9 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
 
           Swal.fire({
             title: "Success!",
-            text: "Attendance recorded successfully.",
+            text: `${
+              isCheckout ? "Check-out" : "Check-in"
+            } recorded successfully.`,
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -75,7 +87,9 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
         } catch (error) {
           Swal.fire({
             title: "Error!",
-            text: "Failed to submit attendance. Please try again.",
+            text: `Failed to submit ${
+              isCheckout ? "check-out" : "check-in"
+            }. Please try again.`,
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -90,15 +104,8 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
           confirmButtonText: "OK",
         });
       }
-    } else {
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to capture photo or location unavailable.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
     }
-  }, [webcamRef, userLocation, checkInMutation, onSuccess]);
+  }, [webcamRef, userLocation, currentMutation, isCheckout, onSuccess]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -111,8 +118,7 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-    return distance;
+    return R * c;
   };
 
   const deg2rad = (deg) => {
@@ -129,7 +135,9 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
       </button>
 
       <div className="mt-6 space-y-4">
-        <h2 className="text-xl font-semibold text-center">Camera Attendance</h2>
+        <h2 className="text-xl font-semibold text-center">
+          Camera {isCheckout ? "Check-out" : "Check-in"}
+        </h2>
 
         {userLocation && (
           <p className="text-sm text-gray-600 text-center">
@@ -141,7 +149,7 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
         {!isCameraOpen ? (
           <button
             onClick={openCamera}
-            className="w-full bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-500 transition duration-300"
+            className="w-full bg-emerald-600 text-white py-2 px-4 rounded hover:bg-emerald-700 transition duration-300"
           >
             Open Camera
           </button>
@@ -156,12 +164,12 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
             />
             <button
               onClick={captureImage}
-              disabled={checkInMutation.isPending}
-              className="w-full bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-500 transition duration-300 disabled:bg-yellow-200 disabled:cursor-not-allowed"
+              disabled={currentMutation.isPending}
+              className="w-full bg-emerald-600 text-white py-2 px-4 rounded hover:bg-emerald-700 transition duration-300 disabled:bg-emerald-300 disabled:cursor-not-allowed"
             >
-              {checkInMutation.isPending
-                ? "Submitting..."
-                : "Capture Photo and Submit Attendance"}
+              {currentMutation.isPending
+                ? "Processing..."
+                : "Capture Photo and Submit"}
             </button>
           </div>
         )}
@@ -170,4 +178,4 @@ const AttendanceCamera = ({ onSuccess, onClose }) => {
   );
 };
 
-export default AttendanceCamera;
+export default TeacherAttendanceCamera;
