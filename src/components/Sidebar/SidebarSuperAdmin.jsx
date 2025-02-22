@@ -9,6 +9,7 @@ import {
   ChevronDown,
   Users,
   GraduationCap,
+  Clock,
 } from "lucide-react";
 import avatar from "../../assets/logo-sekolah.svg";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +55,6 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 overflow-y-auto`}
       >
-        {/* Header section remains the same */}
         <div className="flex-none p-6">
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-4">
@@ -90,7 +90,6 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             <span className="text-lg">Konten</span>
           </button>
 
-          {/* Management Dropdown */}
           <div className="mt-4">
             <button
               onClick={() => setIsManagementOpen(!isManagementOpen)}
@@ -155,9 +154,19 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             <GraduationCap size={24} />
             <span className="text-lg">Nilai Siswa</span>
           </button>
+
+          <button
+            onClick={() => {
+              setActiveMenu("absensi");
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors mt-4"
+          >
+            <Clock size={24} />
+            <span className="text-lg">Absensi</span>
+          </button>
         </nav>
 
-        {/* Logout section remains the same */}
         <div className="flex-none p-6">
           <button
             onClick={handleLogout}
