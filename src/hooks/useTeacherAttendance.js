@@ -22,6 +22,9 @@ export const useTeacherTodayAttendance = () => {
   return useQuery({
     queryKey: ["teacherTodayAttendance"],
     queryFn: getTeacherTodayAttendance,
+    staleTime: 0,
+    cacheTime: 0,
+    refetchInterval: 1000,
   });
 };
 
@@ -29,5 +32,8 @@ export const useTeacherAttendanceHistory = () => {
   return useQuery({
     queryKey: ["teacherAttendanceHistory"],
     queryFn: getTeacherAttendanceHistory,
+    staleTime: 0,
+    cacheTime: 0,
+    refetchInterval: 1000,
   });
 };
