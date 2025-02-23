@@ -1,17 +1,53 @@
-import React, { useState } from "react";
-import { useCreateSalarySlip } from "../../hooks/UseAdminSallarySlips";
+import React, { useState, useMemo } from "react";
+import {
+  useCreateSalarySlip,
+  useSalarySlips,
+} from "../../hooks/UseAdminSallarySlips";
+import { Search, Loader2 } from "lucide-react";
 import Swal from "sweetalert2";
 
 export const CreateSalarySlipModal = ({ isOpen, onClose }) => {
   const [period, setPeriod] = useState("");
   const [file, setFile] = useState(null);
-  const [teacherId, setTeacherId] = useState("");
-  const { mutate: createSlip, isLoading } = useCreateSalarySlip();
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { mutate: createSlip, isLoading: isCreating } = useCreateSalarySlip();
+  const { data: salarySlipsData, isLoading: isLoadingData } = useSalarySlips();
+
+  const teachers = useMemo(() => {
+    if (!salarySlipsData?.data) return [];
+
+    const teacherMap = new Map();
+    salarySlipsData.data.forEach((slip) => {
+      if (slip.teacher && !teacherMap.has(slip.teacher.id)) {
+        teacherMap.set(slip.teacher.id, {
+          id: slip.teacherId,
+          name: slip.teacher.name,
+          email: slip.teacher.email,
+        });
+      }
+    });
+
+    return Array.from(teacherMap.values());
+  }, [salarySlipsData]);
+
+  // Filter teachers based on search query
+  const filteredTeachers = useMemo(() => {
+    if (!searchQuery.trim()) return teachers;
+
+    return teachers.filter(
+      (teacher) =>
+        teacher.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        teacher.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [teachers, searchQuery]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file || !teacherId || !period) {
+    if (!file || !selectedTeacher || !period) {
       Swal.fire({
         title: "Peringatan!",
         text: "Semua field harus diisi",
@@ -22,7 +58,7 @@ export const CreateSalarySlipModal = ({ isOpen, onClose }) => {
     }
 
     const formData = new FormData();
-    formData.append("teacherId", teacherId);
+    formData.append("teacherId", selectedTeacher.id);
     formData.append("period", period);
     formData.append("file", file);
 
@@ -37,7 +73,8 @@ export const CreateSalarySlipModal = ({ isOpen, onClose }) => {
         onClose();
         setPeriod("");
         setFile(null);
-        setTeacherId("");
+        setSelectedTeacher(null);
+        setSearchQuery("");
       },
       onError: (error) => {
         Swal.fire({
@@ -86,21 +123,82 @@ export const CreateSalarySlipModal = ({ isOpen, onClose }) => {
             </h3>
             <form onSubmit={handleSubmit} className="mt-6">
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    ID Guru
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 text-left">
+                    Pilih Guru
                   </label>
-                  <input
-                    type="number"
-                    value={teacherId}
-                    onChange={(e) => setTeacherId(e.target.value)}
-                    placeholder="Masukkan ID guru"
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    required
-                  />
+                  <div className="relative mt-1">
+                    <div
+                      className="w-full cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      onClick={() => setIsDropdownOpen(true)}
+                    >
+                      <div className="flex items-center">
+                        {selectedTeacher ? (
+                          <div className="flex-1 text-left">
+                            <p className="text-sm text-gray-900">
+                              {selectedTeacher.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {selectedTeacher.email}
+                            </p>
+                          </div>
+                        ) : (
+                          <span className="text-gray-500">Pilih guru</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {isDropdownOpen && (
+                      <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                        <div className="sticky top-0 z-10 bg-white px-3 py-2">
+                          <div className="relative">
+                            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              className="w-full rounded-md border border-gray-300 pl-10 pr-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              placeholder="Cari guru..."
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </div>
+                        </div>
+
+                        {isLoadingData ? (
+                          <div className="flex items-center justify-center py-4">
+                            <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+                          </div>
+                        ) : filteredTeachers.length > 0 ? (
+                          filteredTeachers.map((teacher) => (
+                            <div
+                              key={teacher.id}
+                              className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                              onClick={() => {
+                                setSelectedTeacher(teacher);
+                                setIsDropdownOpen(false);
+                                setSearchQuery("");
+                              }}
+                            >
+                              <p className="text-sm font-medium text-gray-900">
+                                {teacher.name}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {teacher.email}
+                              </p>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="px-4 py-2 text-sm text-gray-500">
+                            Tidak ada guru yang ditemukan
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 text-left">
                     Periode (YYYY-MM)
                   </label>
                   <input
@@ -113,8 +211,9 @@ export const CreateSalarySlipModal = ({ isOpen, onClose }) => {
                     required
                   />
                 </div>
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 text-left">
                     File Slip Gaji
                   </label>
                   <input
@@ -126,13 +225,16 @@ export const CreateSalarySlipModal = ({ isOpen, onClose }) => {
                   />
                 </div>
               </div>
+
               <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                 <button
                   type="submit"
-                  disabled={isLoading || !period.trim() || !teacherId || !file}
+                  disabled={
+                    isCreating || !period.trim() || !selectedTeacher || !file
+                  }
                   className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 sm:col-start-2"
                 >
-                  {isLoading ? "Menyimpan..." : "Simpan"}
+                  {isCreating ? "Menyimpan..." : "Simpan"}
                 </button>
                 <button
                   type="button"
