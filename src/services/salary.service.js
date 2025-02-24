@@ -1,8 +1,12 @@
-// services/salaryService.js
 import axiosInstance from "../api/axiosInstance";
 
 export const getSalarySlips = async () => {
   const response = await axiosInstance.get("/salary-slips");
+  return response.data;
+};
+
+export const getTeachers = async () => {
+  const response = await axiosInstance.get("/teachers");
   return response.data;
 };
 

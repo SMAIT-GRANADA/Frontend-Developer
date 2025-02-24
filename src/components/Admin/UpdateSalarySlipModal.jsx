@@ -1,26 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { useUpdateSalarySlip } from "../../hooks/UseAdminSallarySlips";
+import {
+  useUpdateSalarySlip,
+  useTeachers,
+} from "../../hooks/UseAdminSallarySlips";
 import Swal from "sweetalert2";
+import { Loader2 } from "lucide-react";
 
 export const UpdateSalarySlipModal = ({ isOpen, onClose, salarySlip }) => {
   const [period, setPeriod] = useState("");
-  const [file, setFile] = useState(null);
+  const [teacherId, setTeacherId] = useState("");
   const { mutate: updateSlip, isLoading } = useUpdateSalarySlip();
+  const {
+    data: teachersData,
+    isLoading: loadingTeachers,
+    isError: teachersError,
+  } = useTeachers();
 
   useEffect(() => {
-    if (salarySlip) {
-      setPeriod(new Date(salarySlip.period).toISOString().slice(0, 7));
+    if (salarySlip && salarySlip.period) {
+      setPeriod(new Date(salarySlip.period).toISOString().substring(0, 7)); // Format to YYYY-MM
+    }
+
+    if (
+      salarySlip &&
+      salarySlip.teacher &&
+      salarySlip.teacher.id !== undefined
+    ) {
+      setTeacherId(salarySlip.teacher.id.toString());
     }
   }, [salarySlip]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("period", period);
-    if (file) {
-      formData.append("file", file);
+    if (!teacherId || !period) {
+      Swal.fire({
+        title: "Peringatan!",
+        text: "Semua field harus diisi",
+        icon: "warning",
+        confirmButtonColor: "#3B82F6",
+      });
+      return;
     }
+
+    const formData = new FormData();
+    formData.append("teacherId", teacherId);
+    formData.append("period", period);
 
     updateSlip(
       { id: salarySlip.id, data: formData },
@@ -48,7 +73,7 @@ export const UpdateSalarySlipModal = ({ isOpen, onClose, salarySlip }) => {
     );
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !salarySlip) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -83,7 +108,38 @@ export const UpdateSalarySlipModal = ({ isOpen, onClose, salarySlip }) => {
             <form onSubmit={handleSubmit} className="mt-6">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 text-left">
+                    Guru
+                  </label>
+                  {loadingTeachers ? (
+                    <div className="flex items-center justify-center py-2">
+                      <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                      <span className="ml-2 text-sm text-gray-500">
+                        Memuat data guru...
+                      </span>
+                    </div>
+                  ) : teachersError ? (
+                    <div className="text-sm text-red-500 text-left mt-1">
+                      Gagal memuat data guru. Silakan coba lagi.
+                    </div>
+                  ) : (
+                    <select
+                      value={teacherId}
+                      onChange={(e) => setTeacherId(e.target.value)}
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      required
+                    >
+                      <option value="">Pilih Guru</option>
+                      {teachersData?.data?.map((teacher) => (
+                        <option key={teacher.id} value={teacher.id}>
+                          {teacher.name} - {teacher.email}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 text-left">
                     Periode (YYYY-MM)
                   </label>
                   <input
@@ -97,21 +153,38 @@ export const UpdateSalarySlipModal = ({ isOpen, onClose, salarySlip }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    File Slip Gaji (Opsional)
+                  <label className="block text-sm font-medium text-gray-700 text-left">
+                    File Slip Gaji Saat Ini
                   </label>
-                  <input
-                    type="file"
-                    onChange={(e) => setFile(e.target.files[0])}
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                  />
+                  <div className="mt-1 flex items-center">
+                    <div className="flex-1 text-left text-sm text-gray-500 truncate">
+                      {salarySlip.slipImageUrl
+                        ? salarySlip.slipImageUrl.split("/").pop()
+                        : "File tidak tersedia"}
+                    </div>
+                    {salarySlip.slipImageUrl && (
+                      <a
+                        href={salarySlip.slipImageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-3 inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      >
+                        Lihat
+                      </a>
+                    )}
+                  </div>
+                  <p className="mt-2 text-xs text-gray-500 text-left">
+                    Catatan: Untuk mengganti file slip gaji, hapus slip gaji ini
+                    dan buat baru.
+                  </p>
                 </div>
               </div>
               <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                 <button
                   type="submit"
-                  disabled={isLoading || !period.trim()}
+                  disabled={
+                    isLoading || loadingTeachers || !period.trim() || !teacherId
+                  }
                   className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 sm:col-start-2"
                 >
                   {isLoading ? "Menyimpan..." : "Simpan"}
@@ -131,5 +204,3 @@ export const UpdateSalarySlipModal = ({ isOpen, onClose, salarySlip }) => {
     </div>
   );
 };
-
-export default UpdateSalarySlipModal;

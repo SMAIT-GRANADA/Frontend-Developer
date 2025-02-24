@@ -1,11 +1,18 @@
-// hooks/useSalarySlips.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getSalarySlips,
+  getTeachers,
   createSalarySlip,
   updateSalarySlip,
   deleteSalarySlip,
 } from "../services/salary.service";
+
+export const useTeachers = () => {
+  return useQuery({
+    queryKey: ["teachers"],
+    queryFn: getTeachers,
+  });
+};
 
 export const useSalarySlips = () => {
   return useQuery({
