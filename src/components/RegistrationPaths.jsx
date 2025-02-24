@@ -11,6 +11,8 @@ const RegistrationPaths = () => {
         "Fotocopy sertifikat Prestasi 2 Tahun terakhir Min. Tingkat Kota",
       ],
       badgeText: "Jalur Prestasi",
+      formLink:
+        "https://docs.google.com/forms/d/e/1FAIpQLSfYLHQOlf-JAy9jrd63q0R2dMx9G47hCqvcwp1oyHRvTyVq4A/viewform",
     },
     {
       title: "Jalur Reguler",
@@ -20,6 +22,8 @@ const RegistrationPaths = () => {
         "Mengisi Formulir",
       ],
       badgeText: "Jalur Reguler",
+      formLink:
+        "https://docs.google.com/forms/d/e/1FAIpQLScarbGh6WGbW8-8-MwoRlmox20fkRkPBlk6-t9yO_mZd0ANxg/viewform",
     },
     {
       title: "Jalur Undangan",
@@ -29,6 +33,8 @@ const RegistrationPaths = () => {
         "Membawa Undangan dari Panitia PSB SMA IT Granada",
       ],
       badgeText: "Jalur Undangan",
+      formLink:
+        "https://docs.google.com/forms/d/e/1FAIpQLSfdmNh8K_hjB7GURSq1djgs_AqIvrC_KA9MMRUdI5VuSZgQfw/closedform",
     },
   ];
 
@@ -40,7 +46,6 @@ const RegistrationPaths = () => {
           ketentuan :
         </h2>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {paths.map((path, index) => (
           <div
@@ -62,14 +67,18 @@ const RegistrationPaths = () => {
               ))}
             </ul>
             <div className="absolute bottom-8 left-0 w-full flex justify-center">
-              <span className="inline-block bg-[#4C9F38] text-white px-8 py-2 rounded-full text-sm font-medium">
+              <a
+                href={path.formLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-[#4C9F38] text-white px-8 py-2 rounded-full text-sm font-medium hover:bg-[#3d8c29] transition-colors cursor-pointer"
+              >
                 {path.badgeText}
-              </span>
+              </a>
             </div>
           </div>
         ))}
       </div>
-
       <div className="mt-12 bg-[#F3F9F1] rounded-xl p-8 text-center">
         <p className="text-gray-700 mb-3">
           Biaya pendaftaran sebesar Rp. 250.000,-
