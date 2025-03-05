@@ -7,9 +7,9 @@ import {
   useTeacherCheckOut,
 } from "../../hooks/useTeacherAttendance";
 
-const ALLOWED_LATITUDE = -6.317134;
-const ALLOWED_LONGITUDE = 106.797087;
-const ALLOWED_RADIUS = 0.5;
+const ALLOWED_LATITUDE = Number(import.meta.env.VITE_ALLOWED_LATITUDE);
+const ALLOWED_LONGITUDE = Number(import.meta.env.VITE_ALLOWED_LONGITUDE);
+const ALLOWED_RADIUS = Number(import.meta.env.VITE_ALLOWED_RADIUS);
 
 const TeacherAttendanceCamera = ({
   onSuccess,

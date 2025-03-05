@@ -4,9 +4,9 @@ import Swal from "sweetalert2";
 import { X } from "lucide-react";
 import { useCheckIn } from "../hooks/useCheckIn";
 
-const ALLOWED_LATITUDE = -6.317134;
-const ALLOWED_LONGITUDE = 106.797087;
-const ALLOWED_RADIUS = 0.5;
+const ALLOWED_LATITUDE = Number(import.meta.env.VITE_ALLOWED_LATITUDE);
+const ALLOWED_LONGITUDE = Number(import.meta.env.VITE_ALLOWED_LONGITUDE);
+const ALLOWED_RADIUS = Number(import.meta.env.VITE_ALLOWED_RADIUS);
 
 const AttendanceCamera = ({ onSuccess, onClose }) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
