@@ -9,9 +9,9 @@ import {
 } from "../../hooks/useTeacherAttendance";
 import Swal from "sweetalert2";
 
-const ATTENDANCE_START_HOUR = 8; // 8 AM
+const ATTENDANCE_START_HOUR = 0; // 8 AM
 const ATTENDANCE_LATE_HOUR = 9; // 9 AM
-const ATTENDANCE_LATE_MINUTE = 30;
+const ATTENDANCE_LATE_MINUTE = 0; // 9:00 AM
 
 const AttendanceSection = () => {
   const [showCamera, setShowCamera] = useState(false);
