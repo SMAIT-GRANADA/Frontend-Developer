@@ -34,26 +34,26 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
 
   return (
     <>
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed left-4 top-28 z-50 p-2 bg-emerald-700 text-white rounded-lg md:hidden"
-        >
-          <Menu size={24} />
-        </button>
-      )}
+      <button
+        onClick={() => setIsOpen(true)}
+        className={`fixed left-4 top-28 z-50 p-2 bg-emerald-700 text-white rounded-lg lg:hidden ${
+          isOpen ? "hidden" : "block"
+        }`}
+      >
+        <Menu size={24} />
+      </button>
 
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity md:hidden ${
+        className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity lg:hidden ${
           isOpen ? "opacity-100 z-30" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsOpen(false)}
       />
 
       <aside
-        className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-700 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
+        className={`fixed lg:sticky top-0 h-full min-h-screen pt-24 lg:pt-0 lg:top-28 w-72 md:w-64 bg-emerald-700 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 overflow-y-scroll overflow-x-hidden`}
+        } lg:translate-x-0 overflow-y-auto`}
       >
         <div className="flex-none p-6">
           <div className="flex justify-between items-center mb-8">
@@ -71,7 +71,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="md:hidden text-white hover:text-gray-200"
+              className="lg:hidden text-white hover:text-gray-200"
             >
               <X size={24} />
             </button>
