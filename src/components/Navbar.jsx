@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { FiFacebook } from "react-icons/fi";
 import { FaInstagram } from "react-icons/fa";
 import { SlSocialYoutube } from "react-icons/sl";
 import LogoSekolah from "../assets/logo-sekolah.svg";
+import Marquee from "react-fast-marquee";
 
 const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPSBOpen, setIsPSBOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const location = useLocation();
 
   const restrictedRoutes = [
@@ -41,45 +42,12 @@ const Navbar = () => {
         <div className="flex flex-col">
           {!isRestrictedRoute && (
             <div className="w-full border-b border-green-700">
-              <div className="overflow-hidden">
-                <style>
-                  {`
-                    @keyframes marquee {
-                      0% { transform: translate3d(100%, 0, 0); }
-                      100% { transform: translate3d(-180%, 0, 0); }
-                    }
-                    .marquee-wrapper {
-                      width: 100%;
-                      overflow: hidden;
-                    }
-                    .marquee-content {
-                      display: inline-block;
-                      white-space: nowrap;
-                      animation: marquee 18s linear infinite;
-                      padding: 0.5rem 0;
-                      width: max-content;
-                    }
-                    .marquee-content span {
-                      padding: 0 100%;
-                    }
-                  `}
-                </style>
-                <div className="marquee-wrapper">
-                  <div
-                    className="marquee-content"
-                    style={{
-                      animationPlayState: isHovered ? "paused" : "running",
-                    }}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  >
-                    <span className="text-white text-sm">
-                      Selamat datang di website SMAIT GRANADA, Sholeh, Berilmu,
-                      Memimpin
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <Marquee speed={81} pauseOnHover gradient={false}>
+                <span className="text-white text-sm px-4">
+                  Selamat datang di website SMAIT GRANADA, Sholeh, Berilmu,
+                  Memimpin
+                </span>
+              </Marquee>
             </div>
           )}
 
