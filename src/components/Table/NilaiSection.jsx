@@ -177,9 +177,7 @@ const NilaiSection = () => {
 
         {displayData.length > 0 && (
           <div className="mt-3 sm:hidden">
-            <div className="text-xs text-gray-500 italic">
-              * Gulir ke kiri untuk melihat semua data
-            </div>
+            <div className="text-xs text-gray-500 italic"></div>
           </div>
         )}
       </div>

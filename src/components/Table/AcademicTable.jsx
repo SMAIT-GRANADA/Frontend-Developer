@@ -167,9 +167,7 @@ const AcademicTable = () => {
 
         {displayData.length > 0 && (
           <div className="mt-4 sm:hidden">
-            <div className="text-xs text-gray-500 italic mb-2">
-              * Gulir ke kiri untuk melihat semua data
-            </div>
+            <div className="text-xs text-gray-500 italic mb-2"></div>
           </div>
         )}
       </div>
