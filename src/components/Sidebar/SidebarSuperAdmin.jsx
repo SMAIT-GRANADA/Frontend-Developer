@@ -53,7 +53,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
       <aside
         className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-700 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 overflow-y-auto overflow-x-hidden`}
+        } md:translate-x-0 overflow-y-scroll overflow-x-hidden`}
       >
         <div className="flex-none p-6">
           <div className="flex justify-between items-center mb-8">
