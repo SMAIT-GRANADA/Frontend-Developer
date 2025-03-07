@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Pencil, Loader2, Search, Download } from "lucide-react";
 import UpdateAttendanceModal from "../Modal/UpdateAttendanceModal";
 import Swal from "sweetalert2";
@@ -6,6 +6,7 @@ import {
   useExportAttendanceMutation,
   useGetAllAttendanceQuery,
 } from "../../hooks/useAttendaceHistory";
+import * as XLSX from "xlsx";
 
 const AttendanceTable = () => {
   const [page, setPage] = useState(1);
@@ -14,10 +15,11 @@ const AttendanceTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFound, setSearchFound] = useState(true);
   const limit = 10;
+  const tableRef = useRef(null);
 
   const { data, isLoading, isError, error, refetch } =
     useGetAllAttendanceQuery();
-  const { mutate: exportToExcel, isPending: isExporting } =
+  const { mutate: exportToCSV, isPending: isExporting } =
     useExportAttendanceMutation();
 
   const handleUpdate = (id) => {
@@ -25,23 +27,62 @@ const AttendanceTable = () => {
     setIsUpdateModalOpen(true);
   };
 
+  const exportToExcel = (attendanceData) => {
+    const excelData = attendanceData.map((item) => ({
+      ID: item.id,
+      Tanggal: new Date(item.checkInTime).toLocaleDateString("id-ID"),
+      Nama: item.user.name,
+      Email: item.user.email,
+      Role: item.user.roles[0]?.role?.name || "-",
+      Status: item.status,
+      "Jam Masuk": formatDateTime(item.checkInTime),
+      "Lokasi Masuk": `${item.checkInLatitude || "-"}, ${
+        item.checkInLongitude || "-"
+      }`,
+      "Jam Keluar": item.checkOutTime ? formatDateTime(item.checkOutTime) : "-",
+      "Lokasi Keluar": item.checkOutTime
+        ? `${item.checkOutLatitude || "-"}, ${item.checkOutLongitude || "-"}`
+        : "-",
+      Notes: item.notes || "-",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
+
+    XLSX.writeFile(workbook, "attendance_data.xlsx");
+  };
+
   const handleExport = () => {
-    exportToExcel(undefined, {
-      onSuccess: (data) => {
-        const blob = new Blob([data], { type: "text/csv" });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "attendance.csv";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+    if (!data?.data || data.data.length === 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal!",
+        text: "Tidak ada data untuk diexport",
+        confirmButtonColor: "#EF4444",
+      });
+      return;
+    }
+
+    exportToCSV(undefined, {
+      onSuccess: (csvData) => {
+        const csvBlob = new Blob([csvData], { type: "text/csv" });
+        const csvUrl = window.URL.createObjectURL(csvBlob);
+        const csvLink = document.createElement("a");
+        csvLink.href = csvUrl;
+        csvLink.download = "attendance.csv";
+        document.body.appendChild(csvLink);
+        csvLink.click();
+
+        window.URL.revokeObjectURL(csvUrl);
+        document.body.removeChild(csvLink);
+
+        exportToExcel(data.data);
 
         Swal.fire({
           icon: "success",
           title: "Berhasil!",
-          text: "Data absensi berhasil diexport",
+          text: "Data absensi berhasil diexport ke CSV dan Excel",
           confirmButtonColor: "#3B82F6",
         });
       },
@@ -215,7 +256,10 @@ const AttendanceTable = () => {
 
         <div className="hidden lg:block">
           <div className="overflow-x-auto rounded-t-lg">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table
+              className="min-w-full divide-y divide-gray-200"
+              ref={tableRef}
+            >
               <thead className="bg-[#017035]">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">

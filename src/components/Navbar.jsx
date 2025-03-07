@@ -85,19 +85,39 @@ const Navbar = () => {
 
           <div className="flex justify-between items-center py-4 lg:px-8 md:px-6 px-4">
             <div className="flex items-center">
-              <Link to="/" className="flex items-center">
-                <img
-                  src={LogoSekolah}
-                  alt="SMAIT GRANADA Logo"
-                  className="h-16 w-16 md:h-20 md:w-20"
-                />
-                <div className="ml-3">
-                  <h1 className="text-white font-bold text-xl md:text-2xl">
-                    SMAIT GRANADA
-                  </h1>
-                  <h2 className="text-white text-sm md:text-base">SAMARINDA</h2>
+              {isRestrictedRoute ? (
+                <div className="flex items-center">
+                  <img
+                    src={LogoSekolah}
+                    alt="SMAIT GRANADA Logo"
+                    className="h-16 w-16 md:h-20 md:w-20"
+                  />
+                  <div className="ml-3">
+                    <h1 className="text-white font-bold text-xl md:text-2xl">
+                      SMAIT GRANADA
+                    </h1>
+                    <h2 className="text-white text-sm md:text-base">
+                      SAMARINDA
+                    </h2>
+                  </div>
                 </div>
-              </Link>
+              ) : (
+                <Link to="/" className="flex items-center">
+                  <img
+                    src={LogoSekolah}
+                    alt="SMAIT GRANADA Logo"
+                    className="h-16 w-16 md:h-20 md:w-20"
+                  />
+                  <div className="ml-3">
+                    <h1 className="text-white font-bold text-xl md:text-2xl">
+                      SMAIT GRANADA
+                    </h1>
+                    <h2 className="text-white text-sm md:text-base">
+                      SAMARINDA
+                    </h2>
+                  </div>
+                </Link>
+              )}
             </div>
 
             {!isRestrictedRoute && (
