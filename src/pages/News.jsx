@@ -51,8 +51,10 @@ const News = () => {
           <header className="mb-8">
             <h1 className="text-4xl font-bold mb-4">BERITA GRANADA</h1>
             <p className="text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Halaman ini menampilkan berbagai berita dan informasi terkini
+              seputar SMAIT GRANADA. Temukan perkembangan terbaru, kegiatan
+              sekolah, prestasi siswa, dan berbagai informasi penting lainnya
+              yang menjadi bagian dari perjalanan pendidikan kami.
             </p>
             <div className="relative mt-8 h-px bg-[#949593]">
               <div className="absolute top-1/2 left-0 -translate-y-1/2 w-1 h-1 bg-[#949593] rounded-full" />

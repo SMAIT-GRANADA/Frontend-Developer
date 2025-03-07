@@ -53,7 +53,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
       <aside
         className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-700 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 overflow-y-auto`}
+        } md:translate-x-0 overflow-y-auto overflow-x-hidden`}
       >
         <div className="flex-none p-6">
           <div className="flex justify-between items-center mb-8">
@@ -78,7 +78,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
           </div>
         </div>
 
-        <nav className="flex-1 px-3 py-4">
+        <nav className="flex-1 px-3 py-4 w-full overflow-x-hidden">
           <button
             onClick={() => {
               setActiveMenu("konten");
@@ -90,7 +90,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             <span className="text-lg">Konten</span>
           </button>
 
-          <div className="mt-4">
+          <div className="mt-4 w-full">
             <button
               onClick={() => setIsManagementOpen(!isManagementOpen)}
               className="w-full flex items-center justify-between gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
@@ -108,7 +108,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
             </button>
 
             {isManagementOpen && (
-              <div className="ml-4 mt-2 space-y-2">
+              <div className="ml-4 mt-2 space-y-2 w-[calc(100%-1rem)]">
                 <button
                   onClick={() => {
                     setActiveMenu("manajemen-pengguna");
@@ -167,7 +167,7 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
           </button>
         </nav>
 
-        <div className="flex-none p-6">
+        <div className="flex-none p-6 w-full">
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 text-white py-3 px-4 rounded-lg hover:bg-white hover:text-black transition-colors"
