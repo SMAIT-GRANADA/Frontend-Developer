@@ -66,9 +66,55 @@ const StaffGrid = () => {
 
   if (error) {
     return (
-      <div className="text-center py-8 text-red-500">
-        Error loading staff data
-      </div>
+      <StaffGridContainer>
+        <div className="flex flex-col items-center justify-center py-12 px-4 rounded-lg bg-white shadow-sm border border-red-100">
+          <div className="text-red-500 mb-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">
+            Gagal memuat data
+          </h2>
+          <p className="text-gray-600 text-center mb-4">
+            Terjadi kendala saat memuat data pengajar dan staf. Silakan coba
+            kembali nanti.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 rounded-md 
+                     transition-colors duration-300 font-medium flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mr-2"
+            >
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38" />
+            </svg>
+            Coba lagi
+          </button>
+        </div>
+      </StaffGridContainer>
     );
   }
 
