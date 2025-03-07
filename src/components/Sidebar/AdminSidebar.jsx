@@ -59,7 +59,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
         <div className="flex-none p-6">
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
+              <div className="w-12 h-12 bg-emerald-700 rounded-full overflow-hidden">
                 <img
                   src={avatar}
                   alt="Admin"
