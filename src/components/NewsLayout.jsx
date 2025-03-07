@@ -11,7 +11,7 @@ const NewsLayout = () => {
   const navigate = useNavigate();
 
   const handleToNewsPage = () => {
-    navigate("/news");
+    navigate("/berita");
   };
 
   return (
