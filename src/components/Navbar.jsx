@@ -41,7 +41,7 @@ const Navbar = () => {
       <div className="w-full mx-auto">
         <div className="flex flex-col">
           {!isRestrictedRoute && (
-            <div className="w-full border-b border-green-700">
+            <div className="w-full border-b border-green-700 py-2">
               <Marquee speed={81} pauseOnHover gradient={false}>
                 <span className="text-white text-sm px-4">
                   Selamat datang di website SMAIT GRANADA, Sholeh, Berilmu,
