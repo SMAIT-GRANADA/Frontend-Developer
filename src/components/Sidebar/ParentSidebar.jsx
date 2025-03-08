@@ -1,5 +1,7 @@
 import React from "react";
 import { Menu, X, GraduationCap, AlertTriangle, LogOut } from "lucide-react";
+import { useGetUserByIdQuery } from "../../hooks/useGetUserQuery";
+import { jwtDecode } from "jwt-decode";
 import avatar from "../../assets/logo-sekolah.svg";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -7,7 +9,10 @@ import Swal from "sweetalert2";
 
 const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
-
+  const token = Cookies.get("accessToken");
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userId = decodedToken?.id;
+  const { data: userData } = useGetUserByIdQuery(userId);
   const handleLogout = () => {
     Cookies.remove("accessToken", { path: "/" });
     Swal.fire({
@@ -54,7 +59,9 @@ const ParentSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
                 />
               </div>
               <div className="text-white">
-                <div className="font-medium">ORANG TUA</div>
+                <div className="font-medium">
+                  {userData?.data?.name || "PARENT"}
+                </div>
               </div>
             </div>
             <button

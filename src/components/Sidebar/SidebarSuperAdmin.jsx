@@ -12,6 +12,8 @@ import {
   Clock,
 } from "lucide-react";
 import avatar from "../../assets/logo-sekolah.svg";
+import { useGetUserByIdQuery } from "../../hooks/useGetUserQuery";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -19,7 +21,10 @@ import Swal from "sweetalert2";
 const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
   const [isManagementOpen, setIsManagementOpen] = useState(false);
-
+  const token = Cookies.get("accessToken");
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userId = decodedToken?.id;
+  const { data: userData } = useGetUserByIdQuery(userId);
   const handleLogout = () => {
     Cookies.remove("accessToken", { path: "/" });
     Swal.fire({
@@ -66,7 +71,9 @@ const SidebarSuperAdmin = ({ isOpen, setIsOpen, setActiveMenu }) => {
                 />
               </div>
               <div className="text-white">
-                <div className="font-medium">SUPERADMIN</div>
+                <div className="font-medium">
+                  {userData?.data?.name || "SUPERADMIN"}
+                </div>
               </div>
             </div>
             <button

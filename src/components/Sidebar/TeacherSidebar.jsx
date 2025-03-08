@@ -13,6 +13,8 @@ import {
   ChevronUp,
 } from "lucide-react";
 import avatar from "../../assets/logo-sekolah.svg";
+import { useGetUserByIdQuery } from "../../hooks/useGetUserQuery";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -21,7 +23,10 @@ import { useState } from "react";
 const TeacherSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
   const navigate = useNavigate();
   const [isNilaiOpen, setIsNilaiOpen] = useState(true);
-
+  const token = Cookies.get("accessToken");
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userId = decodedToken?.id;
+  const { data: userData } = useGetUserByIdQuery(userId);
   const handleLogout = () => {
     Cookies.remove("accessToken", { path: "/" });
     Swal.fire({
@@ -53,7 +58,7 @@ const TeacherSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
       />
 
       <aside
-        className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-800 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
+        className={`fixed md:sticky top-0 h-full min-h-screen pt-24 md:pt-0 md:top-28 w-64 bg-emerald-700 transition-transform duration-300 ease-in-out z-40 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 overflow-y-auto`}
       >
@@ -68,7 +73,9 @@ const TeacherSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
                 />
               </div>
               <div className="text-white">
-                <div className="font-medium">Hai GURU</div>
+                <div className="font-medium">
+                  {userData?.data?.name || "TEACHER"}
+                </div>
               </div>
             </div>
             <button
