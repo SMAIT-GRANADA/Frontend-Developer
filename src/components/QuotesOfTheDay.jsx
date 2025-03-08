@@ -1,10 +1,10 @@
 import React from "react";
 import line from "../assets/line.svg";
 import quotes from "../assets/quotes.svg";
-import { useGetQuotes } from "../hooks/useQoutes";
+import { useGetDailyQuote } from "../hooks/useQoutes";
 
 const QuotesOfTheDay = () => {
-  const { quote, loading, error, isEmpty } = useGetQuotes();
+  const { data, isLoading, error } = useGetDailyQuote();
 
   if (error) {
     return (
@@ -69,11 +69,11 @@ const QuotesOfTheDay = () => {
         <div className="flex-1">
           <img src={quotes} alt="" />
           <blockquote className="text-black text-2xl font-medium">
-            {loading
+            {isLoading
               ? "Loading quote..."
-              : isEmpty
+              : data?.isEmpty
               ? "Tidak ada quotes hari ini"
-              : quote}
+              : data?.quote}
           </blockquote>
         </div>
       </div>
