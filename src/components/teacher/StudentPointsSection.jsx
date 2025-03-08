@@ -35,20 +35,45 @@ const StudentPointSection = () => {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        deletePoint(id);
+        deletePoint(id, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Berhasil!",
+              text: "Data point berhasil dihapus",
+              icon: "success",
+              confirmButtonColor: "#22C55E",
+            });
+          },
+          onError: (error) => {
+            Swal.fire({
+              title: "Gagal!",
+              text: error?.response?.data?.message || "Gagal menghapus data",
+              icon: "error",
+              confirmButtonColor: "#EF4444",
+            });
+          },
+        });
       }
     });
   };
 
   const filteredData = data?.data
-    ? data.data.filter((item) =>
-        item.id?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
+    ? data.data.filter((item) => {
+        const searchValue = searchTerm.toLowerCase();
+        return (
+          item.studentName?.toLowerCase().includes(searchValue) ||
+          item.id?.toString().toLowerCase().includes(searchValue)
+        );
+      })
     : [];
 
-  // Create handler
   const handleCreate = (formData) => {
-    createPoint(formData, {
+    const payload = {
+      ...formData,
+      points: Number(formData.points),
+    };
+
+    createPoint(payload, {
       onSuccess: () => {
         setIsCreateModalOpen(false);
         Swal.fire({
@@ -69,10 +94,16 @@ const StudentPointSection = () => {
     });
   };
 
-  // Update handler
   const handleUpdate = (formData) => {
+    const updateData = {
+      name: formData.name,
+      className: formData.className,
+      points: Number(formData.points),
+      description: formData.description,
+    };
+
     updatePoint(
-      { id: selectedPoint.id, data: formData },
+      { id: selectedPoint.id, data: updateData },
       {
         onSuccess: () => {
           setIsUpdateModalOpen(false);
@@ -96,7 +127,6 @@ const StudentPointSection = () => {
     );
   };
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="w-full h-96 flex items-center justify-center">
@@ -108,7 +138,6 @@ const StudentPointSection = () => {
     );
   }
 
-  // Error state
   if (isError) {
     return (
       <div className="w-full h-96 flex items-center justify-center">
@@ -123,8 +152,7 @@ const StudentPointSection = () => {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-4 bg-white rounded-lg shadow-lg">
-      {/* Header */}
+    <div className="w-full max-w-6xl mx-auto px-3 sm:px-4 py-4 bg-white rounded-lg shadow-lg">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
         <h1 className="text-xl font-bold text-gray-800">Student Points</h1>
         <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
@@ -136,93 +164,108 @@ const StudentPointSection = () => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari Student ID..."
+              placeholder="Cari nama siswa..."
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="flex-shrink-0 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
+            className="flex-shrink-0 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
           >
             Tambah Point
           </button>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                No
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Student ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Points
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Description
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Date
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {filteredData.map((point, index) => (
-              <tr key={point.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {(page - 1) * limit + index + 1}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {point.studentName}
-                  </div>
-                  <div className="text-sm text-gray-500">{point.className}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {point.points}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900">
-                  {point.description}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(point.createdAt).toLocaleDateString("id-ID")}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setSelectedPoint(point);
-                        setIsUpdateModalOpen(true);
-                      }}
-                      disabled={isDeleting}
-                      className="text-blue-600 hover:text-blue-900"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(point.id)}
-                      disabled={isDeleting}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </td>
+      <div className="overflow-x-auto -mx-4 sm:-mx-0">
+        <div className="inline-block min-w-full align-middle">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  No
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Student
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Points
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell"
+                >
+                  Description
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredData.map((point, index) => (
+                <tr key={point.id}>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {(page - 1) * limit + index + 1}
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {point.studentName || point.name}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {point.className}
+                    </div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {point.points}
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 text-sm text-gray-900 hidden sm:table-cell">
+                    <div className="max-w-xs truncate">{point.description}</div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          const editData = {
+                            ...point,
+                            name: point.studentName || point.name,
+                          };
+                          setSelectedPoint(editData);
+                          setIsUpdateModalOpen(true);
+                        }}
+                        disabled={isDeleting}
+                        className="text-blue-600 hover:text-blue-900 p-1"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(point.id)}
+                        disabled={isDeleting}
+                        className="text-red-600 hover:text-red-900 p-1"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Pagination */}
       <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex justify-between w-full sm:w-auto gap-4">
           <button
@@ -245,7 +288,6 @@ const StudentPointSection = () => {
         </div>
       </div>
 
-      {/* Modals */}
       <Modal
         show={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
