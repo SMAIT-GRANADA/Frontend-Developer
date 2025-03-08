@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   fetchQuotes,
   deleteQuote,
@@ -46,40 +46,49 @@ export const useUpdateQuote = () => {
   });
 };
 
-export const useGetQuotes = () => {
-  const [quote, setQuote] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(false);
+// --- Improved hook for daily quotes using local time ---
+export const useGetDailyQuote = () => {
+  // Get current date in local time format YYYY-MM-DD
+  const getCurrentLocalDate = () => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(now.getDate()).padStart(2, "0")}`;
+  };
 
-  useEffect(() => {
-    const fetchDailyQuote = async () => {
-      try {
-        setLoading(true);
-        const today = new Date().toISOString().split("T")[0];
-        const startDate = new Date("2024-01-01").toISOString().split("T")[0];
-        const daysDiff = Math.floor(
-          (new Date(today) - new Date(startDate)) / (1000 * 60 * 60 * 24)
-        );
+  // Calculate day difference using local time
+  const getDayDifference = (today, startDate) => {
+    const date1 = new Date(today);
+    const date2 = new Date(startDate);
+    return Math.floor((date1 - date2) / (1000 * 60 * 60 * 24));
+  };
 
-        const response = await getQuotes({ page: 1, limit: 100 });
+  // Use React Query for data fetching with caching
+  return useQuery({
+    queryKey: ["dailyQuote", getCurrentLocalDate()],
+    queryFn: async () => {
+      const today = getCurrentLocalDate();
+      const startDate = "2024-01-01";
+      const daysDiff = getDayDifference(today, startDate);
 
-        if (response.status && response.data.length > 0) {
-          const index = daysDiff % response.data.length;
-          setQuote(response.data[index].content);
-          setIsEmpty(false);
-        } else {
-          setIsEmpty(true);
-        }
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
+      const response = await getQuotes({ page: 1, limit: 100 });
+
+      if (response.status && response.data.length > 0) {
+        const index = daysDiff % response.data.length;
+        return {
+          quote: response.data[index].content,
+          isEmpty: false,
+        };
+      } else {
+        return {
+          quote: "",
+          isEmpty: true,
+        };
       }
-    };
-
-    fetchDailyQuote();
-  }, []);
-
-  return { quote, loading, error, isEmpty };
+    },
+    staleTime: 1000 * 60 * 60, // Cache for 1 hour
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 };
