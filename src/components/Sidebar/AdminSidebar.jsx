@@ -38,7 +38,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, setActiveMenu }) => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed left-4 top-28 z-50 p-2 bg-emerald-800 text-white rounded-lg md:hidden"
+          className="fixed left-4 top-28 z-50 p-2 bg-emerald-700 text-white rounded-lg md:hidden"
         >
           <Menu size={24} />
         </button>
