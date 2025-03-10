@@ -156,13 +156,22 @@ const StaffGrid = () => {
       <div className="relative">
         <div
           ref={scrollRef}
-          className={`overflow-x-auto scrollbar-hide scroll-smooth ${
+          className={`overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory ${
             isFetching ? "opacity-50" : ""
           }`}
           onScroll={handleScroll}
         >
-          <div className="flex gap-6 transition-all duration-500 ease-in-out min-w-max px-4">
-            {renderStaffCards()}
+          <div className="grid grid-flow-col auto-cols-[100%] sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-4 gap-6 transition-all duration-500 ease-in-out px-8 sm:px-4">
+            {staffData.map((staff) => (
+              <div key={staff.id} className="snap-center flex justify-center">
+                <StaffCard
+                  staff={{
+                    ...staff,
+                    image: staff.imageUrl,
+                  }}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
