@@ -71,11 +71,11 @@ const VisiMisi = () => {
         <div className="page-content">
           <h2 className="text-2xl font-bold mb-6 text-green-700">Visi</h2>
           <p className="text-lg italic mb-6">
-            "Mewujudkan generasi yang khoikh, berilmu, dan memimpin."
+            "Mewujudkan generasi yang sholeh, berilmu, dan memimpin."
           </p>
           <p>
             Untuk mencapai visi tersebut, SMAIT Granada menjalankan
-            program-program unggulan seperti Tahfidz, Arabic Camp, dan BTR untuk
+            program-program unggulan seperti Tahfidz, Arabic Camp, dan BPI untuk
             pembentukan karakter dan cinta Al-Quran.
           </p>
           <div className="page-number">1</div>
