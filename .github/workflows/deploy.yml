@@ -60,7 +60,6 @@ jobs:
             --cpu=1 \
             --min-instances=0 \
             --max-instances=5 \
-            --cpu-boost \
             --timeout=300s
 
       - name: Log deployment URL
