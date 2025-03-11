@@ -58,7 +58,7 @@ jobs:
             --execution-environment=gen2 \
             --memory=512Mi \
             --cpu=1 \
-            --cpu-boost=false \
+            --no-cpu-throttling \
             --min-instances=0 \
             --max-instances=5 \
             --timeout=300s
