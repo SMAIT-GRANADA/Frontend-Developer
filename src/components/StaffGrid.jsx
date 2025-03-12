@@ -156,12 +156,16 @@ const StaffGrid = () => {
       <div className="relative">
         <div
           ref={scrollRef}
-          className={`overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory ${
-            isFetching ? "opacity-50" : ""
-          }`}
+          className="overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
           onScroll={handleScroll}
         >
-          <div className="grid grid-flow-col auto-cols-[100%] sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-4 gap-6 transition-all duration-500 ease-in-out px-8 sm:px-4">
+          <div
+            className="grid grid-flow-col auto-cols-[100%] sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-4 gap-6 transition-all duration-500 ease-in-out px-8 sm:px-4"
+            style={{
+              opacity: isFetching ? 0.7 : 1,
+              transition: "opacity 300ms",
+            }}
+          >
             {staffData.map((staff) => (
               <div key={staff.id} className="snap-center flex justify-center">
                 <StaffCard
@@ -174,6 +178,13 @@ const StaffGrid = () => {
             ))}
           </div>
         </div>
+
+        {/* Overlay loading */}
+        {isFetching && (
+          <div className="absolute inset-0 bg-white bg-opacity-40 flex items-center justify-center z-10 transition-opacity duration-300">
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
 
         {!isLoading && staffData.length > 0 && (
           <>
