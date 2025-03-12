@@ -59,9 +59,15 @@ export const useGetDailyQuote = () => {
 
   // Calculate day difference using local time
   const getDayDifference = (today, startDate) => {
-    const date1 = new Date(today);
-    const date2 = new Date(startDate);
-    return Math.floor((date1 - date2) / (1000 * 60 * 60 * 24));
+    // Create date objects without time component to avoid time zone issues
+    const date1 = new Date(today + "T00:00:00");
+    const date2 = new Date(startDate + "T00:00:00");
+
+    const diffTime = date1.getTime() - date2.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    // Ensure we always get a positive number
+    return Math.abs(diffDays);
   };
 
   // Use React Query for data fetching with caching
@@ -69,22 +75,36 @@ export const useGetDailyQuote = () => {
     queryKey: ["dailyQuote", getCurrentLocalDate()],
     queryFn: async () => {
       const today = getCurrentLocalDate();
-      const startDate = "2024-01-01";
+      const startDate = "2024-01-01"; // Fixed start date
       const daysDiff = getDayDifference(today, startDate);
 
-      const response = await getQuotes({ page: 1, limit: 100 });
+      try {
+        const response = await getQuotes({ page: 1, limit: 100 });
 
-      if (response.status && response.data.length > 0) {
-        const index = daysDiff % response.data.length;
-        return {
-          quote: response.data[index].content,
-          isEmpty: false,
-        };
-      } else {
-        return {
-          quote: "",
-          isEmpty: true,
-        };
+        if (response.status && response.data && response.data.length > 0) {
+          // Get quotes count to ensure proper cycling
+          const quotesCount = response.data.length;
+
+          // Calculate index with explicit modulo to ensure proper cycling
+          const index = daysDiff % quotesCount;
+
+          console.log(
+            `Day difference: ${daysDiff}, Quotes count: ${quotesCount}, Selected index: ${index}`
+          );
+
+          return {
+            quote: response.data[index].content,
+            isEmpty: false,
+          };
+        } else {
+          return {
+            quote: "",
+            isEmpty: true,
+          };
+        }
+      } catch (error) {
+        console.error("Error fetching daily quote:", error);
+        throw error;
       }
     },
     staleTime: 1000 * 60 * 60, // Cache for 1 hour
