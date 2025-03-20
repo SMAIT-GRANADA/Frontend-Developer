@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   SERVICE_NAME: react-frontend
-  REGION: asia-southeast2
+  REGION: asia-southeast1
 
 jobs:
   build-and-deploy:
