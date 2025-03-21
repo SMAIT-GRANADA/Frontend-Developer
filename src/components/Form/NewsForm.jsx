@@ -29,6 +29,9 @@ export default function NewsForm() {
       onSuccess: () => {
         setFormData({ title: "", description: "", media: null });
         setFileName("");
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       },
     });
   };
@@ -36,8 +39,17 @@ export default function NewsForm() {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
-      setFormData({ ...formData, media: file });
+      setFormData((prevData) => ({
+        ...prevData,
+        media: file,
+      }));
       setFileName(file.name);
+    } else if (e.target.files?.length === 0) {
+      setFormData((prevData) => ({
+        ...prevData,
+        media: null,
+      }));
+      setFileName("");
     }
   };
 
