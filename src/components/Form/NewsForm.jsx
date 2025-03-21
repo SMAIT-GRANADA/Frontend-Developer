@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useCreateNewsMutation } from "../../hooks/useCreateNewsMutation";
+import Swal from "sweetalert2";
 
 export default function NewsForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,17 @@ export default function NewsForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!formData.media) {
+      Swal.fire({
+        title: "Error!",
+        text: "Please choose an image file before posting news",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
     createNewsMutation.mutate(formData, {
       onSuccess: () => {
         setFormData({ title: "", description: "", media: null });
