@@ -1,18 +1,21 @@
+import { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useNewsQuery } from "../hooks/useNewsQuery";
-import arrowRight from "../assets/arrow-right-circle.svg";
+import { CircleArrowDown } from "lucide-react";
 import NewsCard from "../components/NewsCard";
 import NewsCardSkeleton from "../components/Skeleton/NewsCardSkeleton";
-import NewsGrid from "../components/NewsGrid";
 import NewsGridSkeleton from "../components/Skeleton/NewsGridSkeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { useEffect } from "react";
+import { useNewsQuery } from "../hooks/useNewsQuery";
 
 const News = () => {
+  const [visibleNews, setVisibleNews] = useState(7); // Awalnya tampilkan 7 berita
+  const [loading, setLoading] = useState(true);
+  const loadMoreRef = useRef(null);
+
   const roleRoutes = {
     siswa: "/student",
     guru: "/teacher",
@@ -22,6 +25,14 @@ const News = () => {
   };
 
   const navigate = useNavigate();
+
+  // Gunakan custom hook untuk fetch data
+  const { data: newsData, isLoading } = useNewsQuery({ limit: 30, page: 1 });
+
+  useEffect(() => {
+    // Set loading state berdasarkan isLoading dari query
+    setLoading(isLoading);
+  }, [isLoading]);
 
   useEffect(() => {
     const token = Cookies.get("accessToken");
@@ -41,7 +52,32 @@ const News = () => {
     }
   }, [navigate]);
 
-  const { data: newsData, isLoading } = useNewsQuery();
+  // Fungsi untuk menangani klik tombol "Lebih lainnya"
+  const handleLoadMore = () => {
+    setLoading(true);
+
+    // Simulasi loading dengan setTimeout
+    setTimeout(() => {
+      setVisibleNews((prev) => prev + 7);
+      setLoading(false);
+    }, 500);
+  };
+
+  // Chunk array untuk membuat grid
+  const getNewsChunks = () => {
+    if (!newsData?.data || newsData.data.length === 0) return [];
+
+    const chunks = [];
+    // Mulai dari index 1 karena index 0 adalah berita utama
+    for (let i = 1; i < Math.min(visibleNews, newsData.data.length); i += 3) {
+      chunks.push(newsData.data.slice(i, i + 3));
+    }
+
+    return chunks;
+  };
+
+  // Chunks berita untuk ditampilkan dalam grid
+  const newsChunks = getNewsChunks();
 
   return (
     <>
@@ -63,31 +99,51 @@ const News = () => {
           </header>
 
           <main className="space-y-12">
+            {/* Berita utama */}
+            {isLoading ? (
+              <NewsCardSkeleton isMain={true} />
+            ) : (
+              newsData?.data[0] && (
+                <NewsCard news={newsData.data[0]} isMain={true} />
+              )
+            )}
+
+            {/* Grid berita */}
             {isLoading ? (
               <>
-                <NewsCardSkeleton isMain={true} />
                 <NewsGridSkeleton />
                 <NewsGridSkeleton />
               </>
             ) : (
-              <>
-                <NewsCard news={newsData?.data[0]} isMain={true} />
-                <NewsGrid news={newsData?.data} startIndex={1} endIndex={4} />
-                <NewsGrid news={newsData?.data} startIndex={4} endIndex={7} />
-              </>
+              newsChunks.map((chunk, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                >
+                  {chunk.map((news) => (
+                    <NewsCard key={news.id} news={news} />
+                  ))}
+                </div>
+              ))
             )}
+
+            {/* Loading indicator saat load more */}
+            {loading && !isLoading && <NewsGridSkeleton />}
           </main>
 
-          <div className="flex justify-center mt-8">
-            <button className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-colors flex items-center">
-              Lebih lainnya
-              <img
-                src={arrowRight}
-                alt="Arrow Right"
-                className="ml-2 w-4 h-4"
-              />
-            </button>
-          </div>
+          {/* Tombol Load More */}
+          {newsData?.data && visibleNews < newsData.data.length && (
+            <div className="flex justify-center mt-8" ref={loadMoreRef}>
+              <button
+                className="bg-yellow-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-colors flex items-center"
+                onClick={handleLoadMore}
+                disabled={loading}
+              >
+                {loading && !isLoading ? "Memuat..." : "Lebih lainnya"}{" "}
+                <CircleArrowDown className="ml-2" />
+              </button>
+            </div>
+          )}
         </div>
         <Footer />
       </div>
