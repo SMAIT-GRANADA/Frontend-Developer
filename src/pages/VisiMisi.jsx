@@ -56,7 +56,6 @@ const VisiMisi = () => {
   };
 
   const pageContent = [
-    // Page 0 - Cover and Visi
     <>
       <div className="left-page">
         <div className="book-cover-content">
@@ -82,7 +81,6 @@ const VisiMisi = () => {
         </div>
       </div>
     </>,
-    // Page 1 - Misi
     <>
       <div className="left-page">
         <div className="page-content">
@@ -127,7 +125,6 @@ const VisiMisi = () => {
         </div>
       </div>
     </>,
-    // Page 2 - Karakter continued
     <>
       <div className="left-page">
         <div className="page-content">
@@ -231,7 +228,6 @@ const VisiMisi = () => {
         </div>
       </div>
 
-      {/* Custom CSS */}
       <style jsx>{`
         .book-closed {
           width: 300px;
@@ -377,19 +373,113 @@ const VisiMisi = () => {
 
         @media (max-width: 768px) {
           .book-open {
-            max-width: 100%;
-            height: auto;
+            width: 95%;
+            height: 70vh;
+            max-height: 650px;
           }
 
           .book-pages {
-            flex-direction: column;
-            height: auto;
+            display: flex;
+            flex-direction: row;
+            height: 100%;
           }
 
           .left-page,
           .right-page {
-            border-right: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            font-size: 0.9rem;
+          }
+
+          h2 {
+            font-size: 1.3rem;
+          }
+
+          .book-closed {
+            width: 220px;
+            height: 300px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .book-open {
+            width: 98%;
+            height: 55vh;
+            max-height: 450px;
+          }
+
+          .book-pages {
+            display: flex;
+            flex-direction: row;
+          }
+
+          .left-page,
+          .right-page {
+            padding: 10px;
+            font-size: 0.7rem;
+          }
+
+          h2 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+          }
+          
+          .page-content {
+            padding-bottom: 25px;
+          }
+
+          .page-content ol {
+            padding-left: 0;
+            space-y-2;
+          }
+
+          .page-content ol li {
+            margin-bottom: 0.3rem;
+            line-height: 1.3;
+          }
+          
+          .book-closed {
+            width: 160px;
+            height: 200px;
+            padding: 20px;
+          }
+          
+          .book-cover-content h1 {
+            font-size: 1.5rem;
+          }
+          
+          .book-cover-content p {
+            font-size: 0.9rem;
+          }
+
+          .book-navigation {
+            gap: 10px;
+            margin-top: 15px;
+          }
+
+          .prev-btn,
+          .next-btn {
+            width: 28px;
+            height: 28px;
+            font-size: 0.8rem;
+          }
+
+          .page-indicator {
+            font-size: 11px;
+            padding: 2px 8px;
+          }
+          
+          .page-number {
+            font-size: 11px;
+            bottom: 5px;
+            right: 5px;
+          }
+          
+          .mt-10 {
+            margin-top: 1.5rem;
+          }
+          
+          .p-4 {
+            padding: 0.75rem;
           }
         }
       `}</style>
