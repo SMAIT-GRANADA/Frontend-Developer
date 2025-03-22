@@ -374,8 +374,8 @@ const VisiMisi = () => {
         @media (max-width: 768px) {
           .book-open {
             width: 95%;
-            height: 70vh;
-            max-height: 650px;
+            height: 60vh;
+            max-height: 500px;
           }
 
           .book-pages {
@@ -387,24 +387,37 @@ const VisiMisi = () => {
           .left-page,
           .right-page {
             padding: 15px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
           }
 
           h2 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
           }
 
           .book-closed {
             width: 220px;
             height: 300px;
           }
+          
+          .book-navigation {
+            margin-top: 15px;
+          }
+          
+          .page-content ol {
+            space-y-2;
+          }
+          
+          .page-content ol li {
+            margin-bottom: 0.5rem;
+          }
         }
 
         @media (max-width: 480px) {
           .book-open {
             width: 98%;
-            height: 55vh;
-            max-height: 450px;
+            height: 45vh;
+            max-height: 380px;
           }
 
           .book-pages {
@@ -414,72 +427,76 @@ const VisiMisi = () => {
 
           .left-page,
           .right-page {
-            padding: 10px;
-            font-size: 0.7rem;
+            padding: 8px;
+            font-size: 0.65rem;
           }
 
           h2 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
           }
           
           .page-content {
-            padding-bottom: 25px;
+            padding-bottom: 20px;
           }
 
           .page-content ol {
             padding-left: 0;
-            space-y-2;
+            space-y-1;
           }
 
           .page-content ol li {
-            margin-bottom: 0.3rem;
-            line-height: 1.3;
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
           }
           
           .book-closed {
             width: 160px;
             height: 200px;
-            padding: 20px;
+            padding: 15px;
           }
           
           .book-cover-content h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
           }
           
           .book-cover-content p {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
           }
 
           .book-navigation {
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 12px;
           }
 
           .prev-btn,
           .next-btn {
-            width: 28px;
-            height: 28px;
-            font-size: 0.8rem;
+            width: 26px;
+            height: 26px;
+            font-size: 0.7rem;
           }
 
           .page-indicator {
-            font-size: 11px;
-            padding: 2px 8px;
+            font-size: 10px;
+            padding: 2px 6px;
           }
           
           .page-number {
-            font-size: 11px;
-            bottom: 5px;
-            right: 5px;
+            font-size: 10px;
+            bottom: 4px;
+            right: 4px;
           }
           
           .mt-10 {
-            margin-top: 1.5rem;
+            margin-top: 1rem;
           }
           
           .p-4 {
-            padding: 0.75rem;
+            padding: 0.5rem;
+          }
+          
+          .text-lg {
+            font-size: 0.85rem;
           }
         }
       `}</style>
